@@ -33,8 +33,9 @@
 }
 </script>
 
-<style>html{scroll-behavior:smooth}body{margin:0}img{max-width:100%}.lienmail{color:inherit;text-decoration:none}.lienmail:hover code,.lienmail:focus code{text-decoration:underline}</style>
-<title>Je l'aime, mais je n'en peux plus</title>
+<style>html{scroll-behavior:smooth}body{margin:0}img{max-width:100%}.lienmail{color:inherit;text-decoration:none}.lienmail:hover code,.lienmail:focus code{text-decoration:underline}a.tel{color:inherit;text-decoration:none}
+</style>
+<title>Je l’aime, mais je n’en peux plus</title>
 <link rel="icon" href="/favicon.ico" sizes="48x48">
 <link rel="icon" type="image/png" href="/icone-192.png" sizes="192x192">
 <link rel="apple-touch-icon" href="/apple-touch-icon.png">
@@ -347,16 +348,16 @@ section[id],[id="contact"]{scroll-margin-top:84px}
     <span class="marque">Lionel Garnier</span>
     <nav aria-label="Menu du site" class="menu">
       <button type="button" class="menu-btn" id="menu-btn" aria-expanded="false" aria-controls="menu-liste"><span class="burger" aria-hidden="true"></span><span class="txt">Menu</span></button>
-      <a class="sos" href="#aide">Besoin d'aide</a>
+      <a class="sos" href="#aide">Besoin d’aide</a>
       <div class="menu-liste" id="menu-liste" hidden>
         <p class="menu-groupe">Le livre</p>
         <a href="#livre">Présentation</a>
         <a href="#editions">Les deux éditions</a>
         <a href="#feuilleter">Feuilleter</a>
-        <a href="#auteur">L'auteur</a>
+        <a href="#auteur">L’auteur</a>
         <a href="#pros">Professionnels</a>
         <a href="#contact">Contact</a>
-        <a href="#aide" class="menu-aide">Besoin d'aide</a>
+        <a href="#aide" class="menu-aide">Besoin d’aide</a>
       </div>
     </nav>
   </div>
@@ -366,8 +367,8 @@ section[id],[id="contact"]{scroll-margin-top:84px}
   <div class="wrap">
     <div>
       <p class="sur">Un guide pour les proches</p>
-      <h1>Je l'aime, mais <span>je n'en peux plus</span></h1>
-      <p class="sous">Vous vivez auprès d'une personne qui boit, prend des drogues ou des médicaments : votre conjoint, votre enfant, un parent, un ami. Vous avez tout essayé, et vous êtes épuisé(e). Ce livre est pour vous.</p>
+      <h1>Je l’aime, mais <span>je n’en peux plus</span></h1>
+      <p class="sous">Vous vivez auprès d’une personne qui boit, prend des drogues ou des médicaments : votre conjoint, votre enfant, un parent, un ami. Vous avez tout essayé, et vous êtes épuisé(e). Ce livre est pour vous.</p>
       <div class="actions">
         <span class="btn btn-or bientot" role="note">Bientôt disponible sur Amazon</span>
       </div>
@@ -384,17 +385,17 @@ section[id],[id="contact"]{scroll-margin-top:84px}
     <div class="carrousel" id="carrousel">
       <div class="piste" id="piste">
         <article class="edition" data-amazon="">
-          <div class="couv-ed"><span class="img-ed"><img data-p="c1" alt="Couverture de l'édition couleur"></span><span class="bientot-ed">Bientôt disponible</span></div>
+          <div class="couv-ed"><span class="img-ed"><img data-p="c1" alt="Couverture de l’édition couleur"></span><span class="bientot-ed">Bientôt disponible</span></div>
           <h3>Édition couleur</h3>
           <p>Toutes les photos, illustrations et schémas en couleur.</p>
-          <p class="prix-ed">27,90 €</p>
+          <p class="prix-ed">27,90 €</p>
           <p class="fiche">Broché A5 · 389 pages</p>
         </article>
         <article class="edition" data-amazon="">
-          <div class="couv-ed"><span class="img-ed"><img data-p="c1nb" alt="Couverture de l'édition noir et blanc"></span><span class="bientot-ed">Bientôt disponible</span></div>
+          <div class="couv-ed"><span class="img-ed"><img data-p="c1nb" alt="Couverture de l’édition noir et blanc"></span><span class="bientot-ed">Bientôt disponible</span></div>
           <h3>Édition noir et blanc</h3>
           <p>Le même texte et les mêmes pages, illustrations en noir et blanc, à prix réduit.</p>
-          <p class="prix-ed">19,90 €</p>
+          <p class="prix-ed">19,90 €</p>
           <p class="fiche">Broché A5 · 389 pages</p>
         </article>
       </div>
@@ -411,10 +412,10 @@ section[id],[id="contact"]{scroll-margin-top:84px}
   <div class="wrap">
     <p class="etiquette">Feuilleter</p>
     <h2>Les premières pages du livre</h2>
-    <p class="chapeau">De la couverture à la fin de l'avant-propos, telles qu'elles sont imprimées dans l'édition couleur, puis un extrait illustré dans les deux éditions. <span class="seul-pc">Le bouton « Agrandir pour lire » affiche la page en grand.</span><span class="seul-tel">Glissez le doigt pour tourner les pages, écartez deux doigts pour zoomer.</span></p>
+    <p class="chapeau">Les pages, de la couverture à la fin de l’avant-propos, telles qu’elles sont imprimées dans l’édition couleur, puis un extrait illustré dans les deux éditions. <span class="seul-pc">Le bouton « Agrandir pour lire » affiche la page en grand. Sur un écran tactile, vous pouvez aussi tourner les pages du doigt.</span><span class="seul-tel">Glissez le doigt pour tourner les pages, écartez deux doigts pour zoomer.</span></p>
     <div class="scene" id="feuilleter">
-      <div class="livre3d" id="livre3d" data-k="0"><div class="feuillet" data-i="0"><div class="face recto couverture"><img data-p="c1" alt="Couverture du livre" decoding="async"></div><div class="face verso blanc" aria-hidden="true"></div></div><div class="feuillet" data-i="1"><div class="face recto"><img data-p="p1" alt="Page 1 : page de titre" decoding="async"></div><div class="face verso"><img data-p="p2" alt="Page 2 : qui a écrit ce livre, mentions légales" decoding="async"></div></div><div class="feuillet" data-i="2"><div class="face recto"><img data-p="p3" alt="Page 3 : avertissement" decoding="async"></div><div class="face verso"><img data-p="p4" alt="Page 4 : table des matières" decoding="async"></div></div><div class="feuillet" data-i="3"><div class="face recto"><img data-p="p5" alt="Page 5 : table des matières (suite)" decoding="async"></div><div class="face verso"><img data-p="p6" alt="Page 6 : table des matières (fin)" decoding="async"></div></div><div class="feuillet" data-i="4"><div class="face recto"><img data-p="p7" alt="Page 7 : avant-propos, À vous, les proches" decoding="async"></div><div class="face verso"><img data-p="p8" alt="Page 8 : avant-propos (suite)" decoding="async"></div></div><div class="feuillet" data-i="5"><div class="face recto"><img data-p="p9" alt="Page 9 : avant-propos (fin)" decoding="async"></div><div class="face verso"><img data-p="i57c" alt="Extrait, page 57 : édition couleur" decoding="async"></div></div><div class="feuillet" data-i="6"><div class="face recto"><img data-p="x57c" alt="Extrait, page 57, édition couleur : la roue du changement" decoding="async"></div><div class="face verso"><img data-p="i57nb" alt="Extrait, page 57 : édition noir et blanc" decoding="async"></div></div><div class="feuillet" data-i="7"><div class="face recto"><img data-p="x57nb" alt="Extrait, page 57, édition noir et blanc : la roue du changement" decoding="async"></div><div class="face verso"><div class="suite"><strong>La suite est dans le livre</strong><span>389 pages pour comprendre, vous protéger et aider sans vous épuiser, avec un parcours express pour les jours sans force.</span><em>Bientôt disponible sur Amazon</em></div></div></div><div class="feuillet" data-i="8"><div class="face recto blanc" aria-hidden="true"></div><div class="face verso c4"><img data-p="c4" alt="4e de couverture" decoding="async"></div></div></div>
-      <div class="livre1p" id="livre1p"><div class="face couverture"><img data-p="c1" alt="Couverture du livre" decoding="async"></div><div class="face  cache"><img data-p="p1" alt="Page 1 : page de titre" decoding="async"></div><div class="face  cache"><img data-p="p2" alt="Page 2 : qui a écrit ce livre, mentions légales" decoding="async"></div><div class="face  cache"><img data-p="p3" alt="Page 3 : avertissement" decoding="async"></div><div class="face  cache"><img data-p="p4" alt="Page 4 : table des matières" decoding="async"></div><div class="face  cache"><img data-p="p5" alt="Page 5 : table des matières (suite)" decoding="async"></div><div class="face  cache"><img data-p="p6" alt="Page 6 : table des matières (fin)" decoding="async"></div><div class="face  cache"><img data-p="p7" alt="Page 7 : avant-propos" decoding="async"></div><div class="face  cache"><img data-p="p8" alt="Page 8 : avant-propos (suite)" decoding="async"></div><div class="face  cache"><img data-p="p9" alt="Page 9 : avant-propos (fin)" decoding="async"></div><div class="face  cache"><img data-p="i57c" alt="Extrait, page 57 : édition couleur" decoding="async"></div><div class="face  cache"><img data-p="x57c" alt="Extrait, page 57, édition couleur : la roue du changement" decoding="async"></div><div class="face  cache"><img data-p="i57nb" alt="Extrait, page 57 : édition noir et blanc" decoding="async"></div><div class="face  cache"><img data-p="x57nb" alt="Extrait, page 57, édition noir et blanc : la roue du changement" decoding="async"></div><div class="face cache"><div class="suite"><strong>La suite est dans le livre</strong><span>389 pages pour comprendre, vous protéger et aider sans vous épuiser, avec un parcours express pour les jours sans force.</span><em>Bientôt disponible sur Amazon</em></div></div><div class="face c4 cache"><img data-p="c4" alt="4e de couverture" decoding="async"></div></div>
+      <div class="livre3d" id="livre3d" data-k="0"><div class="feuillet" data-i="0"><div class="face recto couverture"><img data-p="c1" alt="Couverture du livre" decoding="async"></div><div class="face verso blanc" aria-hidden="true"></div></div><div class="feuillet" data-i="1"><div class="face recto"><img data-p="p1" alt="Page 1 : page de titre" decoding="async"></div><div class="face verso"><img data-p="p2" alt="Page 2 : qui a écrit ce livre, mentions légales" decoding="async"></div></div><div class="feuillet" data-i="2"><div class="face recto"><img data-p="p3" alt="Page 3 : avertissement" decoding="async"></div><div class="face verso"><img data-p="p4" alt="Page 4 : table des matières" decoding="async"></div></div><div class="feuillet" data-i="3"><div class="face recto"><img data-p="p5" alt="Page 5 : table des matières (suite)" decoding="async"></div><div class="face verso"><img data-p="p6" alt="Page 6 : table des matières (fin)" decoding="async"></div></div><div class="feuillet" data-i="4"><div class="face recto"><img data-p="p7" alt="Page 7 : avant-propos, À vous, les proches" decoding="async"></div><div class="face verso"><img data-p="p8" alt="Page 8 : avant-propos (suite)" decoding="async"></div></div><div class="feuillet" data-i="5"><div class="face recto"><img data-p="p9" alt="Page 9 : avant-propos (fin)" decoding="async"></div><div class="face verso"><img data-p="i57c" alt="Extrait, page 57 : édition couleur" decoding="async"></div></div><div class="feuillet" data-i="6"><div class="face recto"><img data-p="x57c" alt="Extrait, page 57, édition couleur : la roue du changement" decoding="async"></div><div class="face verso"><img data-p="i57nb" alt="Extrait, page 57 : édition noir et blanc" decoding="async"></div></div><div class="feuillet" data-i="7"><div class="face recto"><img data-p="x57nb" alt="Extrait, page 57, édition noir et blanc : la roue du changement" decoding="async"></div><div class="face verso"><div class="suite"><strong>La suite est dans le livre</strong><span>389 pages pour comprendre, vous protéger et aider sans vous épuiser, avec un parcours express pour les jours sans force.</span><em>Bientôt disponible sur Amazon</em></div></div></div><div class="feuillet" data-i="8"><div class="face recto blanc" aria-hidden="true"></div><div class="face verso c4"><img data-p="c4" alt="4ᵉ de couverture" decoding="async"></div></div></div>
+      <div class="livre1p" id="livre1p"><div class="face couverture"><img data-p="c1" alt="Couverture du livre" decoding="async"></div><div class="face  cache"><img data-p="p1" alt="Page 1 : page de titre" decoding="async"></div><div class="face  cache"><img data-p="p2" alt="Page 2 : qui a écrit ce livre, mentions légales" decoding="async"></div><div class="face  cache"><img data-p="p3" alt="Page 3 : avertissement" decoding="async"></div><div class="face  cache"><img data-p="p4" alt="Page 4 : table des matières" decoding="async"></div><div class="face  cache"><img data-p="p5" alt="Page 5 : table des matières (suite)" decoding="async"></div><div class="face  cache"><img data-p="p6" alt="Page 6 : table des matières (fin)" decoding="async"></div><div class="face  cache"><img data-p="p7" alt="Page 7 : avant-propos" decoding="async"></div><div class="face  cache"><img data-p="p8" alt="Page 8 : avant-propos (suite)" decoding="async"></div><div class="face  cache"><img data-p="p9" alt="Page 9 : avant-propos (fin)" decoding="async"></div><div class="face  cache"><img data-p="i57c" alt="Extrait, page 57 : édition couleur" decoding="async"></div><div class="face  cache"><img data-p="x57c" alt="Extrait, page 57, édition couleur : la roue du changement" decoding="async"></div><div class="face  cache"><img data-p="i57nb" alt="Extrait, page 57 : édition noir et blanc" decoding="async"></div><div class="face  cache"><img data-p="x57nb" alt="Extrait, page 57, édition noir et blanc : la roue du changement" decoding="async"></div><div class="face cache"><div class="suite"><strong>La suite est dans le livre</strong><span>389 pages pour comprendre, vous protéger et aider sans vous épuiser, avec un parcours express pour les jours sans force.</span><em>Bientôt disponible sur Amazon</em></div></div><div class="face c4 cache"><img data-p="c4" alt="4ᵉ de couverture" decoding="async"></div></div>
     </div>
     <div class="commandes">
       <button type="button" id="prec" aria-label="Page précédente">&#9664;</button>
@@ -425,7 +426,7 @@ section[id],[id="contact"]{scroll-margin-top:84px}
   </div>
   <div class="loupe" id="loupe" hidden role="dialog" aria-modal="true" aria-label="Page agrandie">
     <div class="loupe-barre"><span id="loupe-titre"></span><button type="button" id="loupe-plus">Zoom +</button><button type="button" id="loupe-fermer" aria-label="Fermer">&#10005;</button></div>
-    <p class="loupe-aide">Faites défiler pour lire. « Zoom + » ou un double-clic pour voir la page en taille réelle.</p>
+    <p class="loupe-aide">Faites défiler pour lire. Cliquez sur « Zoom + » ou double-cliquez pour voir la page en taille réelle.</p>
     <div class="loupe-zone" id="loupe-zone"></div>
   </div>
 </section>
@@ -435,70 +436,70 @@ section[id],[id="contact"]{scroll-margin-top:84px}
       <div class="intro">
         <div>
           <p class="etiquette">Le livre</p>
-          <p class="grand">Comment tenir sans vous perdre ? Poser des limites <em>sans avoir l'impression d'abandonner</em> ?</p>
+          <p class="grand">Comment tenir sans vous perdre ? Poser des limites <em>sans avoir l’impression d’abandonner</em> ?</p>
         </div>
         <div>
-          <p>Ce guide vous accompagne pas à pas, avec des outils issus de CRAFT, une méthode très étudiée qui aide l'entourage à aller mieux et à encourager son proche vers les soins.</p>
+          <p>Ce guide vous accompagne pas à pas, avec des outils issus de CRAFT, une méthode très étudiée qui aide l’entourage à aller mieux et à encourager son proche vers les soins.</p>
           <p>Il réunit plusieurs approches reconnues (approche systémique, communication non violente, analyse transactionnelle), expliquées simplement, avec des exemples, des exercices et leurs réponses, un parcours express pour les jours sans force, les numéros utiles et une annexe pour les enfants.</p>
         </div>
       </div>
 
       <div class="etapes">
-        <div class="etape"><p class="n">ÉTAPE 1</p><h3>Comprendre</h3><p>Ce qui vous arrive, et ce qu'est l'addiction.</p></div>
+        <div class="etape"><p class="n">ÉTAPE 1</p><h3>Comprendre</h3><p>Ce qui vous arrive, et ce qu’est l’addiction.</p></div>
         <div class="etape"><p class="n">ÉTAPE 2</p><h3>Me protéger</h3><p>Prendre soin de soi, se préparer aux moments difficiles.</p></div>
-        <div class="etape"><p class="n">ÉTAPE 3</p><h3>Aider sans s'épuiser</h3><p>Donner plus de place à la vie sans produit, ne plus réparer.</p></div>
-        <div class="etape"><p class="n">ÉTAPE 4</p><h3>Parler autrement</h3><p>Poser des limites, proposer de l'aide au bon moment.</p></div>
+        <div class="etape"><p class="n">ÉTAPE 3</p><h3>Aider sans s’épuiser</h3><p>Donner plus de place à la vie sans produit, ne plus réparer.</p></div>
+        <div class="etape"><p class="n">ÉTAPE 4</p><h3>Parler autrement</h3><p>Poser des limites, proposer de l’aide au bon moment.</p></div>
         <div class="etape"><p class="n">ÉTAPE 5</p><h3>Tenir dans la durée</h3><p>Quand il se soigne, quand il rechute.</p></div>
       </div>
 
       <div class="promesse">
         <strong>Ce livre ne promet pas que votre proche arrêtera.</strong>
-        <span>Il vous aide à aller mieux, quoi qu'il fasse.</span>
+        <span>Il vous aide à aller mieux, quoi qu’il fasse.</span>
       </div>
-      <p class="details">Impression à la demande · ISBN 979-10-991066-0-5 · les pages d'exercices peuvent être photocopiées pour un usage personnel.</p>
+      <p class="details">Impression à la demande · ISBN couleur 979-10-991066-2-9 · noir et blanc 979-10-991066-0-5 · les pages d’exercices peuvent être photocopiées pour un usage personnel (conditions pour les professionnels plus bas).</p>
     </div>
   </section>
 
   <section id="auteur" class="auteur">
     <div class="wrap">
       <div>
-        <p class="etiquette">L'auteur</p>
-        <p class="citation">« J'ai été <span>des deux côtés.</span> »</p>
+        <p class="etiquette">L’auteur</p>
+        <p class="citation">« J’ai été <span>des deux côtés.</span> »</p>
         <ul class="regards">
-          <li>A vécu l'addiction</li><li>Proche qui s'est inquiété</li><li>Animateur de groupes de parole</li>
+          <li>A vécu l’addiction</li><li>Proche qui s’est inquiété</li><li>Animateur de groupes de parole</li>
         </ul>
       </div>
       <div>
-        <p><strong>Lionel Garnier</strong> est patient expert en formation. Il a suivi le diplôme universitaire d'addictologie générale de l'Université Paris-Saclay (2026). Concerné lui-même par un trouble de l'usage d'alcool, il est abstinent depuis novembre 2024.</p>
-        <p>Une amie très proche a été confrontée à son tour à l'addiction ; aujourd'hui, elle est abstinente. Il anime, dans une association d'entraide, des groupes de parole pour les personnes dépendantes et pour leur entourage, et participe à des actions de prévention en Isère. Il n'est ni médecin ni psychologue.</p>
-        <p class="liens">Liens d'intérêts : animateur de groupes de parole à l'association Vivre Sans Addiction (Isère) ; membre des instances de cette association et de la CPTS du Pays Voironnais ; actions de prévention avec ces deux structures. L'auteur ne perçoit aucune rémunération de ces structures pour ce livre ; il perçoit les revenus de sa vente.</p>
+        <p><strong>Lionel Garnier</strong> est patient expert en formation. Il a suivi le diplôme universitaire d’addictologie générale de l’Université Paris-Saclay (2026). Concerné lui-même par un trouble de l’usage d’alcool, il est abstinent depuis novembre 2024.</p>
+        <p>Une amie très proche a été confrontée à son tour à l’addiction ; aujourd’hui, elle est abstinente. Il anime, dans une association d’entraide, des groupes de parole pour les personnes dépendantes et pour leur entourage, et participe à des actions de prévention en Isère. Il n’est ni médecin ni psychologue.</p>
+        <p class="liens">Liens d’intérêts : animateur de groupes de parole à l’association Vivre Sans Addiction (Isère) ; membre des instances de cette association et de la CPTS du Pays Voironnais ; actions de prévention avec ces deux structures. L’auteur ne perçoit aucune rémunération de ces structures pour ce livre ; il perçoit les revenus de sa vente.</p>
       </div>
     </div>
   </section>
 
   <section id="aide">
     <div class="wrap">
-      <p class="etiquette">Besoin d'aide maintenant</p>
+      <p class="etiquette">Besoin d’aide maintenant</p>
       <h2>En cas de danger, appelez</h2>
       <div class="urgence" role="list">
-        <div role="listitem"><b>15</b>SAMU</div>
-        <div role="listitem"><b>17</b>Police, gendarmerie</div>
-        <div role="listitem"><b>18</b>Pompiers</div>
-        <div role="listitem"><b>112</b>Urgence européenne</div>
-        <div role="listitem"><b>114</b>Par SMS, si vous ne pouvez pas parler</div>
+        <div role="listitem"><b><a class="tel" href="tel:15">15</a></b>SAMU</div>
+        <div role="listitem"><b><a class="tel" href="tel:17">17</a></b>Police, gendarmerie</div>
+        <div role="listitem"><b><a class="tel" href="tel:18">18</a></b>Pompiers</div>
+        <div role="listitem"><b><a class="tel" href="tel:112">112</a></b>Urgence européenne</div>
+        <div role="listitem"><b><a class="tel" href="sms:114">114</a></b>Par SMS, si vous ne pouvez pas parler</div>
       </div>
       <div class="lignes">
-        <div class="ligne"><b>3919</b><span>Violences conjugales, écoute anonyme et gratuite, jour et nuit</span></div>
-        <div class="ligne"><b>119</b><span>Enfance en danger, jour et nuit ; un enfant peut appeler lui-même</span></div>
-        <div class="ligne"><b>3114</b><span>Prévention du suicide, jour et nuit, pour vous ou pour un proche</span></div>
-        <div class="ligne"><b>116 006</b><span>Aide aux victimes, 7 jours sur 7, de 9 h à 20 h</span></div>
-        <div class="ligne"><b>0 800 23 13 13</b><span>Drogues Info Service (gratuit), pour les personnes qui consomment et leur entourage</span></div>
-        <div class="ligne"><b>0 980 980 930</b><span>Alcool Info Service (non surtaxé)</span></div>
-        <div class="ligne"><b>0 980 980 940</b><span>Écoute Cannabis (non surtaxé)</span></div>
-        <div class="ligne"><b>09 74 75 13 13</b><span>Joueurs Info Service (non surtaxé)</span></div>
-        <div class="ligne"><b>0 800 235 236</b><span>Fil Santé Jeunes (gratuit), de 12 à 25 ans</span></div>
+        <div class="ligne"><b><a class="tel" href="tel:3919">3919</a></b><span>Violences conjugales, écoute anonyme et gratuite, jour et nuit</span></div>
+        <div class="ligne"><b><a class="tel" href="tel:119">119</a></b><span>Enfance en danger, jour et nuit ; un enfant peut appeler lui-même</span></div>
+        <div class="ligne"><b><a class="tel" href="tel:3114">3114</a></b><span>Prévention du suicide, jour et nuit, pour vous ou pour un proche</span></div>
+        <div class="ligne"><b><a class="tel" href="tel:116006">116 006</a></b><span>Aide aux victimes, 7 jours sur 7, de 9 h à 20 h</span></div>
+        <div class="ligne"><b><a class="tel" href="tel:0800231313">0 800 23 13 13</a></b><span>Drogues Info Service (gratuit), pour les personnes qui consomment et leur entourage</span></div>
+        <div class="ligne"><b><a class="tel" href="tel:0980980930">0 980 980 930</a></b><span>Alcool Info Service (non surtaxé)</span></div>
+        <div class="ligne"><b><a class="tel" href="tel:0980980940">0 980 980 940</a></b><span>Écoute Cannabis (non surtaxé)</span></div>
+        <div class="ligne"><b><a class="tel" href="tel:0974751313">09 74 75 13 13</a></b><span>Joueurs Info Service (non surtaxé)</span></div>
+        <div class="ligne"><b><a class="tel" href="tel:0800235236">0 800 235 236</a></b><span>Fil Santé Jeunes (gratuit), de 12 à 25 ans</span></div>
       </div>
-      <p class="note">Ce site ne remplace pas un professionnel. Pour trouver un lieu d'aide près de chez vous : les annuaires de <a href="https://www.drogues-info-service.fr">drogues-info-service.fr</a> et <a href="https://www.alcool-info-service.fr">alcool-info-service.fr</a>.</p>
+      <p class="note">Ce site ne remplace pas un professionnel. Pour trouver un lieu d’aide près de chez vous : les annuaires de <a href="https://www.drogues-info-service.fr">drogues-info-service.fr</a> et <a href="https://www.alcool-info-service.fr">alcool-info-service.fr</a>.</p>
     </div>
   </section>
 
@@ -506,15 +507,15 @@ section[id],[id="contact"]{scroll-margin-top:84px}
     <div class="wrap duo">
       <div class="carte">
         <p class="etiquette">Pour les professionnels</p>
-        <h3 style="font-size:1.4rem">Vous accompagnez des familles ?</h3>
-        <p>CSAPA, CJC, médecine générale, groupes de parole, travail social : les pages d'exercices et l'annexe pour les enfants peuvent être photocopiées pour un usage personnel, en groupe ou dans le cadre d'un soin, à condition de ne pas être vendues et de mentionner la source.</p>
+        <h3 style="font-size:1.4rem">Vous accompagnez des familles ?</h3>
+        <p>CSAPA, CJC, médecine générale, groupes de parole, travail social : les pages d’exercices et l’annexe pour les enfants peuvent être photocopiées pour un usage personnel, en groupe ou dans le cadre d’un soin, à condition qu’elles ne soient pas vendues et que la source soit mentionnée.</p>
         <p>Pour un retour de lecture, une rencontre ou une intervention auprès de votre équipe ou de vos groupes, écrivez-moi.</p>
       </div>
       <div class="carte" id="contact">
         <p class="etiquette">Contact</p>
-        <h3 style="font-size:1.4rem">Écrire à l'auteur</h3>
+        <h3 style="font-size:1.4rem">Écrire à l’auteur</h3>
         <div class="mail"><a href="mailto:contact@lionelgarnier.fr" class="lienmail"><code id="adresse">contact@lionelgarnier.fr</code></a><button type="button" id="copier">Copier</button></div>
-        <p>Je lis tous les messages. Je ne peux pas donner d'avis médical ni suivre une situation personnelle : en cas d'urgence, appelez le 15 ou le 112.</p>
+        <p>Je lis tous les messages. Je ne peux pas donner d’avis médical ni suivre une situation personnelle : en cas d’urgence, appelez le 15 ou le 112.</p>
       </div>
     </div>
   </section>
@@ -524,17 +525,17 @@ section[id],[id="contact"]{scroll-margin-top:84px}
   <div class="wrap cols">
     <div>
       <h3>Mentions légales</h3>
-      <p>Éditeur du site et directeur de la publication : Lionel Garnier, auteur et éditeur (auto-édition), Voiron (Isère), France. Contact : <a href="mailto:contact@lionelgarnier.fr">contact@lionelgarnier.fr</a>.</p>
-      <p>Hébergeur : OVH SAS, 2 rue Kellermann, 59100 Roubaix, France.</p>
+      <p>Éditeur du site et directeur de la publication : Lionel Garnier, auteur et éditeur (auto-édition), Voiron (Isère), France. Contact : <a href="mailto:contact@lionelgarnier.fr">contact@lionelgarnier.fr</a>.</p>
+      <p>Hébergeur : GitHub, Inc. (service GitHub Pages), 88 Colin P. Kelly Jr. Street, San Francisco, CA 94107, États-Unis, téléphone +1 415 857 5430.</p>
     </div>
     <div>
       <h3>Contenu</h3>
-      <p>Les informations de ce site ne remplacent pas l'avis d'un médecin ou d'un professionnel. En cas d'urgence, appelez le 15 ou le 112.</p>
+      <p>Les informations de ce site ne remplacent pas l’avis d’un médecin ou d’un professionnel. En cas d’urgence, appelez le 15 ou le 112.</p>
       <p>© 2026 Lionel Garnier. Reproduction interdite sans autorisation, hors exceptions légales.</p>
     </div>
     <div>
       <h3>Données personnelles</h3>
-      <p>Ce site ne collecte aucune donnée par formulaire. Il mesure sa fréquentation avec GoatCounter, un outil sans cookies qui ne permet pas de vous identifier (nombre de visites, pages vues, type d'appareil, site d'origine). Si vous m'écrivez, votre adresse et votre message servent seulement à vous répondre ; vous pouvez demander leur suppression à tout moment.</p>
+      <p>Ce site ne collecte aucune donnée par formulaire. Il mesure sa fréquentation avec GoatCounter, un outil sans cookies qui ne permet pas de vous identifier (nombre de visites, pages vues, type d’appareil, site d’origine). Si vous m’écrivez, votre adresse et votre message servent seulement à vous répondre ; vous pouvez demander leur suppression à tout moment.</p>
     </div>
   </div>
 </footer>
@@ -556,8 +557,8 @@ document.getElementById('copier').addEventListener('click', async (e) => {
   const livre = document.getElementById('livre3d'), f = [...livre.querySelectorAll('.feuillet')];
   const m = [...document.querySelectorAll('#livre1p .face')];
   const prec = document.getElementById('prec'), suiv = document.getElementById('suiv'), ou = document.getElementById('ou');
-  const L2 = ['Couverture','Page de titre','Pages 2 et 3','Pages 4 et 5','Pages 6 et 7','Pages 8 et 9','Extrait p. 57 · édition couleur','Extrait p. 57 · édition noir et blanc','La suite est dans le livre','4e de couverture'];
-  const L1 = ['Couverture','Page 1','Page 2','Page 3','Page 4','Page 5','Page 6','Page 7','Page 8','Page 9','Extrait p. 57 · couleur','Extrait p. 57 · couleur','Extrait p. 57 · noir et blanc','Extrait p. 57 · noir et blanc','La suite est dans le livre','4e de couverture'];
+  const L2 = ['Couverture','Page de titre','Pages 2 et 3','Pages 4 et 5','Pages 6 et 7','Pages 8 et 9','Extrait p. 57 · édition couleur','Extrait p. 57 · édition noir et blanc','La suite est dans le livre','4ᵉ de couverture'];
+  const L1 = ['Couverture','Page 1','Page 2','Page 3','Page 4','Page 5','Page 6','Page 7','Page 8','Page 9','Extrait p. 57 · couleur','Extrait p. 57 · couleur','Extrait p. 57 · noir et blanc','Extrait p. 57 · noir et blanc','La suite est dans le livre','4ᵉ de couverture'];
   const etroit = matchMedia('(max-width:760px), (pointer:coarse) and (max-height:500px)');
   let k = 0, j = 0;
   function zs(){ f.forEach((e,i) => { e.style.zIndex = i < k ? i + 1 : f.length - i + 10; }); }
@@ -673,7 +674,7 @@ document.getElementById('copier').addEventListener('click', async (e) => {
   });
   const majTA = () => { z.style.touchAction = (window.visualViewport && visualViewport.scale > 1.05) ? 'auto' : ''; };
   if (window.visualViewport) visualViewport.addEventListener('resize', majTA); majTA();
-  const J2K = [0,1,2,2,3,3,4,4,5,5,6,6,7,8], K2J = [0,1,2,4,6,8,10,12,13];
+  const J2K = [0,1,2,2,3,3,4,4,5,5,6,6,7,7,8,9], K2J = [0,1,2,4,6,8,10,12,14,15];
   etroit.addEventListener('change', () => {
     if (etroit.matches){ j = K2J[k]; m.forEach((e,i) => e.classList.toggle('cache', i !== j)); }
     else { k = J2K[j]; f.forEach((e,i) => { e.style.transition = 'none'; e.classList.toggle('tourne', i < k); void e.offsetWidth; e.style.transition = ''; });
