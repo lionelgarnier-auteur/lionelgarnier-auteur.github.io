@@ -167,6 +167,9 @@ footer p+p{margin-top:8px}
 .face{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;background:#fbfaf6;overflow:hidden}
 .face img{display:block;width:100%;height:100%;object-fit:cover}
 .face.verso{transform:rotateY(180deg)}
+.feuillet .face::before{content:"";position:absolute;inset:0;pointer-events:none;z-index:1;opacity:var(--ombre,0);transition:opacity .3s}
+.feuillet .recto::before{background:linear-gradient(90deg,rgba(0,0,0,.45),rgba(0,0,0,.08) 70%,rgba(255,255,255,.12))}
+.feuillet .verso::before{background:linear-gradient(270deg,rgba(0,0,0,.45),rgba(0,0,0,.08) 70%,rgba(255,255,255,.12))}
 .recto{border-radius:0 4px 4px 0}
 .verso{border-radius:4px 0 0 4px}
 .recto::after,.verso::after{content:"";position:absolute;top:0;bottom:0;width:7%;pointer-events:none}
@@ -609,14 +612,47 @@ document.getElementById('copier').addEventListener('click', async (e) => {
   suiv.addEventListener('click', () => tourne(1));
   let glisse = false;
   f.forEach((e,i) => e.addEventListener('click', () => { if (glisse) { glisse = false; return; } tourne(i < k ? -1 : 1); }));
-  let gx = null, gy = null, gm = false;
-  livre.addEventListener('touchstart', ev => { if (ev.touches.length > 1) { gm = true; gx = null; return; } gm = false; gx = ev.touches[0].clientX; gy = ev.touches[0].clientY; }, {passive:true});
-  livre.addEventListener('touchend', ev => {
-    if (gx === null || gm || (window.visualViewport && visualViewport.scale > 1.05)) { gx = null; return; }
-    const dx = ev.changedTouches[0].clientX - gx, dy = ev.changedTouches[0].clientY - gy;
-    if (Math.abs(dx) > 40 && Math.abs(dx) > Math.abs(dy) * 1.5) { glisse = true; setTimeout(() => { glisse = false; }, 400); tourne(dx < 0 ? 1 : -1); }
-    gx = null;
-  });
+  // la page suit le doigt, puis se tourne (ou retombe) quand on lâche
+  let gx = null, gy = null, gm = false, gsens = 0, gpage = null, gang = 0, gt = 0;
+  function ombre(e, v){ e.style.setProperty('--ombre', v); }
+  livre.addEventListener('touchstart', ev => {
+    if (ev.touches.length > 1) { gm = true; gx = null; return; }
+    gm = false; gx = ev.touches[0].clientX; gy = ev.touches[0].clientY; gsens = 0; gpage = null; gt = Date.now();
+  }, {passive:true});
+  livre.addEventListener('touchmove', ev => {
+    if (gx === null || gm || (window.visualViewport && visualViewport.scale > 1.05)) return;
+    if (ev.touches.length > 1) { gm = true; return; }
+    const dx = ev.touches[0].clientX - gx, dy = ev.touches[0].clientY - gy;
+    if (!gsens) {
+      if (Math.abs(dx) < 8 || Math.abs(dx) < Math.abs(dy) * 1.2) { if (Math.abs(dy) > 12) gx = null; return; }
+      gsens = dx < 0 ? 1 : -1;
+      gpage = gsens > 0 ? (k < f.length ? f[k] : null) : (k > 0 ? f[k - 1] : null);
+      if (!gpage) { gx = null; return; }
+      gpage.style.transition = 'none'; gpage.style.zIndex = 100;
+    }
+    const L = livre.getBoundingClientRect().width;
+    const p = Math.max(0, Math.min(1, (gsens > 0 ? -dx : dx) / (L * 0.8)));
+    gang = gsens > 0 ? -180 * p : -180 * (1 - p);
+    gpage.style.transform = 'rotateY(' + gang + 'deg)';
+    ombre(gpage, (Math.sin(p * Math.PI) * 0.6).toFixed(3));
+  }, {passive:true});
+  function lache(ev){
+    if (gx === null) return;
+    const dx = (ev.changedTouches && ev.changedTouches[0] ? ev.changedTouches[0].clientX : gx) - gx;
+    const e = gpage; gx = null;
+    if (!e) return;
+    const p = gsens > 0 ? -gang / 180 : 1 + gang / 180;
+    const vite = Math.abs(dx) > 30 && Date.now() - gt < 280;
+    glisse = true; setTimeout(() => { glisse = false; }, 400);
+    e.style.transition = ''; ombre(e, 0);
+    void e.offsetWidth;
+    e.style.transform = '';
+    if (p > 0.35 || vite) tourne(gsens);
+    else setTimeout(zs, 820);
+    gpage = null; gsens = 0;
+  }
+  livre.addEventListener('touchend', lache);
+  livre.addEventListener('touchcancel', lache);
   document.getElementById('section-feuilleter').addEventListener('keydown', ev => {
     if (ev.key === 'ArrowRight'){ tourne(1); ev.preventDefault(); }
     if (ev.key === 'ArrowLeft'){ tourne(-1); ev.preventDefault(); }
