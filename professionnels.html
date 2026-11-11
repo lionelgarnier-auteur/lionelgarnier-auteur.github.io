@@ -320,10 +320,10 @@ a.couv-ed .bientot-ed{background:var(--or);color:var(--nuit)}
 .menu-liste[hidden]{display:none}
 @keyframes menu-deroule{from{clip-path:inset(0 0 100% 0 round 14px)}to{clip-path:inset(0 0 0 0 round 14px)}}
 @keyframes menu-lien{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:none}}
-.menu-liste.deroule{animation:menu-deroule 1s cubic-bezier(.25,.75,.3,1)}
+.menu-liste.deroule{animation:menu-deroule 1s cubic-bezier(.11,0,.5,0)}
 @keyframes menu-rouleau{0%{top:-16px;opacity:1}85%{opacity:1}100%{top:calc(100% - 16px);opacity:0}}
 .menu-liste::after{content:"";position:absolute;left:0;right:0;top:-16px;height:16px;pointer-events:none;opacity:0;border-bottom:2px solid var(--or);background:linear-gradient(to bottom,rgba(0,0,0,0),rgba(0,0,0,.14));border-radius:0 0 6px 6px}
-.menu-liste.deroule::after{animation:menu-rouleau 1s cubic-bezier(.25,.75,.3,1)}
+.menu-liste.deroule::after{animation:menu-rouleau 1s cubic-bezier(.11,0,.5,0)}
 .menu-liste.enroule::after{animation:menu-rouleau .6s cubic-bezier(.5,0,.75,.3) reverse}
 .menu-liste.deroule>*{animation:menu-lien .3s ease-out both;animation-delay:calc(80ms + var(--i,0) * 30ms)}
 .menu-liste.enroule{animation:menu-deroule .6s cubic-bezier(.5,0,.75,.3) reverse forwards}
@@ -456,6 +456,8 @@ a.marque:focus-visible{outline:3px solid var(--or);outline-offset:4px;border-rad
 .emploi{border-left:1px solid var(--ligne);position:relative;overflow:hidden}
 .emploi::before{content:"";position:absolute;left:0;top:0;bottom:0;width:4px;background:var(--or)}
 .insec{white-space:nowrap}
+.menu-liste a[aria-current="location"]{box-shadow:inset 3px 0 0 var(--or);font-weight:700}
+.menu-liste:has(a[aria-current="location"]) a[aria-current="page"]{box-shadow:none}
 .pied-nav a[aria-current="page"]{color:var(--or);text-decoration:underline;text-decoration-thickness:2px;text-underline-offset:5px}
 #pros .carte p a[href^="/professionnels#"]{color:var(--or-fonce);text-underline-offset:3px}
 .suite .prevenu{font-family:var(--texte);font-size:clamp(.78rem,1.4vw,.92rem)}
@@ -630,8 +632,21 @@ document.getElementById('copier').addEventListener('click', async (e) => {
   [...l.children].forEach((c, i) => c.style.setProperty('--i', i));
   let ouvert = false, minuteur = null;
   function fin(){ clearTimeout(minuteur); if (!ouvert) { l.hidden = true; l.classList.remove('enroule'); } }
+  // V29 : sur l'accueil, le menu signale la partie de la page où l'on se trouve (barre dorée)
+  function ici(){
+    const liens = [...l.querySelectorAll('a[href^="#"]')].filter(x => x.getAttribute('href').length > 1);
+    liens.forEach(x => { if (x.getAttribute('aria-current') === 'location') x.removeAttribute('aria-current'); });
+    const repere = window.innerHeight * 0.35; let choix = null;
+    ['livre','section-feuilleter','editions','auteur','aide','pros','contact'].forEach(id => {
+      const s = document.getElementById(id); if (s && s.getBoundingClientRect().top <= repere) choix = id;
+    });
+    if (choix === 'pros') choix = 'contact';
+    const a = choix && liens.find(x => x.getAttribute('href') === '#' + choix);
+    if (a) a.setAttribute('aria-current', 'location');
+  }
   function ouvre(o){
     if (o === ouvert) return;
+    if (o) ici();
     ouvert = o; b.setAttribute('aria-expanded', o ? 'true' : 'false');
     clearTimeout(minuteur);
     if (o) { l.classList.remove('enroule'); l.classList.remove('deroule'); l.hidden = false; void l.offsetWidth; if (!calme.matches) l.classList.add('deroule'); }
