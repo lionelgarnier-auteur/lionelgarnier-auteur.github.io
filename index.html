@@ -52,6 +52,8 @@ a.ligne:hover{border-color:var(--or)}
 h2.danger{margin-top:44px}
 .urgence div{background:none!important;padding:0!important}
 .urgence a.pastille{display:flex;align-items:center;min-height:48px;background:var(--urgence-bg);color:var(--urgence);border-radius:12px;padding:12px 18px;font-weight:600;text-decoration:none;font-variant-numeric:tabular-nums}
+.plus-livre{margin-top:22px}
+.plus-livre a{font-weight:700;color:var(--or-fonce);text-underline-offset:4px}
 </style>
 <title>Je l’aime, mais je n’en peux plus</title>
 <link rel="icon" href="/favicon.ico" sizes="48x48">
@@ -361,7 +363,7 @@ section[id],[id="contact"]{scroll-margin-top:84px}
 </head>
 <body>
 <div id="intro" aria-hidden="true"></div>
-<script>if(location.hash==='#aide'){var _i=document.getElementById('intro');if(_i)_i.remove();}</script>
+<script>if(location.hash){var _i=document.getElementById('intro');if(_i)_i.remove();}</script>
 
 <header class="nav">
   <div class="wrap">
@@ -374,6 +376,7 @@ section[id],[id="contact"]{scroll-margin-top:84px}
         <a href="#livre">Présentation</a>
         <a href="#section-feuilleter">Feuilleter</a>
         <a href="#editions">Les deux éditions</a>
+        <a href="/le-livre">Sommaire et avant-propos</a>
         <p class="menu-groupe">L’auteur</p>
         <a href="#auteur">Parcours</a>
         <a href="#pros">Professionnels</a>
@@ -419,6 +422,8 @@ section[id],[id="contact"]{scroll-margin-top:84px}
         <div class="etape"><p class="n">ÉTAPE 4</p><h3>Parler autrement</h3><p>Poser des limites, proposer de l’aide au bon moment.</p></div>
         <div class="etape"><p class="n">ÉTAPE 5</p><h3>Tenir dans la durée</h3><p>Quand il se soigne, quand il rechute.</p></div>
       </div>
+
+      <p class="plus-livre"><a href="/le-livre">Lire le sommaire complet et l’avant-propos <span aria-hidden="true">→</span></a></p>
 
       <div class="promesse">
         <strong>Ce livre ne promet pas que votre proche arrêtera.</strong>
