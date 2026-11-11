@@ -462,6 +462,9 @@ a.marque:focus-visible{outline:3px solid var(--or);outline-offset:4px;border-rad
 @media (max-width:480px){.carte{padding:24px 20px}}
 .emploi{border-left:1px solid var(--ligne);position:relative;overflow:hidden}
 .emploi::before{content:"";position:absolute;left:0;top:0;bottom:0;width:4px;background:var(--or)}
+.insec{white-space:nowrap}
+.pied-nav a[aria-current="page"]{color:var(--or);text-decoration:underline;text-decoration-thickness:2px;text-underline-offset:5px}
+#pros .carte p a[href^="/professionnels#"]{color:var(--or-fonce);text-underline-offset:3px}
 .suite .prevenu{font-family:var(--texte);font-size:clamp(.78rem,1.4vw,.92rem)}
 </style>
 
@@ -533,7 +536,7 @@ a.marque:focus-visible{outline:3px solid var(--or);outline-offset:4px;border-rad
         <a href="/methode-craft">La méthode CRAFT</a>
         <p class="menu-groupe">L’auteur</p>
         <a href="/auteur">Parcours</a>
-        <a href="#pros">Professionnels</a>
+        <a href="/professionnels">Professionnels</a>
         <a href="#contact">Contact</a>
         <a href="#aide" class="menu-aide">Besoin d’aide</a>
       </div>
@@ -585,7 +588,7 @@ a.marque:focus-visible{outline:3px solid var(--or);outline-offset:4px;border-rad
         <strong>Ce livre ne promet pas que votre proche arrêtera.</strong>
         <span>Il vous aide à aller mieux, quoi qu’il fasse.</span>
       </div>
-      <p class="details">Impression à la demande · ISBN couleur 979-10-991066-2-9 · noir et blanc 979-10-991066-0-5 · les pages d’exercices peuvent être photocopiées pour un usage personnel (conditions pour les professionnels plus bas).</p>
+      <p class="details">Impression à la demande · ISBN couleur 979-10-991066-2-9 · noir et blanc 979-10-991066-0-5 · les pages d’exercices peuvent être photocopiées pour un usage personnel (<a href="/professionnels#photocopies">conditions pour les professionnels</a>).</p>
     </div>
   </section>
 <section id="section-feuilleter" class="feuilleter" aria-labelledby="t-feuilleter">
@@ -706,8 +709,9 @@ a.marque:focus-visible{outline:3px solid var(--or);outline-offset:4px;border-rad
       <div class="carte">
         <p class="etiquette">Pour les professionnels</p>
         <h2 class="h-carte">Vous accompagnez des familles ?</h2>
-        <p>CSAPA, CJC, médecins, associations, groupes de parole, travail social : je peux venir présenter le livre, témoigner de mon parcours ou échanger avec vos équipes et vos groupes. Pour un retour de lecture ou une rencontre, écrivez-moi : <a href="mailto:contact@lionelgarnier.fr">contact@lionelgarnier.fr</a>.</p>
-        <p>Les pages d’exercices et l’annexe pour les enfants peuvent être photocopiées pour un usage personnel, en groupe ou dans le cadre d’un soin, à condition qu’elles ne soient pas vendues et que la source soit mentionnée.</p>
+        <p>CSAPA, CJC, médecins, associations, groupes de parole, travail social : je peux venir présenter le livre, témoigner de mon parcours ou échanger avec vos équipes et vos groupes. Les pages d’exercices peuvent être photocopiées pour vos groupes, à certaines conditions.</p>
+        <p>Je suis aussi à la recherche d’un <a href="/professionnels#emploi">poste de patient expert ou de <span class="insec">pair-aidant</span></a>.</p>
+        <p class="plus-livre"><a href="/professionnels">La page des professionnels <span aria-hidden="true">→</span></a></p>
       </div>
       <div class="carte" id="contact">
         <p class="etiquette">Contact</p>
@@ -716,19 +720,11 @@ a.marque:focus-visible{outline:3px solid var(--or);outline-offset:4px;border-rad
         <p>Je lis tous les messages. Je ne peux pas donner d’avis médical ni suivre une situation personnelle, mais je peux vous dire vers qui vous tourner. En cas d’urgence, appelez le 15 ou le 112.</p>
       </div>
     </div>
-    <div class="wrap">
-      <div class="carte emploi" id="emploi">
-        <p class="etiquette">Recrutement</p>
-        <h2 class="h-carte">Je recherche un poste</h2>
-        <p>Patient expert, pair-aidant ou animateur de groupes en addictologie : je suis mobile et prêt à déménager.</p>
-        <p class="plus-livre"><a href="/auteur#emploi">Voir ma recherche de poste <span aria-hidden="true">→</span></a></p>
-      </div>
-    </div>
   </section>
 </main>
 
 <footer>
-  <nav class="wrap pied-nav" aria-label="Liens du site"><a href="/#top" aria-current="page">Accueil</a><a href="/le-livre">Le livre</a><a href="/methode-craft">La méthode CRAFT</a><a href="/auteur">L’auteur</a><a href="/#contact">Contact</a><a href="/#aide">Besoin d’aide</a></nav>
+  <nav class="wrap pied-nav" aria-label="Liens du site"><a href="/#top" aria-current="page">Accueil</a><a href="/le-livre">Le livre</a><a href="/methode-craft">La méthode CRAFT</a><a href="/auteur">L’auteur</a><a href="/professionnels">Professionnels</a><a href="/#contact">Contact</a><a href="/#aide">Besoin d’aide</a></nav>
   <div class="wrap cols">
     <div>
       <h2 class="pied-titre">Mentions légales</h2>
