@@ -353,7 +353,8 @@ button.couv-bt:focus-visible{outline:3px solid var(--focus,#1f2438);outline-offs
 @keyframes rouleau-descend{0%{transform:translateY(0);opacity:1}92%{opacity:1}100%{transform:translateY(var(--h,300px));opacity:0}}
 @keyframes rouleau-remonte{0%{transform:translateY(var(--h,300px));opacity:1}90%{opacity:1}100%{transform:translateY(0);opacity:0}}
 .menu-rouleau.deroule{animation:rouleau-descend 1s cubic-bezier(.11,0,.5,0) forwards}
-.menu-rouleau.enroule{animation:rouleau-remonte .6s cubic-bezier(.5,0,.75,.3) forwards}
+@keyframes rouleau-pos{from{transform:translateY(0)}to{transform:translateY(var(--h,300px))}}
+.menu-rouleau.enroule{opacity:1;animation:rouleau-pos .6s cubic-bezier(.5,0,.75,.3) reverse forwards}
 @media (prefers-reduced-motion:reduce){.menu-rouleau{display:none}}
 .menu-groupe{font-size:.74rem;letter-spacing:.16em;text-transform:uppercase;color:var(--or-fonce);font-weight:700;padding:8px 12px 4px}
 .menu-accueil{font-weight:700}
