@@ -197,7 +197,7 @@ section{padding-block:84px}
 @media (max-width:820px){.duo{grid-template-columns:1fr}}
 
 footer{background:var(--nuit);color:#b8bbcd;font-size:.85rem;padding-block:48px}
-footer h3{color:#fff;font-size:.95rem;margin-bottom:10px}
+footer h3,footer h2.pied-titre{color:#fff;font-family:inherit;font-size:.95rem;font-weight:700;letter-spacing:0;line-height:1.4;margin:0 0 10px}
 footer .cols{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:28px}
 footer p+p{margin-top:8px}
 .bientot{cursor:default}.bientot:hover{transform:none}
@@ -320,10 +320,14 @@ a.couv-ed .bientot-ed{background:var(--or);color:var(--nuit)}
 .menu-liste[hidden]{display:none}
 @keyframes menu-deroule{from{clip-path:inset(0 0 100% 0 round 14px)}to{clip-path:inset(0 0 0 0 round 14px)}}
 @keyframes menu-lien{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:none}}
-.menu-liste.deroule{animation:menu-deroule .34s cubic-bezier(.22,.8,.3,1)}
-.menu-liste.deroule>*{animation:menu-lien .3s ease-out both;animation-delay:calc(var(--i,0) * 16ms)}
-.menu-liste.enroule{animation:menu-deroule .22s cubic-bezier(.5,0,.75,.3) reverse forwards}
-@media (prefers-reduced-motion:reduce){.menu-liste.deroule,.menu-liste.deroule>*,.menu-liste.enroule{animation:none}}
+.menu-liste.deroule{animation:menu-deroule 1s cubic-bezier(.25,.75,.3,1)}
+@keyframes menu-rouleau{0%{top:-16px;opacity:1}85%{opacity:1}100%{top:calc(100% - 16px);opacity:0}}
+.menu-liste::after{content:"";position:absolute;left:0;right:0;top:-16px;height:16px;pointer-events:none;opacity:0;border-bottom:2px solid var(--or);background:linear-gradient(to bottom,rgba(0,0,0,0),rgba(0,0,0,.14));border-radius:0 0 6px 6px}
+.menu-liste.deroule::after{animation:menu-rouleau 1s cubic-bezier(.25,.75,.3,1)}
+.menu-liste.enroule::after{animation:menu-rouleau .6s cubic-bezier(.5,0,.75,.3) reverse}
+.menu-liste.deroule>*{animation:menu-lien .3s ease-out both;animation-delay:calc(80ms + var(--i,0) * 30ms)}
+.menu-liste.enroule{animation:menu-deroule .6s cubic-bezier(.5,0,.75,.3) reverse forwards}
+@media (prefers-reduced-motion:reduce){.menu-liste.deroule,.menu-liste.deroule>*,.menu-liste.enroule,.menu-liste.deroule::after,.menu-liste.enroule::after{animation:none}}
 .menu-groupe{font-size:.74rem;letter-spacing:.16em;text-transform:uppercase;color:var(--or-fonce);font-weight:700;padding:8px 12px 4px}
 .menu-accueil{font-weight:700}
 .menu-accueil+.menu-groupe{margin-top:6px;border-top:1px solid var(--ligne);padding-top:14px}
@@ -400,6 +404,17 @@ footer{font-size:.95rem}
 .urgence>div{min-width:0}
 .urgence a.pastille{flex-wrap:wrap;padding-inline:14px}
 p a[href="/methode-craft"]{color:var(--or-fonce);text-underline-offset:3px}
+/* V22 : encadré « Je recherche un poste » (suite repliable) */
+.emploi{margin-top:24px;border-left:4px solid var(--or)}
+.emploi-plus{margin-top:10px}
+.emploi-plus summary{cursor:pointer;list-style:none;display:inline-flex;align-items:center;gap:10px;min-height:44px;font-weight:700;color:var(--or-fonce)}
+.emploi-plus summary::-webkit-details-marker{display:none}
+.emploi-plus summary::before{content:"+";content:"+" / "";display:inline-grid;place-items:center;width:26px;height:26px;border-radius:50%;background:var(--or);color:#1f2438;font-size:1.1rem;line-height:1}
+.emploi-plus[open] summary::before{content:"−";content:"−" / ""}
+.emploi-plus summary:focus-visible{outline:3px solid var(--focus);outline-offset:3px;border-radius:8px}
+.emploi-plus ul{margin-top:8px;padding-left:22px;display:grid;gap:6px;line-height:1.6}
+.emploi-plus p{margin-top:10px}
+.emploi-contact{margin-top:14px!important;font-weight:600}
 /* V20 : encadré « promesse » — « Il vous aide à aller mieux, quoi qu'il fasse. » devient le message principal */
 .promesse{gap:10px;padding:30px 28px}
 .promesse strong{font-family:var(--texte);font-size:1.02rem;font-weight:600;color:rgba(255,255,255,.88)}
@@ -424,6 +439,22 @@ a.marque:focus-visible{outline:3px solid var(--or);outline-offset:4px;border-rad
 /* boutons côte à côte avec un espace */
 .actions{display:flex;flex-wrap:wrap;gap:12px}
 @media (max-width:480px){.suite-livre .actions .btn{flex:1 1 100%;justify-content:center}}
+/* V24 : corrections Goldorak */
+.aide-vite{margin-top:18px}
+.aide-vite a{display:inline-block;padding-block:8px;color:#f2c66d;font-weight:600;text-underline-offset:3px}
+.autres-num{margin-top:14px}
+.autres-num summary{cursor:pointer;list-style:none;display:inline-flex;align-items:center;gap:10px;min-height:44px;font-weight:700}
+.autres-num summary::-webkit-details-marker{display:none}
+.autres-num summary::before{content:"+";content:"+" / "";flex:none;display:inline-grid;place-items:center;width:26px;height:26px;border-radius:50%;background:var(--or);color:#1f2438;font-size:1.1rem;line-height:1}
+.autres-num[open] summary::before{content:"−";content:"−" / ""}
+.autres-num summary:focus-visible{outline:3px solid var(--focus);outline-offset:3px;border-radius:8px}
+.autres-num .lignes{margin-top:10px}
+.urgence a.pastille{flex-direction:column;flex-wrap:nowrap;align-items:flex-start;justify-content:flex-start;gap:2px}
+.urgence a.pastille b{margin-right:0}
+#emploi{scroll-margin-top:84px}
+@media (max-width:480px){.carte{padding:24px 20px}}
+.emploi{border-left:1px solid var(--ligne);position:relative;overflow:hidden}
+.emploi::before{content:"";position:absolute;left:0;top:0;bottom:0;width:4px;background:var(--or)}
 .suite .prevenu{font-family:var(--texte);font-size:clamp(.78rem,1.4vw,.92rem)}
 
 /* page Le livre */
@@ -458,6 +489,7 @@ a.marque{color:inherit;text-decoration:none}
 .annexes .lettre{font-weight:700;color:var(--or-fonce)}
 .lecture{max-width:720px}
 .avant-propos p{margin-top:16px;line-height:1.75}
+.avant-propos .lecture>p{max-width:68ch}
 .accroche-ap{font-size:1.3rem;font-weight:700;margin-top:18px!important}
 .ap-note{font-size:.9rem;color:var(--muted)}
 .avant-propos blockquote{margin:30px 0 0;padding:20px 22px;border-left:4px solid var(--or);background:var(--surface);font-size:1.1rem;font-weight:600}
@@ -579,17 +611,17 @@ a.marque{color:inherit;text-decoration:none}
   <nav class="wrap pied-nav" aria-label="Liens du site"><a href="/#top">Accueil</a><a href="/le-livre" aria-current="page">Le livre</a><a href="/methode-craft">La méthode CRAFT</a><a href="/auteur">L’auteur</a><a href="/#contact">Contact</a><a href="/#aide">Besoin d’aide</a></nav>
   <div class="wrap cols">
     <div>
-      <h3>Mentions légales</h3>
+      <h2 class="pied-titre">Mentions légales</h2>
       <p>Éditeur du site et directeur de la publication : Lionel Garnier, auteur et éditeur (auto-édition), Voiron (Isère), France. Contact : <a href="mailto:contact@lionelgarnier.fr">contact@lionelgarnier.fr</a>.</p>
       <p>Hébergeur : GitHub, Inc. (service GitHub Pages), 88 Colin P. Kelly Jr. Street, San Francisco, CA 94107, États-Unis, téléphone +1 415 857 5430.</p>
     </div>
     <div>
-      <h3>Contenu</h3>
+      <h2 class="pied-titre">Contenu</h2>
       <p>Les informations de ce site ne remplacent pas l’avis d’un médecin ou d’un professionnel. En cas d’urgence, appelez le 15 ou le 112.</p>
       <p>© 2026 Lionel Garnier. Reproduction interdite sans autorisation, hors exceptions légales.</p>
     </div>
     <div>
-      <h3>Données personnelles</h3>
+      <h2 class="pied-titre">Données personnelles</h2>
       <p>Ce site ne collecte aucune donnée par formulaire. Il mesure sa fréquentation avec GoatCounter, un outil sans cookies qui ne permet pas de vous identifier (nombre de visites, pages vues, type d’appareil, site d’origine). Si vous m’écrivez, votre adresse et votre message servent seulement à vous répondre ; vous pouvez demander leur suppression à tout moment.</p>
     </div>
   </div>
@@ -614,7 +646,7 @@ a.marque{color:inherit;text-decoration:none}
     clearTimeout(minuteur);
     if (o) { l.classList.remove('enroule'); l.classList.remove('deroule'); l.hidden = false; void l.offsetWidth; if (!calme.matches) l.classList.add('deroule'); }
     else if (calme.matches) { l.hidden = true; l.classList.remove('deroule'); }
-    else { l.classList.remove('deroule'); void l.offsetWidth; l.classList.add('enroule'); minuteur = setTimeout(fin, 320); }
+    else { l.classList.remove('deroule'); void l.offsetWidth; l.classList.add('enroule'); minuteur = setTimeout(fin, 680); }
   }
   l.addEventListener('animationend', e => { if (e.target === l && l.classList.contains('enroule')) fin(); });
   b.addEventListener('click', e => { e.stopPropagation(); ouvre(!ouvert); if (ouvert) l.querySelector('a').focus(); });
