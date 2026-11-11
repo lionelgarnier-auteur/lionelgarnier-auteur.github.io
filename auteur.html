@@ -318,6 +318,12 @@ a.couv-ed .bientot-ed{background:var(--or);color:var(--nuit)}
 .menu-btn[aria-expanded="true"] .burger::after{top:0;transform:rotate(-45deg)}
 .menu-liste{position:absolute;top:calc(100% + 6px);right:max(20px,env(safe-area-inset-right,0px));width:min(300px,calc(100vw - 40px));background:var(--surface);color:var(--fg);border:1px solid var(--ligne);border-radius:14px;box-shadow:0 24px 50px -16px rgba(0,0,0,.45);padding:10px;display:flex;flex-direction:column}
 .menu-liste[hidden]{display:none}
+@keyframes menu-deroule{from{clip-path:inset(0 0 100% 0 round 14px)}to{clip-path:inset(0 0 0 0 round 14px)}}
+@keyframes menu-lien{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:none}}
+.menu-liste.deroule{animation:menu-deroule .34s cubic-bezier(.22,.8,.3,1)}
+.menu-liste.deroule>*{animation:menu-lien .3s ease-out both;animation-delay:calc(var(--i,0) * 16ms)}
+.menu-liste.enroule{animation:menu-deroule .22s cubic-bezier(.5,0,.75,.3) reverse forwards}
+@media (prefers-reduced-motion:reduce){.menu-liste.deroule,.menu-liste.deroule>*,.menu-liste.enroule{animation:none}}
 .menu-groupe{font-size:.74rem;letter-spacing:.16em;text-transform:uppercase;color:var(--or-fonce);font-weight:700;padding:8px 12px 4px}
 .menu-accueil{font-weight:700}
 .menu-accueil+.menu-groupe{margin-top:6px;border-top:1px solid var(--ligne);padding-top:14px}
@@ -343,7 +349,12 @@ section[id],[id="contact"]{scroll-margin-top:84px}
 .hero .wrap{display:grid;grid-template-columns:1.25fr .75fr;gap:48px;align-items:center;text-align:left;padding-block:64px 68px}
 .hero .actions{justify-content:flex-start}
 .couv-livre{width:100%;max-width:290px;height:auto;justify-self:center;border-radius:4px 8px 8px 4px;box-shadow:0 24px 60px #0008}
-@media (max-width:760px){.hero .wrap{grid-template-columns:1fr;text-align:center;justify-items:center;gap:26px;padding-block:36px 52px}.hero .sous{margin-left:auto;margin-right:auto}.hero .actions{justify-content:center}.couv-livre{max-width:140px;order:-1}}
+.couv-lien{display:block;justify-self:center;width:100%;max-width:290px;border-radius:4px 8px 8px 4px;transition:transform .25s ease}
+.couv-lien .couv-livre{display:block;max-width:100%;transition:box-shadow .25s ease}
+@media (hover:hover){.couv-lien:hover{transform:translateY(-4px) rotate(-.6deg)}.couv-lien:hover .couv-livre{box-shadow:0 30px 70px #000a}}
+.couv-lien:focus-visible{outline:3px solid var(--or);outline-offset:6px}
+@media (prefers-reduced-motion:reduce){.couv-lien,.couv-lien .couv-livre{transition:none}}
+@media (max-width:760px){.hero .wrap{grid-template-columns:1fr;text-align:center;justify-items:center;gap:26px;padding-block:36px 52px}.hero .sous{margin-left:auto;margin-right:auto}.hero .actions{justify-content:center}.couv-livre{max-width:140px;order:-1}.couv-lien{max-width:140px;order:-1}}
 
 /* ===== V15 ===== */
 :root{--focus:#1f2438}
@@ -389,6 +400,23 @@ footer{font-size:.95rem}
 .urgence>div{min-width:0}
 .urgence a.pastille{flex-wrap:wrap;padding-inline:14px}
 p a[href="/methode-craft"]{color:var(--or-fonce);text-underline-offset:3px}
+/* V20 : encadré « promesse » — « Il vous aide à aller mieux, quoi qu'il fasse. » devient le message principal */
+.promesse{gap:10px;padding:30px 28px}
+.promesse strong{font-family:var(--texte);font-size:1.02rem;font-weight:600;color:rgba(255,255,255,.88)}
+.promesse span{font-family:var(--display);font-weight:700;font-size:clamp(1.35rem,3.6vw,1.75rem);line-height:1.25;letter-spacing:-.01em;text-wrap:balance}
+/* V20 : « Lionel Garnier » ressemble à un logo cliquable (marcheur), doré au survol */
+a.marque,.marque{display:inline-flex;align-items:center;gap:10px;min-height:44px;color:#fff;text-decoration:none}
+.marque-ico{width:30px;height:30px;border-radius:8px;flex:none;box-shadow:0 0 0 1.5px rgba(255,255,255,.25);transition:box-shadow .2s ease}
+@media (hover:hover){a.marque:hover{color:var(--or)}a.marque:hover .marque-ico{box-shadow:0 0 0 2px var(--or)}}
+a.marque:focus-visible{outline:3px solid var(--or);outline-offset:4px;border-radius:8px}
+@media (max-width:380px){.marque-ico{width:24px;height:24px;border-radius:6px}a.marque{gap:6px}}
+@media (max-width:340px){.marque-ico{width:20px;height:20px}a.marque{gap:5px;letter-spacing:.02em!important}}
+/* V20 : pictogramme d'appel (ou de SMS) dans le coin des cases d'urgence, et même dessin devant « Appeler » */
+.urgence a.pastille{position:relative;padding-right:40px}
+.urgence a.pastille::after{content:"";position:absolute;top:10px;right:10px;width:22px;height:22px;background:currentColor;-webkit-mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M6.62 10.79a15.05 15.05 0 0 0 6.59 6.59l2.2-2.2a1 1 0 0 1 1.02-.24c1.12.37 2.32.57 3.57.57a1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.25.2 2.45.57 3.57a1 1 0 0 1-.25 1.02l-2.2 2.2z'/%3E%3C/svg%3E") center/contain no-repeat;mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M6.62 10.79a15.05 15.05 0 0 0 6.59 6.59l2.2-2.2a1 1 0 0 1 1.02-.24c1.12.37 2.32.57 3.57.57a1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.25.2 2.45.57 3.57a1 1 0 0 1-.25 1.02l-2.2 2.2z'/%3E%3C/svg%3E") center/contain no-repeat}
+.urgence a.pastille[href^="sms:"]::after{-webkit-mask-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M20 2H4a2 2 0 0 0-2 2v18l4-4h14a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2zM9 11H7V9h2v2zm4 0h-2V9h2v2zm4 0h-2V9h2v2z'/%3E%3C/svg%3E");mask-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M20 2H4a2 2 0 0 0-2 2v18l4-4h14a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2zM9 11H7V9h2v2zm4 0h-2V9h2v2zm4 0h-2V9h2v2z'/%3E%3C/svg%3E")}
+.appel::before{content:"";display:inline-block;width:1.05em;height:1.05em;margin-right:6px;vertical-align:-.17em;background:currentColor;-webkit-mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M6.62 10.79a15.05 15.05 0 0 0 6.59 6.59l2.2-2.2a1 1 0 0 1 1.02-.24c1.12.37 2.32.57 3.57.57a1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.25.2 2.45.57 3.57a1 1 0 0 1-.25 1.02l-2.2 2.2z'/%3E%3C/svg%3E") center/contain no-repeat;mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M6.62 10.79a15.05 15.05 0 0 0 6.59 6.59l2.2-2.2a1 1 0 0 1 1.02-.24c1.12.37 2.32.57 3.57.57a1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.25.2 2.45.57 3.57a1 1 0 0 1-.25 1.02l-2.2 2.2z'/%3E%3C/svg%3E") center/contain no-repeat}
+
 .pied-nav a:hover{color:var(--or)}
 .liens{font-size:.92rem}
 /* mode sombre : sections mieux séparées */
@@ -455,7 +483,7 @@ a.marque{color:inherit;text-decoration:none}
 
 <header class="nav">
   <div class="wrap">
-    <a class="marque" href="/">Lionel Garnier</a>
+    <a class="marque" href="/" title="Retour à l’accueil"><img class="marque-ico" src="/icone-192.png" width="30" height="30" alt="">Lionel Garnier</a>
     <nav aria-label="Menu du site" class="menu">
       <button type="button" class="menu-btn" id="menu-btn" aria-expanded="false" aria-controls="menu-liste"><span class="burger" aria-hidden="true"></span><span class="txt">Menu</span></button>
       <a class="sos" href="/#aide">Besoin d’aide</a>
@@ -552,12 +580,25 @@ a.marque{color:inherit;text-decoration:none}
 <script>
 (function(){
   const b = document.getElementById('menu-btn'), l = document.getElementById('menu-liste');
-  function ouvre(o){ l.hidden = !o; b.setAttribute('aria-expanded', o ? 'true' : 'false'); }
-  b.addEventListener('click', e => { e.stopPropagation(); ouvre(l.hidden); if (!l.hidden) l.querySelector('a').focus(); });
+  // V19 : le menu se déroule de haut en bas, et se ré-enroule à la fermeture (sauf si l'appareil réduit les animations)
+  const calme = window.matchMedia('(prefers-reduced-motion: reduce)');
+  [...l.children].forEach((c, i) => c.style.setProperty('--i', i));
+  let ouvert = false, minuteur = null;
+  function fin(){ clearTimeout(minuteur); if (!ouvert) { l.hidden = true; l.classList.remove('enroule'); } }
+  function ouvre(o){
+    if (o === ouvert) return;
+    ouvert = o; b.setAttribute('aria-expanded', o ? 'true' : 'false');
+    clearTimeout(minuteur);
+    if (o) { l.classList.remove('enroule'); l.classList.remove('deroule'); l.hidden = false; void l.offsetWidth; if (!calme.matches) l.classList.add('deroule'); }
+    else if (calme.matches) { l.hidden = true; l.classList.remove('deroule'); }
+    else { l.classList.remove('deroule'); void l.offsetWidth; l.classList.add('enroule'); minuteur = setTimeout(fin, 320); }
+  }
+  l.addEventListener('animationend', e => { if (e.target === l && l.classList.contains('enroule')) fin(); });
+  b.addEventListener('click', e => { e.stopPropagation(); ouvre(!ouvert); if (ouvert) l.querySelector('a').focus(); });
   l.querySelectorAll('a').forEach(a => a.addEventListener('click', () => ouvre(false)));
   l.addEventListener('focusout', e => { if (e.relatedTarget && !l.contains(e.relatedTarget) && e.relatedTarget !== b) ouvre(false); });
-  document.addEventListener('click', e => { if (!l.hidden && !l.contains(e.target)) ouvre(false); });
-  document.addEventListener('keydown', e => { if (e.key === 'Escape' && !l.hidden) { ouvre(false); b.focus(); } });
+  document.addEventListener('click', e => { if (ouvert && !l.contains(e.target)) ouvre(false); });
+  document.addEventListener('keydown', e => { if (e.key === 'Escape' && ouvert) { ouvre(false); b.focus(); } });
 })();
 </script>
 
