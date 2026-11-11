@@ -222,6 +222,8 @@ footer p+p{margin-top:8px}
 .livre3d::before{content:"";position:absolute;top:0;bottom:0;left:0;right:0;border-radius:4px;box-shadow:0 30px 60px -18px rgba(0,0,0,.75);transition:left .8s,right .8s}
 .livre3d[data-k="0"]::before{left:50%}
 .livre3d.fin::before{right:50%}
+@media (hover:hover) and (pointer:fine){#livre3d .feuillet{cursor:grab}}
+#livre3d.saisi,#livre3d.saisi .feuillet{cursor:grabbing}
 .feuillet{position:absolute;top:0;left:50%;width:50%;height:100%;transform-origin:left center;transform-style:preserve-3d;transition:transform .8s cubic-bezier(.4,.1,.2,1);cursor:pointer}
 .feuillet.tourne{transform:rotateY(-180deg)}
 .face{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;background:#fbfaf6;overflow:hidden}
@@ -361,7 +363,7 @@ section[id],[id="contact"]{scroll-margin-top:84px}
 @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
 a.marque{color:inherit;text-decoration:none;padding-block:10px}
 .menu-btn{min-height:44px;height:44px}
-.nav .sos{min-height:44px;display:inline-flex;align-items:center;justify-content:center;padding-top:0;padding-bottom:0}
+.nav .sos,.nav nav.menu > a.sos{min-height:44px;display:inline-flex;align-items:center;justify-content:center;padding-top:0;padding-bottom:0}
 @media (max-width:760px){.menu-btn{width:44px;height:44px}}
 .loupe-barre button{height:44px;min-width:44px}
 .mail button{min-height:44px;background:var(--or);color:var(--nuit)}
@@ -389,7 +391,11 @@ h2.citation{margin:0}
 /* pied de page */
 footer{font-size:.95rem}
 .pied-nav{display:flex;flex-wrap:wrap;gap:6px 22px;padding-bottom:22px;margin-bottom:28px;border-bottom:1px solid rgba(255,255,255,.12)}
-.pied-nav a{color:#fff;font-weight:600;text-decoration:none;padding-block:6px}
+.pied-nav a{color:#fff;font-weight:600;text-decoration:none;padding-block:10px}
+@media (min-width:441px) and (max-width:760px){.menu-btn{width:auto}}
+.urgence>div{min-width:0}
+.urgence a.pastille{flex-wrap:wrap;padding-inline:14px}
+p a[href="/methode-craft"]{color:var(--or-fonce);text-underline-offset:3px}
 .pied-nav a:hover{color:var(--or)}
 .liens{font-size:.92rem}
 /* mode sombre : sections mieux séparées */
@@ -465,6 +471,7 @@ footer{font-size:.95rem}
         <a href="#section-feuilleter">Feuilleter</a>
         <a href="#editions">Les deux éditions</a>
         <a href="/le-livre">Sommaire et avant-propos</a>
+        <a href="/methode-craft">La méthode CRAFT</a>
         <p class="menu-groupe">L’auteur</p>
         <a href="/auteur">Parcours</a>
         <a href="#pros">Professionnels</a>
@@ -499,7 +506,7 @@ footer{font-size:.95rem}
           <h2 class="grand">Comment tenir sans vous perdre ? Poser des limites <em>sans avoir l’impression d’abandonner</em> ?</h2>
         </div>
         <div>
-          <p>Ce guide vous accompagne pas à pas, avec des outils issus de CRAFT, une méthode conçue pour les familles et étudiée depuis la fin des années 1980. Elle aide les proches à aller mieux, à apaiser la relation et à encourager la personne vers les soins, sans affrontement.</p>
+          <p>Ce guide vous accompagne pas à pas, avec des outils issus de <a href="/methode-craft">CRAFT</a>, une méthode conçue pour les familles et étudiée depuis la fin des années 1980. Elle aide les proches à aller mieux, à apaiser la relation et à encourager la personne vers les soins, sans affrontement.</p>
           <p>Il s’appuie aussi sur d’autres approches reconnues, expliquées simplement, avec des exemples, des exercices et leurs réponses, un parcours express pour les jours sans force, les numéros utiles et une annexe pour les enfants.</p>
         </div>
       </div>
@@ -525,7 +532,7 @@ footer{font-size:.95rem}
   <div class="wrap">
     <p class="etiquette">Feuilleter</p>
     <h2 id="t-feuilleter">Les premières pages du livre</h2>
-    <p class="chapeau">Les pages, de la couverture à la fin de l’avant-propos, telles qu’elles sont imprimées dans l’édition couleur, puis un extrait illustré dans les deux éditions. <span class="seul-pc">Le bouton « Agrandir pour lire » affiche la page en grand. Sur un écran tactile, vous pouvez aussi tourner les pages du doigt.</span><span class="seul-tel">Glissez le doigt pour tourner les pages ; le bouton « Agrandir pour lire » affiche la page en grand.</span></p>
+    <p class="chapeau">Les pages, de la couverture à la fin de l’avant-propos, telles qu’elles sont imprimées dans l’édition couleur, puis un extrait illustré dans les deux éditions. <span class="seul-pc">Pour tourner les pages : cliquez sur la page, utilisez les flèches sous le livre, ou faites-la glisser avec la souris (clic maintenu). Le bouton « Agrandir pour lire » affiche la page en grand.</span><span class="seul-tel">Glissez le doigt pour tourner les pages ; le bouton « Agrandir pour lire » affiche la page en grand.</span></p>
     <div class="scene" id="feuilleter">
       <div class="livre3d" id="livre3d" data-k="0"><div class="feuillet" data-i="0"><div class="face recto couverture"><img data-p="c1" alt="Couverture du livre" decoding="async"></div><div class="face verso blanc" aria-hidden="true"></div></div><div class="feuillet" data-i="1"><div class="face recto"><img data-p="p1" alt="Page 1 : page de titre" decoding="async"></div><div class="face verso"><img data-p="p2" alt="Page 2 : qui a écrit ce livre, mentions légales" decoding="async"></div></div><div class="feuillet" data-i="2"><div class="face recto"><img data-p="p3" alt="Page 3 : avertissement" decoding="async"></div><div class="face verso"><img data-p="p4" alt="Page 4 : table des matières" decoding="async"></div></div><div class="feuillet" data-i="3"><div class="face recto"><img data-p="p5" alt="Page 5 : table des matières (suite)" decoding="async"></div><div class="face verso"><img data-p="p6" alt="Page 6 : table des matières (fin)" decoding="async"></div></div><div class="feuillet" data-i="4"><div class="face recto"><img data-p="p7" alt="Page 7 : avant-propos, À vous, les proches" decoding="async"></div><div class="face verso"><img data-p="p8" alt="Page 8 : avant-propos (suite)" decoding="async"></div></div><div class="feuillet" data-i="5"><div class="face recto"><img data-p="p9" alt="Page 9 : avant-propos (fin)" decoding="async"></div><div class="face verso"><img data-p="i57c" alt="Extrait, page 57 : édition couleur" decoding="async"></div></div><div class="feuillet" data-i="6"><div class="face recto"><img data-p="x57c" alt="Extrait, page 57, édition couleur : la roue du changement" decoding="async"></div><div class="face verso"><img data-p="i57nb" alt="Extrait, page 57 : édition noir et blanc" decoding="async"></div></div><div class="feuillet" data-i="7"><div class="face recto"><img data-p="x57nb" alt="Extrait, page 57, édition noir et blanc : la roue du changement" decoding="async"></div><div class="face verso"><div class="suite"><strong>La suite est dans le livre</strong><span>389 pages pour comprendre, vous protéger et aider sans vous épuiser, avec un parcours express pour les jours sans force.</span><em>Bientôt disponible sur Amazon</em><a class="prevenu" href="mailto:contact@lionelgarnier.fr?subject=Pr%C3%A9venez-moi%20de%20la%20sortie%20du%20livre">Être prévenu(e) de la sortie (par e-mail)</a></div></div></div><div class="feuillet" data-i="8"><div class="face recto blanc" aria-hidden="true"></div><div class="face verso c4"><img data-p="c4" alt="4ᵉ de couverture" decoding="async"></div></div></div>
       <div class="livre1p" id="livre1p"><div class="face couverture"><img data-p="c1" alt="Couverture du livre" decoding="async"></div><div class="face  cache"><img data-p="p1" alt="Page 1 : page de titre" decoding="async"></div><div class="face  cache"><img data-p="p2" alt="Page 2 : qui a écrit ce livre, mentions légales" decoding="async"></div><div class="face  cache"><img data-p="p3" alt="Page 3 : avertissement" decoding="async"></div><div class="face  cache"><img data-p="p4" alt="Page 4 : table des matières" decoding="async"></div><div class="face  cache"><img data-p="p5" alt="Page 5 : table des matières (suite)" decoding="async"></div><div class="face  cache"><img data-p="p6" alt="Page 6 : table des matières (fin)" decoding="async"></div><div class="face  cache"><img data-p="p7" alt="Page 7 : avant-propos" decoding="async"></div><div class="face  cache"><img data-p="p8" alt="Page 8 : avant-propos (suite)" decoding="async"></div><div class="face  cache"><img data-p="p9" alt="Page 9 : avant-propos (fin)" decoding="async"></div><div class="face  cache"><img data-p="i57c" alt="Extrait, page 57 : édition couleur" decoding="async"></div><div class="face  cache"><img data-p="x57c" alt="Extrait, page 57, édition couleur : la roue du changement" decoding="async"></div><div class="face  cache"><img data-p="i57nb" alt="Extrait, page 57 : édition noir et blanc" decoding="async"></div><div class="face  cache"><img data-p="x57nb" alt="Extrait, page 57, édition noir et blanc : la roue du changement" decoding="async"></div><div class="face cache"><div class="suite"><strong>La suite est dans le livre</strong><span>389 pages pour comprendre, vous protéger et aider sans vous épuiser, avec un parcours express pour les jours sans force.</span><em>Bientôt disponible sur Amazon</em><a class="prevenu" href="mailto:contact@lionelgarnier.fr?subject=Pr%C3%A9venez-moi%20de%20la%20sortie%20du%20livre">Être prévenu(e) de la sortie (par e-mail)</a></div></div><div class="face c4 cache"><img data-p="c4" alt="4ᵉ de couverture" decoding="async"></div></div>
@@ -648,7 +655,7 @@ footer{font-size:.95rem}
 </main>
 
 <footer>
-  <nav class="wrap pied-nav" aria-label="Liens du site"><a href="/#top">Accueil</a><a href="/le-livre">Le livre</a><a href="/auteur">L’auteur</a><a href="/#contact">Contact</a><a href="/#aide">Besoin d’aide</a></nav>
+  <nav class="wrap pied-nav" aria-label="Liens du site"><a href="/#top" aria-current="page">Accueil</a><a href="/le-livre">Le livre</a><a href="/methode-craft">La méthode CRAFT</a><a href="/auteur">L’auteur</a><a href="/#contact">Contact</a><a href="/#aide">Besoin d’aide</a></nav>
   <div class="wrap cols">
     <div>
       <h3>Mentions légales</h3>
@@ -765,7 +772,7 @@ document.getElementById('copier').addEventListener('click', async (e) => {
     if (ev.touches.length > 1) { gm = true; gx = null; return; }
     gm = false; gx = ev.touches[0].clientX; gy = ev.touches[0].clientY; gsens = 0; gpage = null; gt = Date.now();
   }, {passive:true});
-  livre.addEventListener('touchmove', ev => {
+  function bouge(ev){
     if (gx === null || gm || (window.visualViewport && visualViewport.scale > 1.05)) return;
     if (ev.touches.length > 1) { gm = true; return; }
     const dx = ev.touches[0].clientX - gx, dy = ev.touches[0].clientY - gy;
@@ -781,7 +788,27 @@ document.getElementById('copier').addEventListener('click', async (e) => {
     gang = gsens > 0 ? -180 * p : -180 * (1 - p);
     gpage.style.transform = 'rotateY(' + gang + 'deg)';
     ombre(gpage, (Math.sin(p * Math.PI) * 0.6).toFixed(3));
-  }, {passive:true});
+  }
+  livre.addEventListener('touchmove', bouge, {passive:true});
+  // V16 : à la souris, cliquer, maintenir et glisser tourne la page comme le doigt
+  let souris = false, sx = 0, sy = 0;
+  livre.addEventListener('mousedown', ev => {
+    if (ev.button !== 0 || ev.target.closest('a,button')) return;
+    ev.preventDefault();
+    souris = true; gm = false; gx = ev.clientX; gy = ev.clientY; sx = ev.clientX; sy = ev.clientY; gsens = 0; gpage = null; gt = Date.now();
+  });
+  window.addEventListener('mousemove', ev => {
+    if (!souris) return;
+    if (Math.abs(ev.clientX - sx) > 6 || Math.abs(ev.clientY - sy) > 6) glisse = true;
+    bouge({touches: [{clientX: ev.clientX, clientY: ev.clientY}]});
+    if (gpage) livre.classList.add('saisi');
+  });
+  window.addEventListener('mouseup', ev => {
+    if (!souris) return;
+    souris = false; livre.classList.remove('saisi');
+    lache({changedTouches: [{clientX: ev.clientX}]});
+    if (glisse) setTimeout(() => { glisse = false; }, 400);
+  });
   function lache(ev){
     if (gx === null) return;
     const dx = (ev.changedTouches && ev.changedTouches[0] ? ev.changedTouches[0].clientX : gx) - gx;
