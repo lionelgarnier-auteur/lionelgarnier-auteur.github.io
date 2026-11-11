@@ -290,6 +290,21 @@ a.couv-ed{transition:transform .2s ease}
 @media (hover:hover){a.couv-ed:hover{transform:translateY(-4px)}}
 .bientot-ed{display:inline-block;padding:7px 16px;border-radius:999px;background:var(--ligne);color:var(--fg);font-size:.85rem;font-weight:600}
 a.couv-ed .bientot-ed{background:var(--or);color:var(--nuit)}
+.edition{position:relative}
+button.couv-bt{background:none;border:0;padding:0;font:inherit;cursor:pointer;transition:transform .2s ease;border-radius:12px}
+@media (hover:hover){button.couv-bt:hover{transform:translateY(-4px)}}
+button.couv-bt:focus-visible{outline:3px solid var(--focus,#1f2438);outline-offset:6px}
+.ed-bulle{position:absolute;z-index:4;left:50%;top:22%;transform:translateX(-50%);width:min(280px,92%);background:var(--surface);color:var(--fg);border:1px solid var(--ligne);border-top:4px solid var(--or);border-radius:14px;box-shadow:0 24px 48px -12px rgba(0,0,0,.5);padding:20px 18px 16px;text-align:center;animation:bulle-in .22s ease-out}
+.ed-bulle[hidden]{display:none}
+.ed-bulle:focus{outline:none}
+.ed-bulle p{color:var(--fg)!important;font-size:.95rem!important;margin:0}
+.ed-bulle p+p{margin-top:8px}
+.ed-bulle .ed-bulle-t{font-family:var(--display);font-weight:800;font-size:1.2rem!important;color:var(--or-fonce)!important}
+.ed-bulle .prevenu{margin-top:2px}
+.ed-bulle-x{position:absolute;top:4px;right:4px;width:40px;height:40px;border:0;background:none;color:var(--muted);font-size:1.5rem;line-height:1;cursor:pointer;border-radius:50%}
+.ed-bulle-x:focus-visible{outline:3px solid var(--focus,#1f2438)}
+@keyframes bulle-in{from{opacity:0;transform:translateX(-50%) translateY(8px) scale(.96)}to{opacity:1;transform:translateX(-50%)}}
+@media (prefers-reduced-motion:reduce){.ed-bulle{animation:none}}
 .carrousel-nav{display:none}
 @media (max-width:760px), (pointer:coarse) and (max-height:500px){
   .carrousel{overflow:hidden;touch-action:auto}
@@ -328,6 +343,18 @@ a.couv-ed .bientot-ed{background:var(--or);color:var(--nuit)}
 .menu-liste.deroule>*{animation:menu-lien .3s ease-out both;animation-delay:calc(80ms + var(--i,0) * 30ms)}
 .menu-liste.enroule{animation:menu-deroule .6s cubic-bezier(.5,0,.75,.3) reverse forwards}
 @media (prefers-reduced-motion:reduce){.menu-liste.deroule,.menu-liste.deroule>*,.menu-liste.enroule,.menu-liste.deroule::after,.menu-liste.enroule::after{animation:none}}
+/* V30 : un vrai rouleau de parchemin, hors de la zone découpée, qui descend au bord du déroulé */
+.menu-liste::after{display:none}
+.menu-rouleau{position:absolute;z-index:6;top:calc(100% + 6px - 11px);right:calc(max(20px,env(safe-area-inset-right,0px)) - 7px);width:calc(min(300px,calc(100vw - 40px)) + 14px);height:22px;border-radius:11px;pointer-events:none;opacity:0;
+  background:linear-gradient(to bottom,#8a6420 0%,#d9ad52 22%,#f8e3a6 45%,#e9c56f 62%,#a87a28 88%,#6e4f17 100%);
+  box-shadow:0 7px 12px -3px rgba(0,0,0,.45),inset 0 0 0 1px rgba(90,60,10,.35)}
+.menu-rouleau::before,.menu-rouleau::after{content:"";position:absolute;top:2px;width:8px;height:18px;border-radius:4px;background:linear-gradient(to bottom,#5a3f10,#a77a2a 50%,#5a3f10)}
+.menu-rouleau::before{left:-5px}.menu-rouleau::after{right:-5px}
+@keyframes rouleau-descend{0%{transform:translateY(0);opacity:1}92%{opacity:1}100%{transform:translateY(var(--h,300px));opacity:0}}
+@keyframes rouleau-remonte{0%{transform:translateY(var(--h,300px));opacity:1}90%{opacity:1}100%{transform:translateY(0);opacity:0}}
+.menu-rouleau.deroule{animation:rouleau-descend 1s cubic-bezier(.11,0,.5,0) forwards}
+.menu-rouleau.enroule{animation:rouleau-remonte .6s cubic-bezier(.5,0,.75,.3) forwards}
+@media (prefers-reduced-motion:reduce){.menu-rouleau{display:none}}
 .menu-groupe{font-size:.74rem;letter-spacing:.16em;text-transform:uppercase;color:var(--or-fonce);font-weight:700;padding:8px 12px 4px}
 .menu-accueil{font-weight:700}
 .menu-accueil+.menu-groupe{margin-top:6px;border-top:1px solid var(--ligne);padding-top:14px}
@@ -631,7 +658,9 @@ document.getElementById('copier').addEventListener('click', async (e) => {
   const calme = window.matchMedia('(prefers-reduced-motion: reduce)');
   [...l.children].forEach((c, i) => c.style.setProperty('--i', i));
   let ouvert = false, minuteur = null;
-  function fin(){ clearTimeout(minuteur); if (!ouvert) { l.hidden = true; l.classList.remove('enroule'); } }
+  const rouleau = document.createElement('span'); rouleau.className = 'menu-rouleau'; rouleau.setAttribute('aria-hidden', 'true'); l.after(rouleau);
+  function roule(sens){ rouleau.classList.remove('deroule', 'enroule'); if (!sens) return; rouleau.style.setProperty('--h', l.offsetHeight + 'px'); void rouleau.offsetWidth; rouleau.classList.add(sens); }
+  function fin(){ clearTimeout(minuteur); if (!ouvert) { l.hidden = true; l.classList.remove('enroule'); roule(null); } }
   // V29 : sur l'accueil, le menu signale la partie de la page où l'on se trouve (barre dorée)
   function ici(){
     const liens = [...l.querySelectorAll('a[href^="#"]')].filter(x => x.getAttribute('href').length > 1);
@@ -649,9 +678,9 @@ document.getElementById('copier').addEventListener('click', async (e) => {
     if (o) ici();
     ouvert = o; b.setAttribute('aria-expanded', o ? 'true' : 'false');
     clearTimeout(minuteur);
-    if (o) { l.classList.remove('enroule'); l.classList.remove('deroule'); l.hidden = false; void l.offsetWidth; if (!calme.matches) l.classList.add('deroule'); }
+    if (o) { l.classList.remove('enroule'); l.classList.remove('deroule'); l.hidden = false; void l.offsetWidth; if (!calme.matches) { l.classList.add('deroule'); roule('deroule'); } }
     else if (calme.matches) { l.hidden = true; l.classList.remove('deroule'); }
-    else { l.classList.remove('deroule'); void l.offsetWidth; l.classList.add('enroule'); minuteur = setTimeout(fin, 680); }
+    else { l.classList.remove('deroule'); void l.offsetWidth; l.classList.add('enroule'); roule('enroule'); minuteur = setTimeout(fin, 680); }
   }
   l.addEventListener('animationend', e => { if (e.target === l && l.classList.contains('enroule')) fin(); });
   b.addEventListener('click', e => { e.stopPropagation(); ouvre(!ouvert); if (ouvert) l.querySelector('a').focus(); });
