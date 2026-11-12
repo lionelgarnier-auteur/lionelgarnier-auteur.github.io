@@ -522,6 +522,58 @@ a.marque{color:inherit;text-decoration:none}
 .emploi-liste{margin-top:8px;padding-left:22px;display:grid;gap:6px;line-height:1.6}
 .emploi-groupe{margin-top:18px;font-size:1.02rem;color:var(--or-fonce);letter-spacing:.01em}
 .emploi-suite{margin-top:14px}
+.competences{list-style:none;margin:10px 0 0;padding:0;display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,270px),1fr));gap:14px 26px}
+.competences li{display:grid;align-content:start;gap:3px;line-height:1.55;padding-left:14px;border-left:3px solid var(--or)}
+.competences b{font-weight:650;color:var(--fg)}
+.competences span{opacity:.9}
+.competence-livre{grid-column:1/-1}
+.competence-livre a{font-weight:600;white-space:nowrap}
+.plus-coord{margin-top:12px;font-weight:600}
+/* Option R (recommandée) : titres des compétences visibles, détail sous « + » ; atouts dans un volet ; formations fermées */
+.competences{align-items:start}
+.competences:not(.competences-plus){grid-template-columns:1fr;gap:2px;margin-top:6px}
+.competences:not(.competences-plus)>li{border-left:0;padding-left:0;display:block}
+.comp-pli summary{cursor:pointer;list-style:none;display:flex;align-items:center;gap:12px;min-height:44px;padding-block:4px;line-height:1.35}
+.comp-pli summary::-webkit-details-marker{display:none}
+.comp-pli summary::before{content:"+";content:"+" / "";flex:none;display:inline-grid;place-items:center;width:22px;height:22px;border-radius:50%;background:var(--or);color:#1f2438;font-size:1rem;line-height:1;font-weight:700}
+.comp-pli[open] summary::before{content:"−";content:"−" / ""}
+.comp-pli summary:focus-visible{outline:3px solid var(--focus,var(--or));outline-offset:3px;border-radius:8px}
+.comp-pli summary b{font-weight:650;color:var(--fg)}
+.comp-pli > span{display:block;margin:0 0 12px 11px;padding-left:22px;border-left:3px solid var(--or);line-height:1.6;max-width:62ch}
+.emploi-groupe{margin-top:30px}
+.emploi-volet{margin-top:18px}
+.emploi-volet summary h3{display:inline;margin:0;font:inherit;color:inherit}
+.emploi-volet .plus-intro{margin-top:6px}
+.competences-plus{grid-template-columns:1fr;gap:8px;max-width:64ch}
+.emploi-suite{margin-top:4px}
+.page-pros .carte .emploi-cv-haut a.btn{color:var(--nuit)}
+
+/* Option P (page) : deux portes d'entrée dans le bandeau + deux cartes de même poids */
+.deux-portes{margin-top:28px}
+.deux-portes-titre{font-size:.8rem;letter-spacing:.16em;text-transform:uppercase;color:var(--or);font-weight:600}
+.deux-portes ul{list-style:none;margin:12px 0 0;padding:0;display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,250px),1fr));gap:12px}
+.deux-portes a{display:flex;flex-direction:column;gap:4px;height:100%;box-sizing:border-box;padding:16px 44px 16px 18px;position:relative;border:1px solid rgba(242,198,109,.55);border-radius:14px;background:rgba(255,255,255,.04);color:#fff;text-decoration:none;line-height:1.35}
+.deux-portes a::after{content:"↓";content:"↓" / "";position:absolute;right:16px;top:50%;transform:translateY(-50%);color:var(--or);font-size:1.2rem}
+.deux-portes a:hover{background:rgba(242,198,109,.10)}
+.deux-portes a:focus-visible{outline:3px solid var(--or);outline-offset:3px}
+.deux-portes b{font-size:1.06rem;color:var(--or)}
+.deux-portes span{font-size:.92rem;color:#d8dbe8}
+.page-pros .carte-livre{margin-top:0}
+.page-pros .carte-livre #photocopies{margin-top:30px!important;font-size:1.25rem}
+.deux-portes b{display:flex;align-items:center;gap:10px}
+.deux-portes i,.etiquette .num{font-style:normal;flex:none;display:inline-grid;place-items:center;width:24px;height:24px;border-radius:50%;background:var(--or);color:#1f2438;font-size:.85rem;font-weight:800;letter-spacing:0}
+.deux-portes span{padding-left:34px}
+.etiquette .num{width:22px;height:22px;margin-right:10px;font-size:.8rem;vertical-align:middle}
+.page-pros .carte-livre{border-left:4px solid var(--or)}
+
+.competence-livre{grid-column:auto}
+
+.emploi-cv-haut .btn{margin-top:2px}
+.plus-intro{margin-top:4px}
+.competences-plus{grid-template-columns:repeat(auto-fit,minmax(min(100%,230px),1fr));gap:10px 22px;font-size:.95rem}
+.competences-plus li{border-left:0;padding-left:0;display:block}
+.competences-plus b{color:var(--or-fonce)}
+.competences-plus b::after{content:" : "}
 .emploi-suite summary::before{flex:none}
 .emploi-suite[open] summary{margin-bottom:2px}
 .page-pros .emploi-liste a{color:var(--or-fonce);text-underline-offset:3px}
@@ -606,7 +658,7 @@ html.cv-ouvert,html.cv-ouvert body{overflow:hidden}
       <p class="sur">Pour les professionnels</p>
       <h1>Vous accompagnez des familles ?</h1>
       <p class="sous">CSAPA, CJC, services d’addictologie, médecins, associations, groupes de parole, travail social.</p>
-      <div class="actions"><a class="btn btn-or" href="#emploi">Je suis à la recherche d’un poste <span aria-hidden="true">→</span></a></div>
+      <nav class="deux-portes" aria-labelledby="portes-titre"><p class="deux-portes-titre" id="portes-titre">Deux façons de travailler ensemble</p><ul><li><a href="#livre-pros"><b><i aria-hidden="true">1</i>Ponctuellement, autour du livre</b><span>présenter le livre, témoigner, photocopier les exercices</span></a></li><li><a href="#emploi"><b><i aria-hidden="true">2</i>Durablement : me recruter</b><span>patient expert, pair-aidant ou prévention</span></a></li></ul></nav>
       <p class="hero-contact">Pour une intervention ou une rencontre, écrivez-moi : <a href="mailto:contact@lionelgarnier.fr?subject=Proposition%20d%27intervention">contact@lionelgarnier.fr</a></p>
     </div>
   </div>
@@ -614,61 +666,73 @@ html.cv-ouvert,html.cv-ouvert body{overflow:hidden}
 
   <section class="page-pros">
     <div class="wrap lecture">
+      <div class="carte carte-livre" id="livre-pros">
+      <p class="etiquette"><i class="num" aria-hidden="true">1</i>Collaborations ponctuelles</p>
       <h2>Présenter le livre, témoigner, échanger</h2>
-      <p>Je peux venir présenter le livre « Je l’aime, mais je n’en peux plus », témoigner de mon parcours ou échanger avec vos équipes et vos groupes. Pour un retour de lecture ou une rencontre, écrivez-moi : <a href="mailto:contact@lionelgarnier.fr">contact@lionelgarnier.fr</a>.</p>
+      <p>Je peux venir présenter le livre « Je l’aime, mais je n’en peux plus », témoigner de mon parcours lors des événements que vous organisez : journées de prévention ou d’information, rencontres avec les familles, comme je le fais à l’Unité Espérance de Hauteville ; ou échanger avec vos équipes et vos groupes. Pour un retour de lecture ou une rencontre, écrivez-moi : <a href="mailto:contact@lionelgarnier.fr">contact@lionelgarnier.fr</a>.</p>
       <p>Le livre s’appuie principalement sur CRAFT, une méthode conçue pour les familles : <a href="/methode-craft">la méthode CRAFT expliquée aux proches</a>, avec ses sources.</p>
 
       <h2 id="photocopies">Photocopies pour vos groupes</h2>
       <p>Les pages d’exercices et l’annexe pour les enfants peuvent être photocopiées pour un usage personnel, en groupe ou dans le cadre d’un soin, à condition qu’elles ne soient pas vendues et que la source soit mentionnée.</p>
+      </div>
 
       <div class="carte emploi" id="emploi">
         <div class="emploi-tete">
           <img class="emploi-photo" src="/auteur.jpg" width="480" height="600" alt="Portrait dessiné de Lionel Garnier" loading="lazy" decoding="async">
           <div>
-        <p class="etiquette">Ma recherche de poste</p>
-        <h2>Je suis à la recherche d’un poste de patient expert ou de <span class="insec">pair-aidant</span> en addictologie</h2>
+        <p class="etiquette"><i class="num" aria-hidden="true">2</i>Me recruter</p>
+        <h2>Je cherche un poste en addictologie : patient expert, <span class="insec">pair-aidant</span> ou prévention</h2>
           </div>
         </div>
+        <p>Ancien dépendant à l’alcool, abstinent depuis novembre 2024, j’ai vécu l’addiction des deux côtés : comme personne dépendante, puis comme proche inquiet d’une amie.</p>
         <p>Je souhaite mettre mon expérience au service d’une équipe : poste de patient expert, de <span class="insec">pair-aidant</span> ou d’animateur de groupes (personnes dépendantes et entourage), en CSAPA, en CJC, en service d’addictologie ou en prévention.</p>
         <p>Basé à Voiron (Isère), je suis mobile, prêt à déménager, et j’étudie toute proposition, y compris une période d’immersion pour faire connaissance.</p>
-        <p class="emploi-cv-haut"><a id="cv-haut" href="/cv-lionel-garnier.pdf">Consulter mon CV complet <span aria-hidden="true">→</span></a></p>
-        <p>Ce que j’apporte :</p>
-        <h3 class="emploi-groupe">Le vécu et le terrain</h3>
-        <ul class="emploi-liste">
-          <li>l’expérience vécue de l’addiction et du rétablissement, et le recul pour en parler ;</li>
-          <li>stage de mon diplôme universitaire à l’Unité Espérance de Hauteville (soins en addictologie, deux semaines). Depuis, l’équipe fait appel à moi, bénévolement, pour ses rencontres avec l’entourage des patients pendant leurs soins : j’y apporte mon témoignage, pendant que les médecins et la psychologue expliquent les différents aspects de l’addiction ;</li>
-          <li>co-animateur du groupe de parole patients et entourage de l’antenne de Voiron de Vivre Sans Addiction ;</li>
-          <li>représentant de l’association aux réunions d’information des patients du centre de soins en addictologie de Groddeck (Saint-Égrève).</li>
+        <p class="emploi-cv-haut"><a id="cv-haut" class="btn btn-or" href="/cv-lionel-garnier.pdf">Consulter mon CV complet <span aria-hidden="true">→</span></a></p>
+        <p>Selon le poste, voici ce que je peux apporter à une équipe.</p>
+        <h3 class="emploi-groupe">En addictologie</h3>
+        <ul class="competences">
+          <li><details class="comp-pli"><summary><b>Témoigner et transmettre</b></summary><span>Intervenant bénévole aux rencontres de l’Unité Espérance de Hauteville avec l’entourage des patients ; auteur d’un guide pour les proches.</span></details></li>
+          <li><details class="comp-pli"><summary><b>Animer des groupes</b></summary><span>Co-animateur en binôme du groupe de parole patients et entourage de Vivre Sans Addiction à Voiron, passé de quelques participants réguliers à une dizaine ; formé à la <a href="https://www.tcirhonealpes.fr/presentation-de-la-tci-2/">thérapie communautaire intégrative</a>.</span></details></li>
+          <li><details class="comp-pli"><summary><b>Accompagner l’entourage</b></summary><span>Formation « L’entourage, les aidants » ; rassurer les familles et leur redonner de l’espoir ; faire connaître aux proches la <a href="/methode-craft">méthode CRAFT</a>, que j’ai étudiée de près.</span></details></li>
+          <li><details class="comp-pli"><summary><b>Prévenir et sensibiliser</b></summary><span>Collégiens de 3<sup>e</sup>, centre d’hébergement, sept chantiers d’insertion, entreprise ; campagnes à l’hôpital (Mois sans tabac, cancers ORL), santé du foie, soumission chimique ; une conférence montée à mon initiative, financée par quatre partenaires (Vivre Sans Addiction, CPTS, FNAS, mairie).</span></details></li>
+          <li><details class="comp-pli"><summary><b>Travailler en équipe pluridisciplinaire et en réseau</b></summary><span>Stage de deux semaines à l’Unité Espérance de Hauteville : ateliers de la psychologue et d’art-thérapie, entretiens infirmiers sur la motivation, entretiens médicaux d’accueil ; réseau addictologie avec le CSAPA Point Virgule, CPTS du Pays Voironnais.</span></details></li>
+          <li><details class="comp-pli"><summary><b>Un vécu travaillé et mis à distance</b></summary><span>Un travail personnel de fond sur les émotions, mené en suivi individuel avec un psychologue ; un mémoire de diplôme universitaire qui analyse mon parcours avec la psychologie du changement ; et, à Vivre Sans Addiction, une analyse de la pratique chaque mois.</span></details></li>
+          <li class="competence-livre"><details class="comp-pli"><summary><b>Concevoir et transmettre</b></summary><span>Mon livre pour les proches : quatorze chapitres appuyés sur une cinquantaine de références (CRAFT, étapes du changement, communication non violente), un quiz sur 25 idées reçues, un baromètre à refaire au fil du livre, des exercices utilisables en groupe et des pages pour les enfants et les ados. <a href="/#section-feuilleter">Feuilleter le début du livre</a></span></details></li>
         </ul>
-        <h3 class="emploi-groupe">Les formations en addictologie</h3>
+        <details class="emploi-plus emploi-volet"><summary><h3>Et ce que tout le monde n’a pas</h3></summary>
+        <p class="plus-intro">Avant l’addictologie, une vie professionnelle complète, qui me donne d’autres atouts, que je mets au service de l’équipe, à ma place de pair :</p>
+        <ul class="competences competences-plus">
+          <li><b>Coopérer et prendre soin d’une équipe</b><span>près de quinze ans de direction d’équipes, dont le redressement de deux entreprises ; des salariés dont j’ai pris soin (salaires augmentés, prime de panier, intéressement) ; un travail constant avec d’autres métiers, dont l’inspection et la médecine du travail.</span></li>
+          <li><b>Rigueur et méthode</b><span>sept ans de recherche scientifique, dont un projet coordonné avec le CNRS, publications internationales : je sais lire une étude.</span></li>
+          <li><b>Calme dans la crise</b><span>rassurer des personnes inquiètes et garder le cap : une équipe de 40 personnes restée mobilisée dans une entreprise en difficulté.</span></li>
+          <li><b>Anglais et supports</b><span>anglais courant (sept ans aux Pays-Bas) ; conception de supports pour les familles : un livre, ce site.</span></li>
+        </ul>
+        </details>
+        <p class="plus-coord">Selon le poste, je peux aussi coordonner des projets de prévention ou une équipe de <span class="insec">pairs-aidants</span>.</p>
+        <h3 class="emploi-groupe">Je continue à me former</h3>
+        <p class="plus-intro">Mes prochaines étapes, prévues avec France Travail :</p>
         <ul class="emploi-liste">
-          <li>diplôme universitaire d’addictologie générale, suivi en 2026 (Université <span class="insec">Paris-Saclay</span>, résultats en décembre 2026) ;</li>
-          <li>« Addictologie niveau 1 » (Fédération nationale des Amis de la Santé, Centre Edison de Metz, 2025), niveau 2 en novembre 2026 ;</li>
-          <li>« L’entourage, les aidants : la place et le rôle de l’aidant dans les addictions » (Fédération nationale des Amis de la Santé, 12 heures, 2026) ;</li>
-          <li>Premiers secours en santé mentale (PSSM, 2025) ;</li>
-          <li>animateur de rondes de parole en <a href="https://www.tcirhonealpes.fr/presentation-de-la-tci-2/">thérapie communautaire intégrative (TCI)</a> : formation de cinq jours à Grenoble avec TCI Rhône-Alpes, terminée en juin 2025 ;</li>
-          <li>MOOC « Comprendre les addictions » (Université <span class="insec">Paris-Saclay</span>, 2025).</li>
+          <li>éducation thérapeutique du patient (ETP, 40 heures), pour animer des ateliers thérapeutiques en structure de soins ;</li>
+          <li>entretien motivationnel, pour les bilans motivationnels ;</li>
+          <li>diplôme universitaire de <span class="insec">pair-aidance</span> ;</li>
+          <li>communication non violente, pour mes ateliers destinés aux proches ;</li>
+          <li>une immersion d’un mois en CSAPA (période de mise en situation en milieu professionnel).</li>
         </ul>
         <details class="emploi-plus emploi-suite" id="emploi-suite">
-          <summary>Prévention, réseau, parcours scientifique et professionnel</summary>
-          <h3 class="emploi-groupe">La prévention et le travail en réseau</h3>
+          <summary>Mes formations</summary>
           <ul class="emploi-liste">
-            <li>de nombreuses actions de prévention : collèges (classes de 3<sup>e</sup>), centres d’hébergement et chantiers d’insertion, entreprises, hôpitaux de Grenoble et de Voiron (Mois sans tabac, Journée mondiale sans tabac), stands d’information ;</li>
-            <li>une conférence de prévention à Voiron, obtenue à mon initiative pour l’antenne de Vivre Sans Addiction, avec un cofinancement trouvé auprès de la CPTS ;</li>
-            <li>membre du conseil d’administration de Vivre Sans Addiction et de la CPTS du Pays Voironnais ;</li>
-            <li>participation au réseau addictologie du Voironnais, avec le CSAPA Point Virgule, et au collectif contre les violences intrafamiliales (CoVIF) du Pays Voironnais.</li>
-          </ul>
-          <h3 class="emploi-groupe">Le parcours scientifique et professionnel</h3>
-          <ul class="emploi-liste">
-            <li>titulaire d’un DEA de chimie-physique, chercheur pendant sept ans à l’Université de Groningue (Pays-Bas), avec des publications dans des revues internationales (<i lang="en">Journal of Chemical Physics</i>, <i lang="en">Review of Scientific Instruments</i>) : une méthode rigoureuse et l’habitude de lire les études ;</li>
-            <li>anglais courant, après sept ans aux Pays-Bas et des études en Angleterre ;</li>
-            <li>gérant d’une PME de 2011 à 2025, redressée puis bénéficiaire chaque année, et auparavant chef d’atelier dans une entreprise de 40 personnes en difficulté, redressée en trois ans environ : organisation, conduite de projets, travail en équipe ;</li>
-            <li>la conception d’outils pour les familles, dont ce livre.</li>
+            <li>diplôme universitaire d’addictologie générale, suivi en 2026 (Université <span class="insec">Paris-Saclay</span>, résultats en décembre 2026) ;</li>
+            <li>« Addictologie niveau 1 » (Fédération nationale des Amis de la Santé, formation animée par le directeur du Centre Edison de Metz, à Grenoble, 2025), niveau 2 les 21 et 22 novembre 2026 ;</li>
+            <li>« L’entourage, les aidants : la place et le rôle de l’aidant dans les addictions » (Fédération nationale des Amis de la Santé, 12 heures, 2026) ;</li>
+            <li>Premiers secours en santé mentale (PSSM, 2025) ;</li>
+            <li>animateur de rondes de parole en thérapie communautaire intégrative (TCI) : formation de cinq jours à Grenoble avec TCI Rhône-Alpes, terminée en juin 2025 ;</li>
+            <li>MOOC « Comprendre les addictions » (Université <span class="insec">Paris-Saclay</span>, 2025) ;</li>
+            <li>DEA de chimie-physique (Université de Besançon, 1994).</li>
           </ul>
         </details>
         <a class="emploi-cv" id="emploi-cv" href="/cv-lionel-garnier.pdf">
           <img class="emploi-cv-photo" src="/lionel-curieux.png" width="160" height="160" alt="" loading="lazy" decoding="async">
-          <span class="emploi-cv-textes"><span class="emploi-cv-curieux">Pour les plus curieux d’entre vous</span><span class="btn btn-or emploi-cv-btn"><span class="emploi-cv-titre">Mon CV complet</span><span class="emploi-cv-sous">parcours professionnel et associatif</span></span></span>
+          <span class="emploi-cv-textes"><span class="emploi-cv-curieux">Tout ceci a suscité votre intérêt ?<br>N’hésitez pas à consulter mon parcours complet.</span><span class="btn btn-or emploi-cv-btn"><span class="emploi-cv-titre">Mon CV complet</span><span class="emploi-cv-sous">parcours professionnel et associatif</span></span></span>
         </a>
         <div class="cv-voile" id="cv-voile" role="dialog" aria-modal="true" aria-labelledby="cv-titre" hidden>
           <div class="cv-scene">
@@ -761,7 +825,7 @@ html.cv-ouvert,html.cv-ouvert body{overflow:hidden}
 
 <script data-goatcounter="https://lionelgarnier.goatcounter.com/count" async src="https://gc.zgo.at/count.js"></script>
 
-<script>(function(){var hh=document.getElementById('cv-haut'),retour=null,l=document.getElementById('emploi-cv'),v=document.getElementById('cv-voile'),c=document.getElementById('cv-cadre'),fe=document.getElementById('cv-fermer'),im=document.getElementById('cv-imprimer');if(!l||!v)return;var ouvert=false,h=document.documentElement,fen=v.querySelector('.cv-fenetre'),rou=v.querySelector('.cv-rouleau'),aF=null,aR=null;
+<script>(function(){var hh=document.getElementById('cv-haut'),retour=null,y0=0,remet=function(){if(Math.abs((window.scrollY||0)-y0)>2){try{window.scrollTo({top:y0,behavior:'instant'})}catch(x){window.scrollTo(0,y0)}}},l=document.getElementById('emploi-cv'),v=document.getElementById('cv-voile'),c=document.getElementById('cv-cadre'),fe=document.getElementById('cv-fermer'),im=document.getElementById('cv-imprimer');if(!l||!v)return;var ouvert=false,h=document.documentElement,fen=v.querySelector('.cv-fenetre'),rou=v.querySelector('.cv-rouleau'),aF=null,aR=null;
 function calme(){return matchMedia('(prefers-reduced-motion: reduce)').matches||!fen.animate}
 function deroule(sens){if(calme())return;v.classList.toggle('tire',!!sens);if(aF)aF.cancel();if(aR)aR.cancel();var H=fen.offsetHeight;
 if(sens){aF=fen.animate([{clipPath:'inset(0 0 100% 0 round 16px)'},{clipPath:'inset(0 0 0 0 round 16px)'}],{duration:2200,easing:'cubic-bezier(.45,0,.3,1)'});
@@ -769,8 +833,8 @@ aR=rou.animate([{transform:'translateY(0)',opacity:1},{opacity:1,offset:.92},{tr
 else{aF=fen.animate([{clipPath:'inset(0 0 100% 0 round 16px)'},{clipPath:'inset(0 0 0 0 round 16px)'}],{duration:600,easing:'cubic-bezier(.5,0,.75,.3)',direction:'reverse',fill:'forwards'});
 aR=rou.animate([{transform:'translateY(0)',opacity:0},{opacity:1,offset:.1},{transform:'translateY('+H+'px)',opacity:1}],{duration:600,easing:'cubic-bezier(.5,0,.75,.3)',direction:'reverse',fill:'forwards'})}}
 function ouvrir(e){if(e){if(e.ctrlKey||e.metaKey||e.shiftKey||e.button)return;e.preventDefault()}if(ouvert||l.classList.contains('tourne'))return;if(calme()){ouvre();return}l.classList.add('tourne');setTimeout(ouvre,420)}
-function ouvre(){l.classList.add('tourne');if(c.getAttribute('src')!=='/cv.html')c.src='/cv.html';v.hidden=false;h.classList.add('cv-ouvert');requestAnimationFrame(function(){requestAnimationFrame(function(){v.classList.add('ouvert')})});ouvert=true;deroule(true);try{history.pushState({cv:1},'','#cv')}catch(x){}fe.focus()}
-function fermer(depuisHist){if(!ouvert)return;ouvert=false;h.classList.remove('cv-ouvert');var fin=function(){v.classList.remove('ouvert');v.hidden=true;setTimeout(function(){l.classList.remove('tourne')},150)};if(calme())fin();else{deroule(false);setTimeout(function(){v.classList.remove('ouvert')},300);setTimeout(fin,650)}if(!depuisHist&&history.state&&history.state.cv){try{history.back()}catch(x){}}(retour||l).focus()}
+function ouvre(){y0=window.scrollY||0;l.classList.add('tourne');if(c.getAttribute('src')!=='/cv.html')c.src='/cv.html';v.hidden=false;h.classList.add('cv-ouvert');requestAnimationFrame(function(){requestAnimationFrame(function(){v.classList.add('ouvert')})});ouvert=true;deroule(true);try{history.pushState({cv:1},'')}catch(x){}fe.focus()}
+function fermer(depuisHist){if(!ouvert)return;ouvert=false;h.classList.remove('cv-ouvert');var fin=function(){v.classList.remove('ouvert');v.hidden=true;setTimeout(function(){l.classList.remove('tourne')},150)};if(calme())fin();else{deroule(false);setTimeout(function(){v.classList.remove('ouvert')},300);setTimeout(fin,650)}if(!depuisHist&&history.state&&history.state.cv){try{history.back()}catch(x){}}try{(retour||l).focus({preventScroll:true})}catch(x){}remet();setTimeout(remet,60);setTimeout(remet,300);setTimeout(remet,700)}
 l.addEventListener('click',function(e){retour=l;ouvrir(e)}); if(hh)hh.addEventListener('click',function(e){if(e.ctrlKey||e.metaKey||e.shiftKey||e.button)return;e.preventDefault();if(ouvert)return;retour=hh;ouvre()});fe.addEventListener('click',function(){fermer(false)});
 v.addEventListener('click',function(e){if(e.target===v)fermer(false)});
 im.addEventListener('click',function(){try{c.contentWindow.focus();c.contentWindow.print()}catch(x){window.open('/cv-lionel-garnier.pdf','_blank')}});
@@ -778,6 +842,5 @@ addEventListener('popstate',function(){if(ouvert)fermer(true)});
 document.addEventListener('keydown',function(e){if(!ouvert)return;if(e.key==='Escape'){fermer(false)}else if(e.key==='Tab'){var f=[].slice.call(v.querySelectorAll('a,button,iframe'));var p=f[0],d=f[f.length-1];if(e.shiftKey&&document.activeElement===p){e.preventDefault();d.focus()}else if(!e.shiftKey&&document.activeElement===d){e.preventDefault();p.focus()}}});
 if(location.hash==='#cv'){try{history.replaceState(null,'',location.pathname)}catch(x){}}
 })();</script>
-<script>(function(){var d=document.getElementById('emploi-suite');if(d&&window.matchMedia&&matchMedia('(min-width:600px)').matches)d.open=true;})();</script>
 </body>
 </html>
