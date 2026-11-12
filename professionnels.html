@@ -515,6 +515,42 @@ a.marque{color:inherit;text-decoration:none}
 .emploi-suite[open] summary{margin-bottom:2px}
 .page-pros .emploi-liste a{color:var(--or-fonce);text-underline-offset:3px}
 #photocopies,#contact{scroll-margin-top:84px}
+.emploi-cv{position:relative;width:fit-content;max-width:100%;margin:74px auto 0;display:flex;flex-direction:column;align-items:center;padding:58px 40px 24px;text-align:center;text-decoration:none;color:inherit;border-radius:16px;border:1px solid #d9cfb8;background:linear-gradient(135deg,#c7d1e2 0%,#e3dfe0 55%,#f4d9a8 100%)}
+.emploi-cv-photo{position:absolute;top:-46px;left:50%;margin-left:-46px;width:92px;height:92px;border-radius:50%;box-shadow:0 3px 10px rgba(31,36,56,.22);transition:transform .2s ease}
+.emploi-cv-textes{display:flex;flex-direction:column;align-items:center;gap:12px;min-width:0}
+.emploi-cv-btn{display:inline-flex;flex-direction:column;align-items:center;text-align:center;gap:2px;line-height:1.25;padding:12px 28px;background:#1f2438;color:#f2c66d;flex:none}
+.emploi-cv-titre{font-size:1.05rem;font-weight:700}
+.emploi-cv-sous{font-size:.86rem;font-weight:500;opacity:.9;text-wrap:balance}
+.emploi-cv-curieux{font-style:italic;color:#2c3550}
+.emploi-cv:focus-visible{outline:3px solid var(--focus,var(--or));outline-offset:4px}
+.emploi-cv:hover .emploi-cv-photo,.emploi-cv:focus-visible .emploi-cv-photo{transform:rotate(-6deg) scale(1.05)}
+@media (max-width:480px){.emploi-cv{margin-top:60px;padding:46px 16px 18px}.emploi-cv-photo{top:-38px;margin-left:-38px;width:76px;height:76px}.emploi-cv-textes{align-self:stretch}.emploi-cv-btn{padding:12px 14px}}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .emploi-cv{background:linear-gradient(135deg,#2b3550 0%,#3a3a4a 55%,#5a4a32 100%);border-color:#4a4a55}:root:not([data-theme="light"]) .emploi-cv-curieux{color:#d9dcea}:root:not([data-theme="light"]) .emploi-cv-btn{background:#f2c66d;color:#1f2438}}
+:root[data-theme="dark"] .emploi-cv{background:linear-gradient(135deg,#2b3550 0%,#3a3a4a 55%,#5a4a32 100%);border-color:#4a4a55}
+:root[data-theme="dark"] .emploi-cv-curieux{color:#d9dcea}
+:root[data-theme="dark"] .emploi-cv-btn{background:#f2c66d;color:#1f2438}
+/* CV en plein écran */
+.cv-voile{position:fixed;inset:0;z-index:1000;background:rgba(15,18,30,.72);display:flex;align-items:stretch;justify-content:center;padding:max(24px,env(safe-area-inset-top)) 10px max(10px,env(safe-area-inset-bottom));opacity:0;transition:opacity .35s ease}
+.cv-scene{position:relative;width:min(900px,100%);display:flex}
+.cv-voile[hidden]{display:none}
+.cv-voile.ouvert{opacity:1}
+.cv-fenetre{width:100%;display:flex;flex-direction:column;border-radius:16px;overflow:hidden;background:#5b6075;box-shadow:0 20px 60px rgba(0,0,0,.45)}
+.cv-rouleau{position:absolute;z-index:2;left:-7px;right:-7px;top:-11px;height:22px;border-radius:11px;pointer-events:none;opacity:0;background:linear-gradient(to bottom,#8a6420 0%,#d9ad52 22%,#f8e3a6 45%,#e9c56f 62%,#a87a28 88%,#6e4f17 100%);box-shadow:0 7px 12px -3px rgba(0,0,0,.45),inset 0 0 0 1px rgba(90,60,10,.35)}
+.cv-rouleau::before,.cv-rouleau::after{content:"";position:absolute;top:2px;width:8px;height:18px;border-radius:4px;background:linear-gradient(to bottom,#5a3f10,#a77a2a 50%,#5a3f10)}
+.cv-rouleau::before{left:-5px}.cv-rouleau::after{right:-5px}
+.cv-barre{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:10px 12px 10px 18px;background:#1f2438;color:#fff}
+.cv-titre{margin:0!important;font-weight:600;font-size:.98rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0}
+.cv-actions{display:flex;align-items:center;gap:8px;flex:none}
+.cv-act{display:inline-flex;align-items:center;min-height:40px;padding:0 14px;border-radius:10px;border:0;background:#f2c66d;color:#1f2438;font:inherit;font-weight:600;font-size:.92rem;text-decoration:none;cursor:pointer}
+.cv-fermer{display:inline-flex;align-items:center;gap:8px;height:42px;padding:0 14px 0 16px;border-radius:21px;border:1.5px solid rgba(255,255,255,.4);background:transparent;color:#fff;font:inherit;font-weight:600;font-size:.92rem;line-height:1;cursor:pointer}
+.cv-croix{font-size:1.5rem;line-height:1;font-weight:400}
+.cv-fermer:hover{background:rgba(255,255,255,.1)}
+.cv-act:focus-visible,.cv-fermer:focus-visible{outline:3px solid #fff;outline-offset:2px}
+.cv-cadre{flex:1;width:100%;border:0;background:#5b6075}
+html.cv-ouvert,html.cv-ouvert body{overflow:hidden}
+@media (max-width:600px){.cv-fermer-mot{display:none}.cv-fermer{width:42px;padding:0;justify-content:center;border-radius:50%}}
+@media (max-width:480px){.cv-voile{padding:14px 0 0}.cv-fenetre{border-radius:12px 12px 0 0}.cv-rouleau{left:-2px;right:-2px}.cv-pdf{display:none}.cv-act{padding:0 11px}.cv-titre{font-size:.9rem}}
+@media (prefers-reduced-motion:reduce){.emploi-cv-photo,.cv-voile{transition:none}.cv-rouleau{display:none}}
 </style>
 </head>
 <body>
@@ -596,6 +632,7 @@ a.marque{color:inherit;text-decoration:none}
           <h3 class="emploi-groupe">La prévention et le travail en réseau</h3>
           <ul class="emploi-liste">
             <li>de nombreuses actions de prévention : collèges (classes de 3<sup>e</sup>), centres d’hébergement et chantiers d’insertion, entreprises, hôpitaux de Grenoble et de Voiron (Mois sans tabac, Journée mondiale sans tabac), stands d’information ;</li>
+            <li>une conférence de prévention à Voiron, obtenue à mon initiative pour l’antenne de Vivre Sans Addiction, avec un cofinancement trouvé auprès de la CPTS ;</li>
             <li>membre du conseil d’administration de Vivre Sans Addiction et de la CPTS du Pays Voironnais ;</li>
             <li>participation au réseau addictologie du Voironnais, avec le CSAPA Point Virgule, et au collectif contre les violences intrafamiliales (CoVIF) du Pays Voironnais.</li>
           </ul>
@@ -603,11 +640,31 @@ a.marque{color:inherit;text-decoration:none}
           <ul class="emploi-liste">
             <li>docteur en chimie-physique, chercheur pendant sept ans à l’Université de Groningue (Pays-Bas), avec des publications dans des revues internationales (<i lang="en">Journal of Chemical Physics</i>, <i lang="en">Review of Scientific Instruments</i>) : une méthode rigoureuse et l’habitude de lire les études ;</li>
             <li>anglais courant, après sept ans aux Pays-Bas et des études en Angleterre ;</li>
-            <li>gérant d’une PME de 2011 à 2025, et auparavant chef d’atelier (40 personnes) : organisation, conduite de projets, travail en équipe ;</li>
+            <li>gérant d’une PME de 2011 à 2025, redressée puis bénéficiaire chaque année, et auparavant chef d’atelier dans une entreprise de 40 personnes en difficulté, redressée en trois ans environ : organisation, conduite de projets, travail en équipe ;</li>
             <li>la conception d’outils pour les familles, dont ce livre.</li>
           </ul>
         </details>
-        <p class="emploi-contact">Écrivez-moi : <a href="mailto:contact@lionelgarnier.fr?subject=Proposition%20de%20poste">contact@lionelgarnier.fr</a>. Je vous enverrai mon CV.</p>
+        <a class="emploi-cv" id="emploi-cv" href="/cv-lionel-garnier.pdf">
+          <img class="emploi-cv-photo" src="/lionel-curieux.png" width="160" height="160" alt="" loading="lazy" decoding="async">
+          <span class="emploi-cv-textes"><span class="emploi-cv-curieux">Pour les plus curieux d’entre vous</span><span class="btn btn-or emploi-cv-btn"><span class="emploi-cv-titre">Mon CV complet</span><span class="emploi-cv-sous">parcours professionnel et associatif</span></span></span>
+        </a>
+        <div class="cv-voile" id="cv-voile" role="dialog" aria-modal="true" aria-labelledby="cv-titre" hidden>
+          <div class="cv-scene">
+          <span class="cv-rouleau" aria-hidden="true"></span>
+          <div class="cv-fenetre">
+            <div class="cv-barre">
+              <p class="cv-titre" id="cv-titre">CV de Lionel Garnier</p>
+              <div class="cv-actions">
+                <a class="cv-act" href="/cv-lionel-garnier.pdf" download>Télécharger<span class="cv-pdf">&nbsp;(PDF)</span></a>
+                <button type="button" class="cv-act" id="cv-imprimer">Imprimer</button>
+                <button type="button" class="cv-fermer" id="cv-fermer" aria-label="Fermer le CV"><span class="cv-fermer-mot" aria-hidden="true">Fermer</span><span class="cv-croix" aria-hidden="true">×</span></button>
+              </div>
+            </div>
+            <iframe class="cv-cadre" id="cv-cadre" title="CV de Lionel Garnier" src="about:blank"></iframe>
+          </div>
+          </div>
+        </div>
+        <p class="emploi-contact">Pour me proposer un poste, écrivez-moi : <a href="mailto:contact@lionelgarnier.fr?subject=Proposition%20de%20poste">contact@lionelgarnier.fr</a>.</p>
       </div>
 
       <div class="carte" id="contact">
@@ -695,6 +752,22 @@ document.getElementById('copier').addEventListener('click', async (e) => {
 
 <script data-goatcounter="https://lionelgarnier.goatcounter.com/count" async src="https://gc.zgo.at/count.js"></script>
 
+<script>(function(){var l=document.getElementById('emploi-cv'),v=document.getElementById('cv-voile'),c=document.getElementById('cv-cadre'),fe=document.getElementById('cv-fermer'),im=document.getElementById('cv-imprimer');if(!l||!v)return;var ouvert=false,h=document.documentElement,fen=v.querySelector('.cv-fenetre'),rou=v.querySelector('.cv-rouleau'),aF=null,aR=null;
+function calme(){return matchMedia('(prefers-reduced-motion: reduce)').matches||!fen.animate}
+function deroule(sens){if(calme())return;if(aF)aF.cancel();if(aR)aR.cancel();var H=fen.offsetHeight;
+if(sens){aF=fen.animate([{clipPath:'inset(0 0 100% 0 round 16px)'},{clipPath:'inset(0 0 0 0 round 16px)'}],{duration:1000,easing:'cubic-bezier(.11,0,.5,0)'});
+aR=rou.animate([{transform:'translateY(0)',opacity:1},{opacity:1,offset:.92},{transform:'translateY('+H+'px)',opacity:0}],{duration:1000,easing:'cubic-bezier(.11,0,.5,0)'})}
+else{aF=fen.animate([{clipPath:'inset(0 0 100% 0 round 16px)'},{clipPath:'inset(0 0 0 0 round 16px)'}],{duration:600,easing:'cubic-bezier(.5,0,.75,.3)',direction:'reverse',fill:'forwards'});
+aR=rou.animate([{transform:'translateY(0)',opacity:0},{opacity:1,offset:.1},{transform:'translateY('+H+'px)',opacity:1}],{duration:600,easing:'cubic-bezier(.5,0,.75,.3)',direction:'reverse',fill:'forwards'})}}
+function ouvrir(e){if(e){if(e.ctrlKey||e.metaKey||e.shiftKey||e.button)return;e.preventDefault()}if(c.getAttribute('src')!=='/cv.html')c.src='/cv.html';v.hidden=false;h.classList.add('cv-ouvert');requestAnimationFrame(function(){requestAnimationFrame(function(){v.classList.add('ouvert')})});ouvert=true;deroule(true);try{history.pushState({cv:1},'','#cv')}catch(x){}fe.focus()}
+function fermer(depuisHist){if(!ouvert)return;ouvert=false;h.classList.remove('cv-ouvert');var fin=function(){v.classList.remove('ouvert');v.hidden=true};if(calme())fin();else{deroule(false);setTimeout(function(){v.classList.remove('ouvert')},300);setTimeout(fin,650)}if(!depuisHist&&history.state&&history.state.cv){try{history.back()}catch(x){}}l.focus()}
+l.addEventListener('click',ouvrir);fe.addEventListener('click',function(){fermer(false)});
+v.addEventListener('click',function(e){if(e.target===v)fermer(false)});
+im.addEventListener('click',function(){try{c.contentWindow.focus();c.contentWindow.print()}catch(x){window.open('/cv-lionel-garnier.pdf','_blank')}});
+addEventListener('popstate',function(){if(ouvert)fermer(true)});
+document.addEventListener('keydown',function(e){if(!ouvert)return;if(e.key==='Escape'){fermer(false)}else if(e.key==='Tab'){var f=[].slice.call(v.querySelectorAll('a,button,iframe'));var p=f[0],d=f[f.length-1];if(e.shiftKey&&document.activeElement===p){e.preventDefault();d.focus()}else if(!e.shiftKey&&document.activeElement===d){e.preventDefault();p.focus()}}});
+if(location.hash==='#cv'){try{history.replaceState(null,'',location.pathname)}catch(x){}}
+})();</script>
 <script>(function(){var d=document.getElementById('emploi-suite');if(d&&window.matchMedia&&matchMedia('(min-width:600px)').matches)d.open=true;})();</script>
 </body>
 </html>
