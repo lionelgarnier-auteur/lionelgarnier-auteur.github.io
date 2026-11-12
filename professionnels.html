@@ -553,7 +553,7 @@ a.marque{color:inherit;text-decoration:none}
 .deux-portes-titre{font-size:.8rem;letter-spacing:.16em;text-transform:uppercase;color:var(--or);font-weight:600}
 .deux-portes ul{list-style:none;margin:12px 0 0;padding:0;display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,250px),1fr));gap:12px}
 .deux-portes a{display:flex;flex-direction:column;gap:4px;height:100%;box-sizing:border-box;padding:16px 44px 16px 18px;position:relative;border:1px solid rgba(242,198,109,.55);border-radius:14px;background:rgba(255,255,255,.04);color:#fff;text-decoration:none;line-height:1.35}
-.deux-portes a::after{content:"↓";content:"↓" / "";position:absolute;right:16px;top:50%;transform:translateY(-50%);color:var(--or);font-size:1.2rem}
+.deux-portes a::after{content:"▾";content:"▾" / "";transition:transform .2s;position:absolute;right:16px;top:50%;transform:translateY(-50%);color:var(--or);font-size:1.2rem}
 .deux-portes a:hover{background:rgba(242,198,109,.10)}
 .deux-portes a:focus-visible{outline:3px solid var(--or);outline-offset:3px}
 .deux-portes b{font-size:1.06rem;color:var(--or)}
@@ -567,6 +567,16 @@ a.marque{color:inherit;text-decoration:none}
 .page-pros .carte-livre{border-left:4px solid var(--or)}
 
 .competence-livre{grid-column:auto}
+.page-pros .carte.repliee{display:none}
+.page-pros.portes-vides{display:none}
+@media print{.page-pros.portes-vides{display:block}}
+@media print{.page-pros .carte.repliee{display:block}}
+#livre-pros,#emploi{scroll-margin-top:84px}
+.deux-portes .porte-voir{font-style:normal;font-size:.85rem;font-weight:600;color:var(--or);padding-left:34px;margin-top:2px}
+.deux-portes a[aria-expanded="true"]{background:rgba(242,198,109,.16);border-color:var(--or);box-shadow:0 0 0 1px var(--or)}
+.deux-portes a[aria-expanded="true"]::after{transform:translateY(-50%) rotate(180deg)}
+@media (prefers-reduced-motion:reduce){.deux-portes a::after{transition:none}}
+
 .comp-pli > .pli-corps{display:block;margin:0 0 12px 11px;padding-left:22px;border-left:3px solid var(--or);line-height:1.6;max-width:62ch}
 .pli-corps p{margin:0 0 6px}
 .pli-corps ul{margin:0;padding-left:20px;display:grid;gap:6px;list-style:disc}
@@ -663,7 +673,7 @@ html.cv-ouvert,html.cv-ouvert body{overflow:hidden}
       <p class="sur">Pour les professionnels</p>
       <h1>Vous accompagnez des familles ?</h1>
       <p class="sous">CSAPA, CJC, services d’addictologie, médecins, associations, groupes de parole, travail social.</p>
-      <nav class="deux-portes" aria-labelledby="portes-titre"><p class="deux-portes-titre" id="portes-titre">Deux façons de travailler ensemble</p><ul><li><a href="#livre-pros"><b><i aria-hidden="true">1</i>Ponctuellement, autour du livre</b><span>présenter le livre, témoigner, photocopier les exercices</span></a></li><li><a href="#emploi"><b><i aria-hidden="true">2</i>Durablement : me recruter</b><span>patient expert, pair-aidant ou prévention</span></a></li></ul></nav>
+      <nav class="deux-portes" aria-labelledby="portes-titre"><p class="deux-portes-titre" id="portes-titre">Deux façons de travailler ensemble</p><ul><li><a href="#livre-pros"><b><i aria-hidden="true">1</i>Ponctuellement, autour du livre</b><span>présenter le livre, témoigner, photocopier les exercices</span><em class="porte-voir">Voir le détail</em></a></li><li><a href="#emploi"><b><i aria-hidden="true">2</i>Durablement : me recruter</b><span>patient expert, pair-aidant ou prévention</span><em class="porte-voir">Voir le détail</em></a></li></ul></nav>
       <p class="hero-contact">Pour une intervention ou une rencontre, écrivez-moi : <a href="mailto:contact@lionelgarnier.fr?subject=Proposition%20d%27intervention">contact@lionelgarnier.fr</a></p>
     </div>
   </div>
@@ -845,5 +855,14 @@ addEventListener('popstate',function(){if(ouvert)fermer(true)});
 document.addEventListener('keydown',function(e){if(!ouvert)return;if(e.key==='Escape'){fermer(false)}else if(e.key==='Tab'){var f=[].slice.call(v.querySelectorAll('a,button,iframe'));var p=f[0],d=f[f.length-1];if(e.shiftKey&&document.activeElement===p){e.preventDefault();d.focus()}else if(!e.shiftKey&&document.activeElement===d){e.preventDefault();p.focus()}}});
 if(location.hash==='#cv'){try{history.replaceState(null,'',location.pathname)}catch(x){}}
 })();</script>
-<script>(function(){var L=[].slice.call(document.querySelectorAll('details.comp-pli'));L.forEach(function(d){var s=d.querySelector('summary');if(!s)return;s.addEventListener('click',function(){if(d.open)return;var y=s.getBoundingClientRect().top,f=false;L.forEach(function(o){if(o!==d&&o.open){o.open=false;f=true}});if(!f)return;requestAnimationFrame(function(){var dy=s.getBoundingClientRect().top-y;if(Math.abs(dy)>1){try{window.scrollBy({top:dy,behavior:'instant'})}catch(e){window.scrollBy(0,dy)}}})})})})();</script></body>
+<script>(function(){var L=[].slice.call(document.querySelectorAll('details.comp-pli'));L.forEach(function(d){var s=d.querySelector('summary');if(!s)return;s.addEventListener('click',function(){if(d.open)return;var y=s.getBoundingClientRect().top,f=false;L.forEach(function(o){if(o!==d&&o.open){o.open=false;f=true}});if(!f)return;requestAnimationFrame(function(){var dy=s.getBoundingClientRect().top-y;if(Math.abs(dy)>1){try{window.scrollBy({top:dy,behavior:'instant'})}catch(e){window.scrollBy(0,dy)}}})})})})();</script><script>(function(){var P=['livre-pros','emploi'],C=P.map(function(i){return document.getElementById(i)}),A=[].slice.call(document.querySelectorAll('.deux-portes a'));if(C.indexOf(null)>=0||A.length!==2)return;
+var rm=window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches;
+function maj(k){var sp=C[0].closest('.page-pros');if(sp)sp.classList.toggle('portes-vides',k<0);C.forEach(function(c,i){var o=(i===k);c.classList.toggle('repliee',!o);A[i].setAttribute('aria-expanded',o?'true':'false');var v=A[i].querySelector('.porte-voir');if(v)v.textContent=o?'Masquer le détail':'Voir le détail'})}
+function va(el,doux){try{el.scrollIntoView({behavior:(doux&&!rm)?'smooth':'auto',block:'start'})}catch(e){el.scrollIntoView(true)}}
+function ouvert(){for(var i=0;i<2;i++)if(!C[i].classList.contains('repliee'))return i;return -1}
+function cible(h){if(!h||h.length<2)return null;var el=null;try{el=document.getElementById(decodeURIComponent(h.slice(1)))}catch(e){}if(!el)return null;for(var i=0;i<2;i++)if(C[i]===el||C[i].contains(el))return {k:i,el:el};return null}
+A.forEach(function(a,i){a.setAttribute('role','button');a.setAttribute('aria-controls',P[i]);a.addEventListener('click',function(e){e.preventDefault();if(ouvert()===i){maj(-1);return}maj(i);requestAnimationFrame(function(){va(C[i],true)})});a.addEventListener('keydown',function(e){if(e.key===' '||e.key==='Spacebar'){e.preventDefault();a.click()}})});
+document.addEventListener('click',function(e){var a=e.target.closest&&e.target.closest('a[href*="#"]');if(!a||A.indexOf(a)>=0)return;var u;try{u=new URL(a.href,location.href)}catch(x){return}if(u.pathname!==location.pathname)return;var c=cible(u.hash);if(c&&ouvert()!==c.k){maj(c.k)}},true);
+function depuisHash(){var c=cible(location.hash);if(c){maj(c.k);requestAnimationFrame(function(){va(c.el,false)})}}
+maj(-1);depuisHash();window.addEventListener('hashchange',depuisHash)})();</script></body>
 </html>
