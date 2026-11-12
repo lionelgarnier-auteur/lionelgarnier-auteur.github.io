@@ -333,6 +333,8 @@ button.couv-bt:focus-visible{outline:3px solid var(--focus,#1f2438);outline-offs
 .menu-btn[aria-expanded="true"] .burger::after{top:0;transform:rotate(-45deg)}
 .menu-liste{position:absolute;top:calc(100% + 6px);right:max(20px,env(safe-area-inset-right,0px));width:min(300px,calc(100vw - 40px));background:var(--surface);color:var(--fg);border:1px solid var(--ligne);border-radius:14px;box-shadow:0 24px 50px -16px rgba(0,0,0,.45);padding:10px;display:flex;flex-direction:column}
 .menu-liste[hidden]{display:none}
+/* V41 : le menu ne dépasse jamais l'écran (petit téléphone, barre des tâches) ; il défile à l'intérieur si besoin */
+.menu-liste{max-height:calc(100vh - 110px);max-height:calc(100dvh - 110px);overflow-y:auto;overscroll-behavior:contain}
 @keyframes menu-deroule{from{clip-path:inset(0 0 100% 0 round 14px)}to{clip-path:inset(0 0 0 0 round 14px)}}
 @keyframes menu-lien{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:none}}
 .menu-liste.deroule{animation:menu-deroule 1s cubic-bezier(.11,0,.5,0)}
@@ -394,6 +396,8 @@ section[id],[id="contact"]{scroll-margin-top:84px}
 .couv-lien:focus-visible{outline:3px solid var(--or);outline-offset:6px}
 @media (prefers-reduced-motion:reduce){.couv-lien,.couv-lien .couv-livre{transition:none}}
 @media (max-width:760px){.hero .wrap{grid-template-columns:1fr;text-align:center;justify-items:center;gap:26px;padding-block:36px 52px}.hero .sous{margin-left:auto;margin-right:auto}.hero .actions{justify-content:center}.couv-livre{max-width:140px;order:-1}.couv-lien{max-width:140px;order:-1}}
+/* V41 : sur les petits téléphones, couverture un peu plus petite pour que le bouton « Feuilleter » remonte */
+@media (max-width:420px){.hero .wrap{gap:18px;padding-block:22px 44px}.couv-livre,.couv-lien{max-width:112px}}
 
 /* ===== V15 ===== */
 :root{--focus:#1f2438}
@@ -563,6 +567,8 @@ html.cv-ouvert,html.cv-ouvert body{overflow:hidden}
 @media (max-width:600px){.cv-fermer-mot{display:none}.cv-fermer{width:42px;padding:0;justify-content:center;border-radius:50%}}
 @media (max-width:480px){.cv-voile{padding:14px 0 0}.cv-fenetre{border-radius:12px 12px 0 0}.cv-rouleau{left:-2px;right:-2px}.cv-pdf{display:none}.cv-act{padding:0 11px}.cv-titre{font-size:.9rem}}
 @media (prefers-reduced-motion:reduce){.emploi-cv-photo,.cv-voile{transition:none}.cv-rouleau{display:none}}
+.emploi-cv-haut{margin:6px 0 4px}
+.emploi-cv-haut a{font-weight:600;color:var(--or-fonce);text-underline-offset:3px}
 .hero-contact{margin-top:18px;color:#d8dbe8;font-size:1rem;line-height:1.6}
 .hero-contact a{color:#f2c66d;font-weight:600;text-underline-offset:3px}
 </style>
@@ -625,6 +631,7 @@ html.cv-ouvert,html.cv-ouvert body{overflow:hidden}
         </div>
         <p>Je souhaite mettre mon expérience au service d’une équipe : poste de patient expert, de <span class="insec">pair-aidant</span> ou d’animateur de groupes (personnes dépendantes et entourage), en CSAPA, en CJC, en service d’addictologie ou en prévention.</p>
         <p>Basé à Voiron (Isère), je suis mobile, prêt à déménager, et j’étudie toute proposition, y compris une période d’immersion pour faire connaissance.</p>
+        <p class="emploi-cv-haut"><a id="cv-haut" href="/cv-lionel-garnier.pdf">Consulter mon CV complet <span aria-hidden="true">→</span></a></p>
         <p>Ce que j’apporte :</p>
         <h3 class="emploi-groupe">Le vécu et le terrain</h3>
         <ul class="emploi-liste">
@@ -635,7 +642,7 @@ html.cv-ouvert,html.cv-ouvert body{overflow:hidden}
         </ul>
         <h3 class="emploi-groupe">Les formations en addictologie</h3>
         <ul class="emploi-liste">
-          <li>diplôme universitaire d’addictologie générale, en cours (Université <span class="insec">Paris-Saclay</span>, résultats en décembre 2026) ;</li>
+          <li>diplôme universitaire d’addictologie générale, suivi en 2026 (Université <span class="insec">Paris-Saclay</span>, résultats en décembre 2026) ;</li>
           <li>« Addictologie niveau 1 » (Fédération nationale des Amis de la Santé, Centre Edison de Metz, 2025), niveau 2 en novembre 2026 ;</li>
           <li>« L’entourage, les aidants : la place et le rôle de l’aidant dans les addictions » (Fédération nationale des Amis de la Santé, 12 heures, 2026) ;</li>
           <li>Premiers secours en santé mentale (PSSM, 2025) ;</li>
@@ -754,7 +761,7 @@ html.cv-ouvert,html.cv-ouvert body{overflow:hidden}
 
 <script data-goatcounter="https://lionelgarnier.goatcounter.com/count" async src="https://gc.zgo.at/count.js"></script>
 
-<script>(function(){var l=document.getElementById('emploi-cv'),v=document.getElementById('cv-voile'),c=document.getElementById('cv-cadre'),fe=document.getElementById('cv-fermer'),im=document.getElementById('cv-imprimer');if(!l||!v)return;var ouvert=false,h=document.documentElement,fen=v.querySelector('.cv-fenetre'),rou=v.querySelector('.cv-rouleau'),aF=null,aR=null;
+<script>(function(){var hh=document.getElementById('cv-haut'),retour=null,l=document.getElementById('emploi-cv'),v=document.getElementById('cv-voile'),c=document.getElementById('cv-cadre'),fe=document.getElementById('cv-fermer'),im=document.getElementById('cv-imprimer');if(!l||!v)return;var ouvert=false,h=document.documentElement,fen=v.querySelector('.cv-fenetre'),rou=v.querySelector('.cv-rouleau'),aF=null,aR=null;
 function calme(){return matchMedia('(prefers-reduced-motion: reduce)').matches||!fen.animate}
 function deroule(sens){if(calme())return;v.classList.toggle('tire',!!sens);if(aF)aF.cancel();if(aR)aR.cancel();var H=fen.offsetHeight;
 if(sens){aF=fen.animate([{clipPath:'inset(0 0 100% 0 round 16px)'},{clipPath:'inset(0 0 0 0 round 16px)'}],{duration:2200,easing:'cubic-bezier(.45,0,.3,1)'});
@@ -763,8 +770,8 @@ else{aF=fen.animate([{clipPath:'inset(0 0 100% 0 round 16px)'},{clipPath:'inset(
 aR=rou.animate([{transform:'translateY(0)',opacity:0},{opacity:1,offset:.1},{transform:'translateY('+H+'px)',opacity:1}],{duration:600,easing:'cubic-bezier(.5,0,.75,.3)',direction:'reverse',fill:'forwards'})}}
 function ouvrir(e){if(e){if(e.ctrlKey||e.metaKey||e.shiftKey||e.button)return;e.preventDefault()}if(ouvert||l.classList.contains('tourne'))return;if(calme()){ouvre();return}l.classList.add('tourne');setTimeout(ouvre,420)}
 function ouvre(){l.classList.add('tourne');if(c.getAttribute('src')!=='/cv.html')c.src='/cv.html';v.hidden=false;h.classList.add('cv-ouvert');requestAnimationFrame(function(){requestAnimationFrame(function(){v.classList.add('ouvert')})});ouvert=true;deroule(true);try{history.pushState({cv:1},'','#cv')}catch(x){}fe.focus()}
-function fermer(depuisHist){if(!ouvert)return;ouvert=false;h.classList.remove('cv-ouvert');var fin=function(){v.classList.remove('ouvert');v.hidden=true;setTimeout(function(){l.classList.remove('tourne')},150)};if(calme())fin();else{deroule(false);setTimeout(function(){v.classList.remove('ouvert')},300);setTimeout(fin,650)}if(!depuisHist&&history.state&&history.state.cv){try{history.back()}catch(x){}}l.focus()}
-l.addEventListener('click',ouvrir);fe.addEventListener('click',function(){fermer(false)});
+function fermer(depuisHist){if(!ouvert)return;ouvert=false;h.classList.remove('cv-ouvert');var fin=function(){v.classList.remove('ouvert');v.hidden=true;setTimeout(function(){l.classList.remove('tourne')},150)};if(calme())fin();else{deroule(false);setTimeout(function(){v.classList.remove('ouvert')},300);setTimeout(fin,650)}if(!depuisHist&&history.state&&history.state.cv){try{history.back()}catch(x){}}(retour||l).focus()}
+l.addEventListener('click',function(e){retour=l;ouvrir(e)}); if(hh)hh.addEventListener('click',function(e){if(e.ctrlKey||e.metaKey||e.shiftKey||e.button)return;e.preventDefault();if(ouvert)return;retour=hh;ouvre()});fe.addEventListener('click',function(){fermer(false)});
 v.addEventListener('click',function(e){if(e.target===v)fermer(false)});
 im.addEventListener('click',function(){try{c.contentWindow.focus();c.contentWindow.print()}catch(x){window.open('/cv-lionel-garnier.pdf','_blank')}});
 addEventListener('popstate',function(){if(ouvert)fermer(true)});

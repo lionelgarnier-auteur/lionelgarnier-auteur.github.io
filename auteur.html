@@ -333,6 +333,8 @@ button.couv-bt:focus-visible{outline:3px solid var(--focus,#1f2438);outline-offs
 .menu-btn[aria-expanded="true"] .burger::after{top:0;transform:rotate(-45deg)}
 .menu-liste{position:absolute;top:calc(100% + 6px);right:max(20px,env(safe-area-inset-right,0px));width:min(300px,calc(100vw - 40px));background:var(--surface);color:var(--fg);border:1px solid var(--ligne);border-radius:14px;box-shadow:0 24px 50px -16px rgba(0,0,0,.45);padding:10px;display:flex;flex-direction:column}
 .menu-liste[hidden]{display:none}
+/* V41 : le menu ne dépasse jamais l'écran (petit téléphone, barre des tâches) ; il défile à l'intérieur si besoin */
+.menu-liste{max-height:calc(100vh - 110px);max-height:calc(100dvh - 110px);overflow-y:auto;overscroll-behavior:contain}
 @keyframes menu-deroule{from{clip-path:inset(0 0 100% 0 round 14px)}to{clip-path:inset(0 0 0 0 round 14px)}}
 @keyframes menu-lien{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:none}}
 .menu-liste.deroule{animation:menu-deroule 1s cubic-bezier(.11,0,.5,0)}
@@ -394,6 +396,8 @@ section[id],[id="contact"]{scroll-margin-top:84px}
 .couv-lien:focus-visible{outline:3px solid var(--or);outline-offset:6px}
 @media (prefers-reduced-motion:reduce){.couv-lien,.couv-lien .couv-livre{transition:none}}
 @media (max-width:760px){.hero .wrap{grid-template-columns:1fr;text-align:center;justify-items:center;gap:26px;padding-block:36px 52px}.hero .sous{margin-left:auto;margin-right:auto}.hero .actions{justify-content:center}.couv-livre{max-width:140px;order:-1}.couv-lien{max-width:140px;order:-1}}
+/* V41 : sur les petits téléphones, couverture un peu plus petite pour que le bouton « Feuilleter » remonte */
+@media (max-width:420px){.hero .wrap{gap:18px;padding-block:22px 44px}.couv-livre,.couv-lien{max-width:112px}}
 
 /* ===== V15 ===== */
 :root{--focus:#1f2438}
@@ -603,7 +607,7 @@ a.marque{color:inherit;text-decoration:none}
       <p>Ensuite, je me suis retrouvé de l’autre côté. Une amie très proche, que je connaissais depuis longtemps, était elle aussi aux prises avec l’addiction ; aujourd’hui, elle est abstinente. J’ai appris ce que vivent les proches : guetter, s’inquiéter, hésiter à intervenir, chercher la bonne distance avec quelqu’un qu’on aime.</p>
 
       <h2>D’où je viens</h2>
-      <p>Titulaire d’un DEA de chimie-physique, j’ai été chercheur pendant sept ans aux Pays-Bas, puis j’ai dirigé pendant une quinzaine d’années une petite entreprise industrielle, avant de me reconvertir dans l’addictologie. En 2026, j’ai suivi le diplôme universitaire d’addictologie générale de l’Université Paris-Saclay, avec un stage dans une unité de soins en addictologie. Aujourd’hui, je me forme pour devenir patient expert : une personne qui a vécu la maladie et met cette expérience au service des autres, aux côtés des soignants. Mon mémoire porte sur la place des émotions dans le parcours vers l’abstinence, et sur le travail nécessaire, après l’arrêt, pour apprendre à les reconnaître et à les vivre autrement.</p>
+      <p>Titulaire d’un DEA de chimie-physique, j’ai été chercheur pendant sept ans aux Pays-Bas, puis j’ai dirigé pendant une quinzaine d’années une petite entreprise industrielle, avant de me reconvertir dans l’addictologie. En 2026, j’ai suivi le diplôme universitaire d’addictologie générale de l’Université Paris-Saclay (résultats en décembre 2026), avec un stage dans une unité de soins en addictologie. Aujourd’hui, je me forme pour devenir patient expert : une personne qui a vécu la maladie et met cette expérience au service des autres, aux côtés des soignants. Mon mémoire porte sur la place des émotions dans le parcours vers l’abstinence, et sur le travail nécessaire, après l’arrêt, pour apprendre à les reconnaître et à les vivre autrement.</p>
 
       <h2>Ce que je fais aujourd’hui</h2>
       <p>J’anime, à l’association <a href="https://vivresansaddiction.fr/">Vivre Sans Addiction</a> (Isère), des groupes de parole pour les personnes dépendantes et pour leur entourage, selon la <a href="https://vivresansaddiction.fr/therapie-communautaire-integrative-tci/">Thérapie Communautaire Intégrative</a> : on y parle en « je », sans jugement et sans conseil. Je participe aussi à des actions de prévention en Isère.</p>
