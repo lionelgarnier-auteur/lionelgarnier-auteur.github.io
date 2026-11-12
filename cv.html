@@ -161,12 +161,12 @@ html.large .feuilles{margin:0 8px}html.large{overflow-x:auto}}
 </section>
 </div><script>
 (function(){var f=document.querySelector('.feuilles'),h=document.documentElement,grand=false,bulle=document.getElementById('zoom-bulle');
-function ajuste(){var l=h.clientWidth-16;var s=Math.min(1,l/794);if(grand||s>=1){f.style.zoom='';h.classList.toggle('large',grand)}else{f.style.zoom=s;h.classList.remove('large')}bulle.hidden=s>=.8;bulle.textContent=grand?'Touchez le CV pour le réduire':'Touchez le CV pour l\u2019agrandir'}
-f.addEventListener('click',function(e){var l=h.clientWidth-16;if(l/794>=.8)return;var r=f.getBoundingClientRect(),fx=(e.clientX-r.left)/r.width,fy=(e.clientY-r.top)/r.height;grand=!grand;ajuste();var r2=f.getBoundingClientRect();scrollTo(fx*r2.width-innerWidth/2+(r2.left+scrollX),fy*r2.height-e.clientY+(r2.top+scrollY))});
+function ajuste(){var l=h.clientWidth-16;var s=Math.min(1,l/794);if(grand||s>=1){f.style.zoom='';h.classList.toggle('large',grand)}else{f.style.zoom=s;h.classList.remove('large')}bulle.hidden=s>=.8;var v=h.classList.contains('souris')?'Cliquez':'Touchez';bulle.textContent=grand?v+' le CV pour le réduire':v+' le CV pour l\u2019agrandir'}
+var bouge=false;f.addEventListener('click',function(e){if(bouge){bouge=false;return}var l=h.clientWidth-16;if(l/794>=.8)return;var r=f.getBoundingClientRect(),fx=(e.clientX-r.left)/r.width,fy=(e.clientY-r.top)/r.height;grand=!grand;ajuste();var r2=f.getBoundingClientRect();scrollTo(fx*r2.width-innerWidth/2+(r2.left+scrollX),fy*r2.height-e.clientY+(r2.top+scrollY))});
 ajuste();addEventListener('resize',ajuste);
-if(matchMedia('(hover:hover) and (pointer:fine)').matches){h.classList.add('souris');var x0,y0,sx,sy,actif=false;
-f.addEventListener('mousedown',function(e){if(e.button!==0)return;actif=true;x0=e.clientX;y0=e.clientY;sx=scrollX;sy=scrollY;h.classList.add('saisi');e.preventDefault()});
-addEventListener('mousemove',function(e){if(!actif)return;scrollTo(sx-(e.clientX-x0),sy-(e.clientY-y0))});
+if(matchMedia('(hover:hover) and (pointer:fine)').matches){h.classList.add('souris');ajuste();var x0,y0,sx,sy,actif=false;
+f.addEventListener('mousedown',function(e){if(e.button!==0)return;actif=true;bouge=false;x0=e.clientX;y0=e.clientY;sx=scrollX;sy=scrollY;h.classList.add('saisi');e.preventDefault()});
+addEventListener('mousemove',function(e){if(!actif)return;if(Math.abs(e.clientX-x0)+Math.abs(e.clientY-y0)>5)bouge=true;scrollTo(sx-(e.clientX-x0),sy-(e.clientY-y0))});
 addEventListener('mouseup',function(){if(!actif)return;actif=false;h.classList.remove('saisi')});
 addEventListener('blur',function(){actif=false;h.classList.remove('saisi')})}addEventListener('beforeprint',function(){f.style.zoom=''});addEventListener('afterprint',ajuste)})();
 </script></body></html>
