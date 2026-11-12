@@ -362,6 +362,7 @@ button.couv-bt:focus-visible{outline:3px solid var(--focus,#1f2438);outline-offs
 .menu-groupe~.menu-groupe{margin-top:8px;border-top:1px solid var(--ligne);padding-top:14px}
 .nav nav.menu .menu-liste a{display:block;padding:11px 12px 11px 22px;border-radius:9px;color:var(--fg);opacity:1;text-decoration:none;font-size:1rem}
 .nav nav.menu .menu-liste a:hover,.nav nav.menu .menu-liste a:focus-visible{background:var(--bg);color:var(--fg)}
+.nav nav.menu .menu-liste a.menu-contact{margin-top:8px;border-top:1px solid var(--ligne);border-radius:0 0 9px 9px;padding-top:15px;padding-left:12px;font-weight:600}
 .nav nav.menu .menu-liste a.menu-aide{margin-top:8px;padding-left:12px;background:var(--or);color:var(--nuit);font-weight:600;text-align:center}
 .nav nav.menu .menu-liste a.menu-aide:hover,.nav nav.menu .menu-liste a.menu-aide:focus-visible{background:#ffd98a;color:var(--nuit)}
 @media (max-width:760px){.nav nav.menu > a.sos{display:inline-block}}
@@ -376,6 +377,12 @@ button.couv-bt:focus-visible{outline:3px solid var(--focus,#1f2438);outline-offs
 }
 @media (max-width:370px){.marque{font-size:.72rem;letter-spacing:.05em}}
 section[id],[id="contact"]{scroll-margin-top:84px}
+/* V37 : contact */
+[id="contact"]{scroll-margin-top:100px}
+.mail{gap:8px}
+.mail code{padding:8px 12px}
+.lienmail code{color:var(--or-fonce)}
+@media (max-width:400px){.mail code{font-size:.95rem;padding:8px 10px}.mail button{padding:9px 12px}}
 #feuilleter{scroll-margin-top:76px}
 
 .hero .wrap{display:grid;grid-template-columns:1.25fr .75fr;gap:48px;align-items:center;text-align:left;padding-block:64px 68px}
@@ -573,7 +580,7 @@ html.cv-ouvert,html.cv-ouvert body{overflow:hidden}
         <p class="menu-groupe">L’auteur</p>
         <a href="/auteur">Parcours</a>
         <a href="/professionnels" aria-current="page">Pour les professionnels</a>
-        <a href="#contact">Contact</a>
+        <a href="/#contact" class="menu-contact">Contact</a>
         <a href="/#aide" class="menu-aide">Besoin d’aide</a>
       </div>
     </nav>
@@ -586,7 +593,7 @@ html.cv-ouvert,html.cv-ouvert body{overflow:hidden}
       <p class="sur">Pour les professionnels</p>
       <h1>Vous accompagnez des familles ?</h1>
       <p class="sous">CSAPA, CJC, services d’addictologie, médecins, associations, groupes de parole, travail social.</p>
-      <div class="actions"><a class="btn btn-or" href="#emploi">Je suis à la recherche d’un poste <span aria-hidden="true">→</span></a></div>
+      <div class="actions"><a class="btn btn-or" href="#emploi">Je suis à la recherche d’un poste <span aria-hidden="true">→</span></a><a class="btn btn-ligne" href="mailto:contact@lionelgarnier.fr?subject=Proposition%20d%27intervention">Me proposer une intervention</a></div>
     </div>
   </div>
 </div>
@@ -667,18 +674,12 @@ html.cv-ouvert,html.cv-ouvert body{overflow:hidden}
         <p class="emploi-contact">Pour me proposer un poste, écrivez-moi : <a href="mailto:contact@lionelgarnier.fr?subject=Proposition%20de%20poste">contact@lionelgarnier.fr</a>.</p>
       </div>
 
-      <div class="carte" id="contact">
-        <p class="etiquette">Contact</p>
-        <h2>Écrire à l’auteur</h2>
-        <div class="mail"><a href="mailto:contact@lionelgarnier.fr" class="lienmail"><code id="adresse">contact@lionelgarnier.fr</code></a><button type="button" id="copier">Copier</button><span class="sr" id="copie-etat" aria-live="polite"></span></div>
-        <p>Pour une intervention, une proposition de poste ou un retour de lecture. Pour mieux me connaître : <a href="/auteur">mon parcours</a>.</p>
-      </div>
     </div>
   </section>
 </main>
 
 <footer>
-  <nav class="wrap pied-nav" aria-label="Liens du site"><a href="/#top">Accueil</a><a href="/le-livre">Le livre</a><a href="/methode-craft">La méthode CRAFT</a><a href="/auteur">L’auteur</a><a href="/professionnels" aria-current="page">Pour les professionnels</a><a href="#contact">Contact</a><a href="/#aide">Besoin d’aide</a></nav>
+  <nav class="wrap pied-nav" aria-label="Liens du site"><a href="/#top">Accueil</a><a href="/le-livre">Le livre</a><a href="/methode-craft">La méthode CRAFT</a><a href="/auteur">L’auteur</a><a href="/professionnels" aria-current="page">Pour les professionnels</a><a href="/#contact">Contact</a><a href="/#aide">Besoin d’aide</a></nav>
   <div class="wrap cols">
     <div>
       <h2 class="pied-titre">Mentions légales</h2>
@@ -697,14 +698,7 @@ html.cv-ouvert,html.cv-ouvert body{overflow:hidden}
   </div>
 </footer>
 
-<script>
-document.getElementById('copier').addEventListener('click', async (e) => {
-  const b = e.currentTarget, t = document.getElementById('adresse');
-  try { await navigator.clipboard.writeText(t.textContent); b.textContent = 'Copié'; document.getElementById('copie-etat').textContent = 'Adresse copiée'; }
-  catch (_) { const r = document.createRange(); r.selectNodeContents(t); const s = getSelection(); s.removeAllRanges(); s.addRange(r); b.textContent = 'Sélectionné'; }
-  setTimeout(() => { b.textContent = 'Copier'; }, 2000);
-});
-</script>
+
 
 
 
