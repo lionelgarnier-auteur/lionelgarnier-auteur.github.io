@@ -845,5 +845,5 @@ addEventListener('popstate',function(){if(ouvert)fermer(true)});
 document.addEventListener('keydown',function(e){if(!ouvert)return;if(e.key==='Escape'){fermer(false)}else if(e.key==='Tab'){var f=[].slice.call(v.querySelectorAll('a,button,iframe'));var p=f[0],d=f[f.length-1];if(e.shiftKey&&document.activeElement===p){e.preventDefault();d.focus()}else if(!e.shiftKey&&document.activeElement===d){e.preventDefault();p.focus()}}});
 if(location.hash==='#cv'){try{history.replaceState(null,'',location.pathname)}catch(x){}}
 })();</script>
-</body>
+<script>(function(){var L=[].slice.call(document.querySelectorAll('details.comp-pli'));L.forEach(function(d){var s=d.querySelector('summary');if(!s)return;s.addEventListener('click',function(){if(d.open)return;var y=s.getBoundingClientRect().top,f=false;L.forEach(function(o){if(o!==d&&o.open){o.open=false;f=true}});if(!f)return;requestAnimationFrame(function(){var dy=s.getBoundingClientRect().top-y;if(Math.abs(dy)>1){try{window.scrollBy({top:dy,behavior:'instant'})}catch(e){window.scrollBy(0,dy)}}})})})})();</script></body>
 </html>
