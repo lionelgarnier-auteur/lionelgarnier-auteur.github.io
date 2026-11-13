@@ -771,7 +771,7 @@ a.marque:focus-visible{outline:3px solid var(--or);outline-offset:4px;border-rad
   <div class="wrap cols">
     <div>
       <h2 class="pied-titre">Mentions légales</h2>
-      <p>Éditeur du site et directeur de la publication : Lionel Garnier, auteur et éditeur (auto-édition), Voiron (Isère), France. Contact : <a href="mailto:contact@lionelgarnier.fr">contact@lionelgarnier.fr</a>.</p>
+      <p>Éditeur du site et directeur de la publication : Lionel Garnier, auteur et éditeur (auto-édition), Voiron (Isère), France. Contact : <a href="mailto:contact@lionelgarnier.fr">contact@lionelgarnier.fr</a></p>
       <p>Hébergeur : GitHub, Inc. (service GitHub Pages), 88 Colin P. Kelly Jr. Street, San Francisco, CA 94107, États-Unis, téléphone +1 415 857 5430.</p>
     </div>
     <div>
@@ -798,7 +798,7 @@ document.getElementById('copier').addEventListener('click', async (e) => {
 
 <script>
 (function(){
-  const IMG = {"c1": "/feuilleter-c1.jpg", "c1nb": "/feuilleter-c1nb.jpg?v=1611", "p1": "/feuilleter-p1.jpg", "p2": "/feuilleter-p2.jpg?v=1611", "p3": "/feuilleter-p3.jpg", "p4": "/feuilleter-p4.jpg?v=1611", "p5": "/feuilleter-p5.jpg?v=1611", "p6": "/feuilleter-p6.jpg", "p7": "/feuilleter-p7.jpg?v=1611", "p8": "/feuilleter-p8.jpg", "p9": "/feuilleter-p9.jpg", "i57c": "/feuilleter-i57c.jpg", "x57c": "/feuilleter-x57c.jpg", "i57nb": "/feuilleter-i57nb.jpg", "x57nb": "/feuilleter-x57nb.jpg?v=1611", "c4": "/feuilleter-c4.jpg"};
+  const IMG = {"c1": "/feuilleter-c1.jpg", "c1nb": "/feuilleter-c1nb.jpg?v=1611", "p1": "/feuilleter-p1.jpg", "p2": "/feuilleter-p2.jpg?v=1614", "p3": "/feuilleter-p3.jpg", "p4": "/feuilleter-p4.jpg?v=1611", "p5": "/feuilleter-p5.jpg?v=1611", "p6": "/feuilleter-p6.jpg", "p7": "/feuilleter-p7.jpg?v=1611", "p8": "/feuilleter-p8.jpg", "p9": "/feuilleter-p9.jpg", "i57c": "/feuilleter-i57c.jpg", "x57c": "/feuilleter-x57c.jpg", "i57nb": "/feuilleter-i57nb.jpg", "x57nb": "/feuilleter-x57nb.jpg?v=1611", "c4": "/feuilleter-c4.jpg"};
   function charge(sel){ document.querySelectorAll(sel).forEach(i => { if (!i.src) i.src = IMG[i.dataset.p]; }); }
   if ('IntersectionObserver' in window) {
     [['#editions', '#editions img[data-p]'], ['#section-feuilleter', '#section-feuilleter img[data-p]']].forEach(([z, sel]) => {
