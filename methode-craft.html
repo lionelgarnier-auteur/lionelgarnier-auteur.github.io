@@ -345,6 +345,7 @@ button.couv-bt:focus-visible{outline:3px solid var(--focus,#1f2438);outline-offs
 @keyframes rouleau-pos{from{transform:translateY(0)}to{transform:translateY(var(--h,300px))}}
 .menu-rouleau.enroule{opacity:1;animation:rouleau-pos .6s cubic-bezier(.5,0,.75,.3) reverse forwards}
 @media (prefers-reduced-motion:reduce){.menu-rouleau{display:none}}
+html{-webkit-tap-highlight-color:transparent}
 .menu-groupe{font-size:.74rem;letter-spacing:.16em;text-transform:uppercase;color:var(--or-fonce);font-weight:700;padding:8px 12px 4px}
 .menu-accueil{font-weight:700}
 .menu-accueil+.menu-groupe{margin-top:6px;border-top:1px solid var(--ligne);padding-top:14px}
