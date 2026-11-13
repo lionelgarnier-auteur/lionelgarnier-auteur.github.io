@@ -2,6 +2,7 @@
 <html lang="fr">
 <head>
 <meta charset="utf-8">
+<script>try{var t=localStorage.getItem('lg-mode');if(t==='light'||t==='dark')document.documentElement.setAttribute('data-theme',t)}catch(e){}</script>
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="description" content="Je l'aime, mais je n'en peux plus : guide pour les proches d'une personne dépendante à l'alcool, aux drogues ou aux médicaments, par Lionel Garnier.">
 <link rel="canonical" href="https://lionelgarnier.fr/">
@@ -410,7 +411,7 @@ section[id],[id="contact"]{scroll-margin-top:84px}
 
 /* ===== V15 ===== */
 :root{--focus:#1f2438}
-@media (prefers-color-scheme:dark){:root{--focus:#f2c66d}}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--focus:#f2c66d}}
 :focus-visible{outline:3px solid var(--focus)}
 .nav :focus-visible,.hero :focus-visible,.feuilleter :focus-visible,.suite-livre :focus-visible,footer :focus-visible,.loupe :focus-visible,#intro :focus-visible,.promesse :focus-visible{outline-color:#f2c66d}
 .evitement{position:absolute;left:12px;top:-60px;z-index:100;background:var(--or);color:var(--nuit);padding:10px 16px;border-radius:10px;font-weight:700}
@@ -483,7 +484,7 @@ a.marque:focus-visible{outline:3px solid var(--or);outline-offset:4px;border-rad
 .pied-nav a:hover{color:var(--or)}
 .liens{font-size:.92rem}
 /* mode sombre : sections mieux séparées */
-@media (prefers-color-scheme:dark){main > section, .hero, .editions{border-bottom:1px solid rgba(255,255,255,.08)}}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) main > section,:root:not([data-theme="light"]) .hero,:root:not([data-theme="light"]) .editions{border-bottom:1px solid rgba(255,255,255,.08)}}:root[data-theme="dark"] main > section,:root[data-theme="dark"] .hero,:root[data-theme="dark"] .editions{border-bottom:1px solid rgba(255,255,255,.08)}
 /* boutons côte à côte avec un espace */
 .actions{display:flex;flex-wrap:wrap;gap:12px}
 @media (max-width:480px){.suite-livre .actions .btn{flex:1 1 100%;justify-content:center}}
@@ -557,6 +558,11 @@ a.marque:focus-visible{outline:3px solid var(--or);outline-offset:4px;border-rad
 #intro{animation:introSecu 0s 9s forwards}
 </style>
 <noscript><style>#intro{display:none}</style></noscript>
+<style>
+.nav nav.menu .menu-liste button.menu-mode{display:block;width:100%;margin:8px 0 0;padding:11px 12px;border:1px solid var(--ligne);border-radius:9px;background:transparent;color:var(--fg);font:inherit;font-size:1rem;font-weight:600;text-align:left;cursor:pointer}
+.nav nav.menu .menu-liste button.menu-mode:hover,.nav nav.menu .menu-liste button.menu-mode:focus-visible{background:var(--bg)}
+.menu-mode .ico{display:inline-block;width:1.4em}
+</style>
 </head>
 <body>
 <div id="intro" aria-hidden="true"></div>
@@ -581,6 +587,7 @@ a.marque:focus-visible{outline:3px solid var(--or);outline-offset:4px;border-rad
         <a href="/auteur">Parcours</a>
         <a href="/professionnels">Pour les professionnels</a>
         <a href="#contact" class="menu-contact">Contact</a>
+        <button type="button" class="menu-mode" id="menu-mode"><span class="ico" aria-hidden="true"></span><span class="txt"></span></button>
         <a href="#aide" class="menu-aide">Besoin d’aide</a>
       </div>
     </nav>
@@ -1095,6 +1102,23 @@ var INTRO_IMG={"art": "/intro-chemin.jpg", "c1": "", "p1": ""};
   window.introJouer=function(m){ clearTimeout(t); clearTimeout(t2); el.classList.remove('fin','lent'); jouer(m); };
   if(reduit || (!DEMO && vue())){ el.remove(); return; }
   marque(); jouer(window.INTRO_MODE||1);
+})();
+</script>
+<script>
+(function(){
+  var b=document.getElementById('menu-mode'); if(!b) return;
+  var r=document.documentElement, sys=window.matchMedia('(prefers-color-scheme: dark)');
+  function actuel(){ var t=r.getAttribute('data-theme'); return (t==='light'||t==='dark')?t:(sys.matches?'dark':'light'); }
+  function maj(){ var nuit=actuel()==='dark';
+    b.querySelector('.ico').textContent = nuit ? '\u2600\uFE0F' : '\uD83C\uDF19';
+    b.querySelector('.txt').textContent = nuit ? 'Passer en mode jour' : 'Passer en mode nuit'; }
+  b.addEventListener('click', function(e){ e.stopPropagation();
+    var voulu = actuel()==='dark' ? 'light' : 'dark', auto = sys.matches ? 'dark' : 'light';
+    if (voulu===auto) { r.removeAttribute('data-theme'); try{localStorage.removeItem('lg-mode')}catch(x){} }
+    else { r.setAttribute('data-theme', voulu); try{localStorage.setItem('lg-mode', voulu)}catch(x){} }
+    maj(); });
+  if (sys.addEventListener) sys.addEventListener('change', maj);
+  maj();
 })();
 </script>
 </body>
