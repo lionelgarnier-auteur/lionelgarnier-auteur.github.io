@@ -898,25 +898,30 @@ maj(-1);depuisHash();window.addEventListener('hashchange',depuisHash)})();</scri
 <style>
 @keyframes porteHalo{0%,100%{box-shadow:0 0 0 0 rgba(242,198,109,0)}50%{box-shadow:0 0 0 3px rgba(242,198,109,.85),0 0 22px 6px rgba(242,198,109,.45);background:rgba(242,198,109,.12)}}
 @keyframes porteTape{0%,100%{transform:translateY(-50%)}50%{transform:translateY(-15%)}}
+.deux-portes a{transition:background .9s ease,box-shadow .9s ease,border-color .9s ease}
 .deux-portes a.porte-invite{animation:porteHalo var(--d,1s) ease-in-out var(--n,1)}
-.deux-portes a.porte-invite::after{animation:porteTape var(--f,.5s) ease-in-out var(--m,2)}
+.deux-portes a.porte-invite::after{animation:porteTape var(--d,1s) ease-in-out var(--n,1)}
+.deux-portes a.porte-choisie{background:rgba(242,198,109,.13);border-color:var(--or);box-shadow:0 0 0 1px var(--or),0 0 16px rgba(242,198,109,.30)}
 .deux-portes .porte-astuce{display:none;margin-top:10px;font-size:.85rem;color:#d8dbe8}
-@media (prefers-reduced-motion:reduce){.deux-portes a.porte-invite,.deux-portes a.porte-invite::after{animation:none}.deux-portes .porte-astuce{display:block}}
+@media (prefers-reduced-motion:reduce){.deux-portes a{transition:none}.deux-portes a.porte-invite,.deux-portes a.porte-invite::after{animation:none}.deux-portes .porte-astuce{display:block}}
 </style>
 <script>
+// V9 : ② trois fois rapide, ① une fois lent, ② trois fois rapide (chaque groupe 1,2 s, environ 4 s en tout),
+// puis ② reste doucement allumé en doré pour inviter à le toucher. Arrêt immédiat si le visiteur touche ou survole un encadré.
 (function(){var n=document.querySelector('.deux-portes');if(!n)return;
 var p=document.createElement('p');p.className='porte-astuce';p.textContent='Touchez un encadré pour le déplier.';n.appendChild(p);
-var A=[null,n.querySelector('li:nth-child(1) a'),n.querySelector('li:nth-child(2) a')];if(!A[1]||!A[2]||!('IntersectionObserver' in window))return;
-// départ : 2 halos rapides sur ②, puis bascule lente ① / ② jusqu'à ce que le visiteur touche ou survole un encadré (30 s maximum)
-var debut=[[2,500,2,250,4]],lent=[[1,2400,1,600,4],[2,2400,1,600,4]],stop=false,t0=0,minu=null,MAX=30000;
+var A=[null,n.querySelector('li:nth-child(1) a'),n.querySelector('li:nth-child(2) a')];if(!A[1]||!A[2])return;
+var rm=window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches;
+var seq=[[2,400,3],[1,1200,1],[2,400,3]],stop=false,minu=null;
+function choisie(){if(A[2].getAttribute('aria-expanded')!=='true'&&A[1].getAttribute('aria-expanded')!=='true')A[2].classList.add('porte-choisie');}
 function fini(){stop=true;clearTimeout(minu);A[1].classList.remove('porte-invite');A[2].classList.remove('porte-invite');}
-function etape(e,suite){if(stop)return;var a=A[e[0]];
- if(a.getAttribute('aria-expanded')==='true'){fini();return;}
- a.style.setProperty('--d',e[1]+'ms');a.style.setProperty('--n',e[2]);a.style.setProperty('--f',e[3]+'ms');a.style.setProperty('--m',e[4]);
- a.classList.add('porte-invite');minu=setTimeout(function(){a.classList.remove('porte-invite');minu=setTimeout(suite,250);},e[1]*e[2]);}
-function boucle(i){if(stop||Date.now()-t0>MAX){fini();return;}etape(lent[i%2],function(){boucle(i+1);});}
-[A[1],A[2]].forEach(function(a){['pointerenter','touchstart','focus','click'].forEach(function(ev){a.addEventListener(ev,fini,{passive:true});});});
-var o=new IntersectionObserver(function(en){if(en[0].isIntersecting){o.disconnect();setTimeout(function(){t0=Date.now();etape(debut[0],function(){boucle(0);});},700);}},{threshold:.8});
+function joue(i){if(stop)return;if(i>=seq.length){choisie();return;}var e=seq[i],a=A[e[0]];
+ a.style.setProperty('--d',e[1]+'ms');a.style.setProperty('--n',e[2]);a.classList.add('porte-invite');
+ minu=setTimeout(function(){a.classList.remove('porte-invite');minu=setTimeout(function(){joue(i+1)},300);},e[1]*e[2]);}
+[A[1],A[2]].forEach(function(a){['pointerenter','touchstart','focus','click'].forEach(function(ev){a.addEventListener(ev,fini,{passive:true});});
+ a.addEventListener('click',function(){A[2].classList.remove('porte-choisie');});});
+if(rm||!('IntersectionObserver' in window)){choisie();return;}
+var o=new IntersectionObserver(function(en){if(en[0].isIntersecting){o.disconnect();setTimeout(function(){joue(0);},700);}},{threshold:.8});
 o.observe(A[2]);})();
 </script>
 <style>
