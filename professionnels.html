@@ -910,7 +910,7 @@ maj(-1);depuisHash();window.addEventListener('hashchange',depuisHash)})();</scri
 if((window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches)||!('IntersectionObserver' in window))return;
 var o=new IntersectionObserver(function(e){if(e[0].isIntersecting){o.disconnect();setTimeout(function(){t.classList.add('titre-eveil');},700);}},{threshold:1});o.observe(t);
 t.addEventListener('animationend',function(){t.classList.remove('titre-eveil');});
-document.querySelectorAll('.deux-portes a').forEach(function(x){['pointerenter','touchstart','click'].forEach(function(ev){x.addEventListener(ev,function(){t.classList.remove('titre-eveil');},{passive:true});});});})();
+document.querySelectorAll('.deux-portes a').forEach(function(x){x.addEventListener('pointerenter',function(e){if(e.pointerType==='mouse')t.classList.remove('titre-eveil');});x.addEventListener('click',function(){t.classList.remove('titre-eveil');});});})();
 </script>
 <style>
 @keyframes porteHalo{0%,100%{box-shadow:0 0 0 0 rgba(242,198,109,0)}50%{box-shadow:0 0 0 3px rgba(242,198,109,.85),0 0 22px 6px rgba(242,198,109,.45);background:rgba(242,198,109,.12)}}
@@ -935,7 +935,7 @@ function fini(){stop=true;clearTimeout(minu);A[1].classList.remove('porte-invite
 function joue(i){if(stop)return;if(i>=seq.length){choisie();return;}var e=seq[i],a=A[e[0]];
  a.style.setProperty('--d',e[1]+'ms');a.style.setProperty('--n',e[2]);a.classList.add('porte-invite');
  minu=setTimeout(function(){a.classList.remove('porte-invite');minu=setTimeout(function(){joue(i+1)},300);},e[1]*e[2]);}
-[A[1],A[2]].forEach(function(a){['pointerenter','touchstart','focus','click'].forEach(function(ev){a.addEventListener(ev,fini,{passive:true});});
+[A[1],A[2]].forEach(function(a){a.addEventListener('pointerenter',function(e){if(e.pointerType==='mouse')fini();});['focus','click'].forEach(function(ev){a.addEventListener(ev,fini,{passive:true});});
  a.addEventListener('click',function(){A[2].classList.remove('porte-choisie');});});
 if(rm||!('IntersectionObserver' in window)){choisie();return;}
 var ti=n.querySelector('.deux-portes-titre')||A[2];
@@ -1014,7 +1014,7 @@ function etapePlus(){if(stop||E.classList.contains('repliee')){fini();return;}
  var cand=P.filter(function(s){return visible(s)&&!s.parentNode.open});
  if(cand.length){var s=cand[k%cand.length];k++;s.classList.remove('guide-plus');void s.offsetWidth;s.classList.add('guide-plus');}
  minu=setTimeout(etapeCV,cand.length?5200:200);  /* effet « + » 1,2 s + 4 s de pause */}
-CV.concat(P).forEach(function(x){['click','touchstart'].forEach(function(ev){x.addEventListener(ev,fini,{passive:true})})});
+CV.concat(P).forEach(function(x){x.addEventListener('click',fini,{passive:true})});  /* le défilement au doigt ne l'arrête pas */
 document.querySelectorAll('.deux-portes li:nth-child(2) a').forEach(function(a){a.addEventListener('click',function(){
  var D=0;setTimeout(function(){D=parseInt(E.getAttribute('data-deroule')||'3000',10);setTimeout(function(){if(!E.classList.contains('repliee')&&!actif&&!stop){actif=true;t0=Date.now();etapeCV();}},D+7000);},50);});});
 document.addEventListener('visibilitychange',function(){if(document.hidden)fini();});})();
