@@ -896,6 +896,22 @@ maj(-1);depuisHash();window.addEventListener('hashchange',depuisHash)})();</scri
 })();
 </script>
 <style>
+@keyframes titreSouffle{0%,100%{color:#f2c66d;text-shadow:0 0 0 rgba(242,198,109,0);transform:scale(1)}50%{color:#fff4d6;text-shadow:0 0 8px rgba(255,214,120,1),0 0 20px rgba(242,198,109,.9),0 0 36px rgba(242,198,109,.6);transform:scale(1.07)}}
+@keyframes titreTrait{0%{transform:scaleX(0);opacity:1}55%{transform:scaleX(1);opacity:1}100%{transform:scaleX(1);opacity:0}}
+.deux-portes-titre{position:relative;display:inline-block;transform-origin:left center}
+.deux-portes-titre.titre-eveil{animation:titreSouffle var(--dt,4200ms) ease-in-out 1}
+.deux-portes-titre.titre-eveil::after{content:"";position:absolute;left:0;right:0;bottom:-5px;height:3px;border-radius:2px;background:#f2c66d;box-shadow:0 0 10px rgba(242,198,109,.9);transform-origin:left center;animation:titreTrait var(--dt,4200ms) ease-in-out 1 forwards}
+@media (prefers-reduced-motion:reduce){.deux-portes-titre.titre-eveil,.deux-portes-titre.titre-eveil::after{animation:none}.deux-portes-titre.titre-eveil::after{display:none}}
+</style>
+<script>
+// Le titre « Deux façons de travailler ensemble » s'illumine lentement une fois, pendant l'animation des encadrés (même départ, même durée).
+(function(){var t=document.querySelector('.deux-portes-titre'),a=document.querySelector('.deux-portes li:nth-child(2) a');if(!t||!a)return;
+if((window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches)||!('IntersectionObserver' in window))return;
+var o=new IntersectionObserver(function(e){if(e[0].isIntersecting){o.disconnect();setTimeout(function(){t.classList.add('titre-eveil');},700);}},{threshold:1});o.observe(t);
+t.addEventListener('animationend',function(){t.classList.remove('titre-eveil');});
+document.querySelectorAll('.deux-portes a').forEach(function(x){['pointerenter','touchstart','click'].forEach(function(ev){x.addEventListener(ev,function(){t.classList.remove('titre-eveil');},{passive:true});});});})();
+</script>
+<style>
 @keyframes porteHalo{0%,100%{box-shadow:0 0 0 0 rgba(242,198,109,0)}50%{box-shadow:0 0 0 3px rgba(242,198,109,.85),0 0 22px 6px rgba(242,198,109,.45);background:rgba(242,198,109,.12)}}
 @keyframes porteTape{0%,100%{transform:translateY(-50%)}50%{transform:translateY(-15%)}}
 .deux-portes a{transition:background .9s ease,box-shadow .9s ease,border-color .9s ease}
@@ -921,14 +937,15 @@ function joue(i){if(stop)return;if(i>=seq.length){choisie();return;}var e=seq[i]
 [A[1],A[2]].forEach(function(a){['pointerenter','touchstart','focus','click'].forEach(function(ev){a.addEventListener(ev,fini,{passive:true});});
  a.addEventListener('click',function(){A[2].classList.remove('porte-choisie');});});
 if(rm||!('IntersectionObserver' in window)){choisie();return;}
-var o=new IntersectionObserver(function(en){if(en[0].isIntersecting){o.disconnect();setTimeout(function(){joue(0);},700);}},{threshold:.8});
-o.observe(A[2]);})();
+var ti=n.querySelector('.deux-portes-titre')||A[2];
+var o=new IntersectionObserver(function(en){if(en[0].isIntersecting){o.disconnect();setTimeout(function(){joue(0);},700);}},{threshold:1});
+o.observe(ti);})();
 </script>
 <style>
 .porte-rouleau{position:absolute;left:-6px;right:-6px;height:14px;top:0;border-radius:7px;pointer-events:none;z-index:3;
 background:linear-gradient(180deg,#8a6420 0%,#f2c66d 35%,#ffe2a6 50%,#d9a64a 70%,#7a561a 100%);box-shadow:0 3px 8px rgba(0,0,0,.35)}
 .porte-nuit{position:absolute;inset:0;background:#151929;pointer-events:none;z-index:2}
-.porte-reflet{position:absolute;top:0;bottom:0;width:45%;left:-60%;pointer-events:none;background:linear-gradient(105deg,rgba(255,255,255,0) 0%,rgba(255,255,255,.85) 50%,rgba(255,255,255,0) 100%)}
+.porte-reflet{position:absolute;top:0;bottom:0;width:45%;left:-60%;pointer-events:none;background:linear-gradient(105deg,rgba(255,255,255,0) 0%,rgba(255,255,255,1) 50%,rgba(255,255,255,0) 100%)}
 </style>
 <script>
 (function(){var rm=window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches;if(rm||!Element.prototype.animate)return;
@@ -941,8 +958,8 @@ A.forEach(function(a,i){a.addEventListener('click',function(){var c=document.get
  if(getComputedStyle(sec).position==='static')sec.style.position='relative';
  [].slice.call(document.querySelectorAll('.porte-rouleau,.porte-nuit')).forEach(function(x){x.remove()});
  var ease='cubic-bezier(.3,.1,.3,1)';
- // 1. passage en douceur du bleu nuit (haut de page) au fond clair, seulement si la page est en mode jour
- if(clair(document.body)){var n=document.createElement('div');n.className='porte-nuit';n.setAttribute('aria-hidden','true');sec.appendChild(n);
+ // 1. passage en douceur du bleu nuit au fond clair, dès que la partie ouverte est claire (toujours pour « me recruter »)
+ if(clair(c)){var n=document.createElement('div');n.className='porte-nuit';n.setAttribute('aria-hidden','true');sec.appendChild(n);
   n.animate([{opacity:1},{opacity:0}],{duration:DUREE,easing:'ease-in-out',fill:'forwards'}).onfinish=function(){n.remove()};}
  // 2. déroulé de la partie visible à l'écran, avec la baguette dorée
  var r=document.createElement('span');r.className='porte-rouleau';r.setAttribute('aria-hidden','true');c.appendChild(r);
@@ -954,10 +971,51 @@ A.forEach(function(a,i){a.addEventListener('click',function(){var c=document.get
  if(i===1&&!waouh){var b=document.getElementById('cv-haut');if(b)setTimeout(function(){var q=b.getBoundingClientRect();if(q.bottom<0||q.top>window.innerHeight||waouh)return;waouh=true;
   if(getComputedStyle(b).position==='static')b.style.position='relative';b.style.overflow='hidden';
   var s=document.createElement('span');s.className='porte-reflet';s.setAttribute('aria-hidden','true');b.appendChild(s);
-  b.animate([{transform:'scale(1)',boxShadow:'0 0 0 0 rgba(242,198,109,0)'},{transform:'scale(1.08)',boxShadow:'0 0 0 6px rgba(242,198,109,.55),0 0 28px 10px rgba(242,198,109,.55)',offset:.35},{transform:'scale(1)',boxShadow:'0 0 0 0 rgba(242,198,109,0)'}],{duration:1300,easing:'ease-out'});
-  s.animate([{left:'-60%'},{left:'120%'}],{duration:900,delay:150,easing:'ease-in-out',fill:'forwards'}).onfinish=function(){s.remove();b.style.overflow=''};},DUREE+300);}});});
+  b.animate([{transform:'scale(1)',boxShadow:'0 0 0 0 rgba(205,140,30,0)'},{transform:'scale(1.14)',boxShadow:'0 0 0 3px #fff,0 0 0 8px rgba(205,140,30,1),0 0 48px 20px rgba(242,180,60,.8)',offset:.3},{transform:'scale(1.02)',boxShadow:'0 0 0 2px #fff,0 0 0 5px rgba(205,140,30,.6),0 0 24px 8px rgba(242,180,60,.4)',offset:.65},{transform:'scale(1)',boxShadow:'0 0 0 0 rgba(205,140,30,0)'}],{duration:1900,easing:'ease-out'});
+  s.animate([{left:'-60%',offset:0},{left:'120%',offset:.45},{left:'-60%',offset:.46},{left:'120%',offset:1}],{duration:1700,delay:150,easing:'ease-in-out',fill:'forwards'}).onfinish=function(){s.remove();b.style.overflow=''};},DUREE+300);}});});
 // la photo est chargée dès l'arrivée, pour être prête au déroulé
 var ph=document.querySelector('.emploi-photo');if(ph)ph.loading='eager';})();
+</script>
+<style>
+/* La fiche « me recruter » reste une feuille claire dans tous les modes, comme le CV */
+:root #emploi{--bg:#f6f5f1;--surface:#ffffff;--fg:#1e2233;--muted:#5b6075;--ligne:#e3e1d9;--or-fonce:#a8741a;--urgence:#b42318;--urgence-bg:#fdecea;color-scheme:light;background:#fbfaf6;color:var(--fg);border-color:#e3e1d9}
+:root #emploi .emploi-cv{background:linear-gradient(135deg,#c7d1e2 0%,#e3dfe0 55%,#f4d9a8 100%);border-color:#d9cfb8}
+:root #emploi .emploi-cv-curieux{color:#2c3550}
+:root #emploi .emploi-cv-btn{background:#1f2438;color:#f2c66d}
+</style>
+<style>
+@keyframes guideHalo{0%,100%{box-shadow:0 0 0 0 rgba(205,140,30,0);transform:scale(1)}50%{box-shadow:0 0 0 3px #fff,0 0 0 6px rgba(205,140,30,.95),0 0 32px 12px rgba(205,140,30,.55);transform:scale(1.06)}}
+@keyframes guidePlus{0%,100%{transform:scale(1);box-shadow:0 0 0 0 rgba(242,198,109,0)}50%{transform:scale(1.45);box-shadow:0 0 0 4px rgba(242,198,109,.35),0 0 14px 4px rgba(242,198,109,.6)}}
+@keyframes guideTexte{0%,100%{transform:translateX(0)}50%{transform:translateX(4px)}}
+#emploi .guide-cv{animation:guideHalo 1.6s ease-in-out 1}
+#emploi summary.guide-plus::before{animation:guidePlus 1.2s ease-in-out 1}
+#emploi summary.guide-plus b,#emploi summary.guide-plus span{display:inline-block;animation:guideTexte 1.2s ease-in-out 1}
+@media (prefers-reduced-motion:reduce){#emploi .guide-cv,#emploi summary.guide-plus::before,#emploi summary.guide-plus b{animation:none}}
+</style>
+<script>
+// Fiche « me recruter » ouverte : les deux accès au CV (bouton du haut et encadré avec la photo) s'allument ensemble,
+// puis un « + » visible à l'écran grossit, puis de nouveau le CV, puis le « + » suivant… Rythme : CV, 2 s de pause, un « + », 4 s de pause, CV… ; boucle de 60 s maximum,
+// arrêtée dès que le visiteur touche un « + » ou un accès au CV, ou referme la fiche.
+(function(){var E=document.getElementById('emploi');if(!E)return;
+if((window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches))return;
+var CV=[document.getElementById('cv-haut'),document.getElementById('emploi-cv')].filter(Boolean);
+var P=[].slice.call(E.querySelectorAll('details > summary'));
+var actif=false,stop=false,minu=null,t0=0,k=0,MAX=60000;
+function visible(el){var r=el.getBoundingClientRect();return r.bottom>60&&r.top<window.innerHeight-20;}
+function fini(){stop=true;actif=false;clearTimeout(minu);CV.forEach(function(x){x.classList.remove('guide-cv')});P.forEach(function(x){x.classList.remove('guide-plus')});}
+function etapeCV(){if(stop||E.classList.contains('repliee')||Date.now()-t0>MAX){fini();return;}
+ P.forEach(function(x){x.classList.remove('guide-plus')});CV.forEach(function(x){x.classList.remove('guide-cv')});
+ var v=CV.filter(visible);v.forEach(function(x){x.classList.remove('guide-cv');void x.offsetWidth;x.classList.add('guide-cv')});
+ minu=setTimeout(etapePlus,v.length?3400:200);  /* effet CV 1,4 s + 2 s de pause */}
+function etapePlus(){if(stop||E.classList.contains('repliee')){fini();return;}
+ CV.forEach(function(x){x.classList.remove('guide-cv')});P.forEach(function(x){x.classList.remove('guide-plus')});
+ var cand=P.filter(function(s){return visible(s)&&!s.parentNode.open});
+ if(cand.length){var s=cand[k%cand.length];k++;s.classList.remove('guide-plus');void s.offsetWidth;s.classList.add('guide-plus');}
+ minu=setTimeout(etapeCV,cand.length?5200:200);  /* effet « + » 1,2 s + 4 s de pause */}
+CV.concat(P).forEach(function(x){['click','touchstart'].forEach(function(ev){x.addEventListener(ev,fini,{passive:true})})});
+document.querySelectorAll('.deux-portes li:nth-child(2) a').forEach(function(a){a.addEventListener('click',function(){
+ setTimeout(function(){if(!E.classList.contains('repliee')&&!actif&&!stop){actif=true;t0=Date.now();etapeCV();}},10000);});});
+document.addEventListener('visibilitychange',function(){if(document.hidden)fini();});})();
 </script>
 </body>
 </html>
