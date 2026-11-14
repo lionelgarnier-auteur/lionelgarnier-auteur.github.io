@@ -996,7 +996,7 @@ var ph=document.querySelector('.emploi-photo');if(ph)ph.loading='eager';})();
 </style>
 <script>
 // Fiche « me recruter » ouverte : les deux accès au CV (bouton du haut et encadré avec la photo) s'allument ensemble,
-// puis un « + » visible à l'écran grossit, puis de nouveau le CV, puis le « + » suivant… Rythme : CV, 2 s de pause, un « + », 4 s de pause, CV… ; boucle de 60 s maximum,
+// puis un « + » visible à l'écran grossit, puis de nouveau le CV, puis le « + » suivant… Rythme : CV et un « + » presque ensemble, puis 4 s de pause, CV… ; boucle de 60 s maximum,
 // arrêtée dès que le visiteur touche un « + » ou un accès au CV, ou referme la fiche.
 (function(){var E=document.getElementById('emploi');if(!E)return;
 if((window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches))return;
@@ -1008,7 +1008,7 @@ function fini(){stop=true;actif=false;clearTimeout(minu);CV.forEach(function(x){
 function etapeCV(){if(stop||E.classList.contains('repliee')||Date.now()-t0>MAX){fini();return;}
  P.forEach(function(x){x.classList.remove('guide-plus')});CV.forEach(function(x){x.classList.remove('guide-cv')});
  var v=CV.filter(visible);v.forEach(function(x){x.classList.remove('guide-cv');void x.offsetWidth;x.classList.add('guide-cv')});
- minu=setTimeout(etapePlus,v.length?3400:200);  /* effet CV 1,4 s + 2 s de pause */}
+ minu=setTimeout(etapePlus,v.length?1900:200);  /* effet CV 1,6 s + 0,3 s : le « + » suit presque aussitôt */}
 function etapePlus(){if(stop||E.classList.contains('repliee')){fini();return;}
  CV.forEach(function(x){x.classList.remove('guide-cv')});P.forEach(function(x){x.classList.remove('guide-plus')});
  var cand=P.filter(function(s){return visible(s)&&!s.parentNode.open});
