@@ -919,5 +919,40 @@ function boucle(i){if(stop||Date.now()-t0>MAX){fini();return;}etape(lent[i%2],fu
 var o=new IntersectionObserver(function(en){if(en[0].isIntersecting){o.disconnect();setTimeout(function(){t0=Date.now();etape(debut[0],function(){boucle(0);});},700);}},{threshold:.8});
 o.observe(A[2]);})();
 </script>
+<style>
+.porte-rouleau{position:absolute;left:-6px;right:-6px;height:14px;top:0;border-radius:7px;pointer-events:none;z-index:3;
+background:linear-gradient(180deg,#8a6420 0%,#f2c66d 35%,#ffe2a6 50%,#d9a64a 70%,#7a561a 100%);box-shadow:0 3px 8px rgba(0,0,0,.35)}
+.porte-nuit{position:absolute;inset:0;background:#151929;pointer-events:none;z-index:2}
+.porte-reflet{position:absolute;top:0;bottom:0;width:45%;left:-60%;pointer-events:none;background:linear-gradient(105deg,rgba(255,255,255,0) 0%,rgba(255,255,255,.85) 50%,rgba(255,255,255,0) 100%)}
+</style>
+<script>
+(function(){var rm=window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches;if(rm||!Element.prototype.animate)return;
+var DUREE=3000,ids=['livre-pros','emploi'],waouh=false;
+function clair(el){var c=getComputedStyle(el).backgroundColor.match(/\d+/g);if(!c)return false;return (0.299*c[0]+0.587*c[1]+0.114*c[2])>140;}
+var A=[].slice.call(document.querySelectorAll('.deux-portes a'));
+A.forEach(function(a,i){a.addEventListener('click',function(){var c=document.getElementById(ids[i]);if(!c||c.classList.contains('repliee'))return;
+ var sec=c.closest('.page-pros')||c.parentNode;
+ if(getComputedStyle(c).position==='static')c.style.position='relative';
+ if(getComputedStyle(sec).position==='static')sec.style.position='relative';
+ [].slice.call(document.querySelectorAll('.porte-rouleau,.porte-nuit')).forEach(function(x){x.remove()});
+ var ease='cubic-bezier(.3,.1,.3,1)';
+ // 1. passage en douceur du bleu nuit (haut de page) au fond clair, seulement si la page est en mode jour
+ if(clair(document.body)){var n=document.createElement('div');n.className='porte-nuit';n.setAttribute('aria-hidden','true');sec.appendChild(n);
+  n.animate([{opacity:1},{opacity:0}],{duration:DUREE,easing:'ease-in-out',fill:'forwards'}).onfinish=function(){n.remove()};}
+ // 2. déroulé de la partie visible à l'écran, avec la baguette dorée
+ var r=document.createElement('span');r.className='porte-rouleau';r.setAttribute('aria-hidden','true');c.appendChild(r);
+ var h=c.offsetHeight,v=Math.min(h,Math.max(200,window.innerHeight-80));
+ c.animate([{clipPath:'inset(0 -10px '+h+'px -10px)'},{clipPath:'inset(0 -10px '+(h-v)+'px -10px)'}],{duration:DUREE,easing:ease});
+ var an=r.animate([{transform:'translateY(-7px)'},{transform:'translateY('+(v-7)+'px)'}],{duration:DUREE,easing:ease,fill:'forwards'});
+ an.onfinish=function(){r.animate([{opacity:1},{opacity:0}],{duration:400,fill:'forwards'}).onfinish=function(){r.remove()}};
+ // 3. pour la partie « me recruter » : un effet « waouh » sur le bouton du CV, une seule fois, après l'éclaircissement
+ if(i===1&&!waouh){var b=document.getElementById('cv-haut');if(b)setTimeout(function(){var q=b.getBoundingClientRect();if(q.bottom<0||q.top>window.innerHeight||waouh)return;waouh=true;
+  if(getComputedStyle(b).position==='static')b.style.position='relative';b.style.overflow='hidden';
+  var s=document.createElement('span');s.className='porte-reflet';s.setAttribute('aria-hidden','true');b.appendChild(s);
+  b.animate([{transform:'scale(1)',boxShadow:'0 0 0 0 rgba(242,198,109,0)'},{transform:'scale(1.08)',boxShadow:'0 0 0 6px rgba(242,198,109,.55),0 0 28px 10px rgba(242,198,109,.55)',offset:.35},{transform:'scale(1)',boxShadow:'0 0 0 0 rgba(242,198,109,0)'}],{duration:1300,easing:'ease-out'});
+  s.animate([{left:'-60%'},{left:'120%'}],{duration:900,delay:150,easing:'ease-in-out',fill:'forwards'}).onfinish=function(){s.remove();b.style.overflow=''};},DUREE+300);}});});
+// la photo est chargée dès l'arrivée, pour être prête au déroulé
+var ph=document.querySelector('.emploi-photo');if(ph)ph.loading='eager';})();
+</script>
 </body>
 </html>
