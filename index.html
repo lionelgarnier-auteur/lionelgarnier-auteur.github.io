@@ -557,6 +557,10 @@ a.marque:focus-visible{outline:3px solid var(--or);outline-offset:4px;border-rad
 #intro.mv{background:#000}
 #intro .film{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;background:#000}
 #intro.mv .passer{z-index:2}
+#intro .boutons{position:absolute;right:16px;bottom:calc(16px + env(safe-area-inset-bottom,0px));display:flex;gap:10px;z-index:2;transition:opacity 1s ease}
+#intro .boutons .passer{position:static}
+#intro .plein{font:600 15px 'Inter Site',system-ui,sans-serif;color:#f2c66d;background:#1f2438b3;border:1.5px solid #f2c66d;border-radius:999px;min-height:44px;padding:0 18px;cursor:pointer}
+#intro.finale .boutons{opacity:0;pointer-events:none}
 #intro .tourner{display:none}
 #intro .passer .court{display:none}
 @media (orientation:portrait){#intro.mv .tourner{position:absolute;left:0;right:0;top:0;height:calc((100vh - 56.25vw)/2);z-index:2;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;color:#f2c66d;font:500 16px/1.35 'Inter Site',system-ui,sans-serif;text-align:center;pointer-events:none}
@@ -568,7 +572,7 @@ a.marque:focus-visible{outline:3px solid var(--or);outline-offset:4px;border-rad
 @keyframes pointe{0%,45%{opacity:0}55%,82%{opacity:1}96%,100%{opacity:0}}
 #intro .passer{transition:opacity 1s ease}
 #intro.finale .passer{opacity:0;pointer-events:none}
-@media (orientation:landscape) and (max-height:520px){#intro .passer{min-height:36px;padding:0 14px;font-size:13px}#intro .passer .long{display:none}#intro .passer .court{display:inline}}
+@media (orientation:landscape) and (max-height:520px){#intro .passer,#intro .plein{min-height:36px;padding:0 14px;font-size:13px}#intro .passer .long{display:none}#intro .passer .court{display:inline}}
 @media (prefers-reduced-motion:reduce){#intro .tourner *{animation:none!important}}
 @media (prefers-reduced-motion:reduce){#intro{display:none!important}}
 @keyframes introSecu{to{visibility:hidden}}
@@ -1103,20 +1107,37 @@ window.INTRO_VIDEO='/teaser-accueil.mp4';
   var DEMO=window.INTRO_DEMO===true;
   function vue(){ try{return sessionStorage.getItem('introVue')==='1'}catch(e){return false} }
   function marque(){ try{sessionStorage.setItem('introVue','1')}catch(e){} }
-  var t=null, t2=null, v=null;
-  function fermer(lent){ if(!el.parentNode) return; if(v){ try{v.pause()}catch(e){} } if(lent===true) el.classList.add('lent'); else el.classList.remove('lent'); el.classList.add('fin'); clearTimeout(t); clearTimeout(t2); t2=setTimeout(function(){ if(!DEMO){el.remove()} else {el.style.display='none'} }, lent===true ? 2050 : 650); }
+  var t=null, t2=null, v=null, calme=0;
+  var tactile=window.matchMedia&&window.matchMedia('(pointer: coarse)').matches;
+  function enPlein(){ return !!(document.fullscreenElement||document.webkitFullscreenElement); }
+  function possible(){ return !!(el.requestFullscreen||el.webkitRequestFullscreen||(v&&v.webkitEnterFullscreen)); }
+  function plein(){ calme=Date.now(); var f=el.requestFullscreen||el.webkitRequestFullscreen;
+    if(f){ try{ var p=f.call(el); var verrou=function(){ if(tactile){ try{ screen.orientation.lock('landscape').catch(function(){}) }catch(e){} } };
+      if(p&&p.then) p.then(verrou).catch(function(){}); else verrou(); }catch(e){} }
+    else if(v&&v.webkitEnterFullscreen){ try{ v.webkitEnterFullscreen() }catch(e){} } }
+  function sortir(){ try{ if(screen.orientation&&screen.orientation.unlock) screen.orientation.unlock() }catch(e){}
+    try{ if(document.exitFullscreen&&document.fullscreenElement) document.exitFullscreen(); else if(document.webkitExitFullscreen&&document.webkitFullscreenElement) document.webkitExitFullscreen(); }catch(e){} }
+  function fermer(lent){ if(!el.parentNode) return; sortir(); if(v){ try{v.pause()}catch(e){} } if(lent===true) el.classList.add('lent'); else el.classList.remove('lent'); el.classList.add('fin'); clearTimeout(t); clearTimeout(t2); t2=setTimeout(function(){ if(!DEMO){el.remove()} else {el.style.display='none'} }, lent===true ? 2050 : 650); }
   function jouer(){
     el.className='mv'; el.style.display='flex';
-    el.innerHTML='<video class="film" muted playsinline autoplay preload="auto" disablepictureinpicture></video><div class="tourner"><svg viewBox="0 0 64 64" width="60" height="60" aria-hidden="true"><g class="tel"><rect x="23" y="13" width="18" height="38" rx="3.5" fill="none" stroke="currentColor" stroke-width="2.6"/><circle cx="32" cy="46" r="1.6" fill="currentColor"/></g><g class="fl"><path d="M51.7 18.2 A24 24 0 0 0 12.3 18.2" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/><polygon class="pointe" points="8.9,23.1 8.9,15.8 15.8,20.6" fill="currentColor"/></g></svg><span>Tournez votre téléphone<br>pour mieux voir</span></div><button class="passer" type="button" tabindex="-1"><span class="long">Passer l’introduction</span><span class="court">Passer ›</span></button>';
+    el.innerHTML='<video class="film" muted playsinline autoplay preload="auto" disablepictureinpicture></video><div class="tourner"><svg viewBox="0 0 64 64" width="60" height="60" aria-hidden="true"><g class="tel"><rect x="23" y="13" width="18" height="38" rx="3.5" fill="none" stroke="currentColor" stroke-width="2.6"/><circle cx="32" cy="46" r="1.6" fill="currentColor"/></g><g class="fl"><path d="M51.7 18.2 A24 24 0 0 0 12.3 18.2" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/><polygon class="pointe" points="8.9,23.1 8.9,15.8 15.8,20.6" fill="currentColor"/></g></svg><span>Touchez « Plein écran »,<br>puis tournez votre téléphone</span></div><div class="boutons"><button class="plein" type="button" tabindex="-1" hidden>⛶&nbsp;Plein écran</button><button class="passer" type="button" tabindex="-1"><span class="long">Passer l’introduction</span><span class="court">Passer ›</span></button></div>';
     v=el.querySelector('video'); v.muted=true; v.defaultMuted=true; v.src=window.INTRO_VIDEO;
     v.addEventListener('ended',function(){ fermer(true); });
     v.addEventListener('timeupdate',function(){ if(v.duration && v.duration-v.currentTime<6) el.classList.add('finale'); });
     v.addEventListener('error',function(){ fermer(false); });
+    v.addEventListener('webkitendfullscreen',function(){ if(!v.ended && el.parentNode){ var q=v.play(); if(q&&q.catch) q.catch(function(){}); } });
+    el.querySelector('.plein').hidden=!possible();
     t=setTimeout(function(){ if(!v || v.currentTime<0.1) fermer(false); },5000);
     var p=v.play(); if(p&&p.catch) p.catch(function(){ fermer(false); });
   }
-  el.addEventListener('click',function(){fermer(false)});
-  ['wheel','touchmove','scroll'].forEach(function(ev){ window.addEventListener(ev,function(){ if(el.parentNode && !el.classList.contains('fin')) fermer(false); },{passive:true}); });
+  el.addEventListener('click',function(e){ var b=e.target.closest&&e.target.closest('button');
+    if(b&&b.classList.contains('plein')){ plein(); return; }
+    if(b&&b.classList.contains('passer')){ fermer(false); return; }
+    if(tactile){ if(!enPlein()) plein(); return; }
+    fermer(false); });
+  window.addEventListener('resize',function(){ calme=Date.now(); });
+  ['fullscreenchange','webkitfullscreenchange'].forEach(function(ev){ document.addEventListener(ev,function(){ calme=Date.now(); var bp=el.querySelector('.plein'); if(bp) bp.hidden=enPlein()||!possible(); }); });
+  ['wheel','touchmove','scroll'].forEach(function(ev){ window.addEventListener(ev,function(){ if(Date.now()-calme<1500) return; if(el.parentNode && !el.classList.contains('fin')) fermer(false); },{passive:true}); });
   document.addEventListener('keydown',function(e){ if(el.style.display!=='none') fermer(false); },{once:!DEMO});
   window.introJouer=function(){ clearTimeout(t); clearTimeout(t2); el.classList.remove('fin','lent'); jouer(); };
   if(reduit || eco || (!DEMO && vue())){ el.remove(); return; }
