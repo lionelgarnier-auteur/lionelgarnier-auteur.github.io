@@ -930,7 +930,7 @@ var inp=document.createElement('input');inp.type='file';inp.hidden=true;inp.acce
 acc.appendChild(br);acc.appendChild(inp);acc.appendChild(et);
 /* Carnet 50 : le bouton « Importer mes notes » devient un bouton caché sur la pastille jaune « Édition couleur » de la couverture.
    AIDE_NOTES=true : on l'explique encore à l'écran (version d'essai). Pour la version finale, mettre false : plus aucun texte ne signale que des notes existent. */
-var AIDE_NOTES=true;
+var AIDE_NOTES=false;
 br.hidden=true;
 (function(){var cv=document.getElementById('couv');if(!cv)return;var w=document.createElement('div');w.id='couvw';cv.parentNode.insertBefore(w,cv);w.appendChild(cv);
  var sc=document.createElement('button');sc.id='secret';sc.type='button';sc.setAttribute('aria-label',AIDE_NOTES?'Charger mes notes':'Édition couleur');w.appendChild(sc);
