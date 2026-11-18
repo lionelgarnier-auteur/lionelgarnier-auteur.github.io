@@ -1,0 +1,560 @@
+<!doctype html>
+<html lang="fr"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+<title>Espace relecteurs — Je l'aime, mais je n'en peux plus</title>
+<meta name="robots" content="noindex,nofollow">
+<style>
+html,body{margin:0;height:100%;background:#151929;color:#eceaf2;font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;overflow:hidden;-webkit-tap-highlight-color:transparent;user-select:none;-webkit-user-select:none}
+#accueil{position:fixed;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:20px;padding:20px;text-align:center;background:radial-gradient(120% 90% at 50% 10%,#3a4170 0%,#1f2438 55%,#151929 100%)}
+#accueil canvas{max-height:58vh;max-width:80vw;border-radius:4px 8px 8px 4px;box-shadow:0 12px 40px rgba(0,0,0,.55)}
+#accueil h1{margin:0;font-size:1.25rem;font-weight:600;color:#f2c66d}
+#accueil p{margin:0;font-size:.9rem;color:#b9bdd3}
+.bouton{border:0;border-radius:999px;padding:14px 34px;font:inherit;font-size:1.1rem;font-weight:700;background:#f2c66d;color:#1f2438;cursor:pointer;box-shadow:0 6px 18px rgba(0,0,0,.35)}
+ #patience{position:fixed;left:50%;top:50%;transform:translate(-50%,-50%);z-index:30;display:flex;align-items:center;gap:10px;padding:12px 22px;border-radius:999px;background:rgba(21,25,41,.9);border:2px solid #f2c66d;color:#f2c66d;font-weight:700;font-size:1.05rem;box-shadow:0 6px 24px rgba(0,0,0,.5);pointer-events:none;animation:clignote 1.1s ease-in-out infinite}
+#patience[hidden]{display:none}
+#patience .sablier{display:inline-block;animation:tourneS 1.1s linear infinite}
+@keyframes clignote{0%,100%{opacity:1}50%{opacity:.45}}
+@keyframes tourneS{to{transform:rotate(360deg)}}
+.bouton:disabled{opacity:.6;cursor:wait}
+.bouton.second{background:transparent;color:#f2c66d;border:1px solid #f2c66d;padding:10px 24px;font-size:.95rem}
+#lecture{position:fixed;inset:0;display:none;align-items:center;justify-content:center;background:#151929}
+.scene{display:flex;justify-content:center;perspective:2600px;transform-origin:0 0;will-change:auto;position:relative}
+/* V9 : pendant le zoom, le livre 3D est remplacé par une vue plate des pages visibles (évite les carrés noirs) */
+#plat{position:absolute;left:0;top:0;width:100%;height:100%;pointer-events:none}
+#plat .face{position:absolute;inset:auto;transform:none;pointer-events:auto}
+.scene.a-plat .livre3d,.scene.a-plat .livre1p{visibility:hidden}
+.scene.a-plat{perspective:none}
+/* V9 : boutons Retour (en haut à gauche) et Sommaire (à gauche du ✕) */
+.btn-haut{position:fixed;top:max(10px,env(safe-area-inset-top,0px));z-index:22;height:46px;border-radius:999px;border:2px solid #1f2438;background:#f2c66d;color:#1f2438;font:inherit;font-weight:800;display:flex;align-items:center;gap:6px;padding:0 14px;cursor:pointer;box-shadow:0 2px 10px rgba(0,0,0,.5)}
+#retour{left:max(10px,env(safe-area-inset-left,0px));font-size:1rem}
+#retour .fl{font-size:1.35rem;line-height:1}
+#sommaire{left:50%;transform:translateX(-50%);background:rgba(21,25,41,.75);color:#f2c66d;border-color:#f2c66d;font-size:.95rem;font-weight:700}
+#sommaire .ic{font-size:1.15rem;line-height:1}
+.btn-haut[hidden]{display:none}
+.scene.zoom-anim{transition:transform .25s ease}
+#lecture{touch-action:none}
+/* livre deux pages (paysage) : même mécanique que le « Feuilleter » du site */
+.livre3d{touch-action:none;position:relative;transition:transform .8s cubic-bezier(.4,.1,.2,1)}
+.livre3d.ferme{transform:translateX(-25%)}
+.livre3d.fin{transform:translateX(25%)}
+.livre3d::before{content:"";position:absolute;inset:0;border-radius:4px;box-shadow:0 30px 60px -18px rgba(0,0,0,.75);transition:left .8s,right .8s}
+.livre3d.ferme::before{left:50%}.livre3d.fin::before{right:50%}
+.feuillet{position:absolute;top:0;left:50%;width:50%;height:100%;transform-origin:left center;transform-style:preserve-3d;transition:transform .8s cubic-bezier(.4,.1,.2,1)}
+.feuillet.tourne{transform:rotateY(-180deg)}
+.face{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;background:#fbfaf6;overflow:hidden}
+.face canvas.pg{display:block;width:100%;height:100%}
+.face.verso{transform:rotateY(180deg)}
+.feuillet .face::before{content:"";position:absolute;inset:0;pointer-events:none;z-index:1;opacity:var(--ombre,0);transition:opacity .3s}
+.feuillet .recto::before{background:linear-gradient(90deg,rgba(0,0,0,.45),rgba(0,0,0,.08) 70%,rgba(255,255,255,.12))}
+.feuillet .verso::before{background:linear-gradient(270deg,rgba(0,0,0,.45),rgba(0,0,0,.08) 70%,rgba(255,255,255,.12))}
+.recto{border-radius:0 4px 4px 0}.verso{border-radius:4px 0 0 4px}
+.recto::after,.verso::after{content:"";position:absolute;top:0;bottom:0;width:7%;pointer-events:none}
+.recto::after{left:0;background:linear-gradient(90deg,rgba(0,0,0,.18),transparent)}
+.verso::after{right:0;background:linear-gradient(270deg,rgba(0,0,0,.18),transparent)}
+.face.couv{border-radius:2px 6px 6px 2px}.face.couv::after,.face.dos::after{display:none}
+.face.dos{border-radius:6px 2px 2px 6px}
+.face.blanc{background:#f3f1ea}
+.lien{position:absolute;cursor:pointer;border-radius:3px;backface-visibility:hidden;-webkit-backface-visibility:hidden}
+.lien.ajoute{background:rgba(60,120,225,.26);mix-blend-mode:multiply;box-shadow:inset 0 -1px 0 rgba(45,85,160,.9);border-radius:1px}   /* V28 : trait affiné */   /* V24 : liens ajoutés dessinés en bleu comme ceux du livre */
+.lien.note{background:rgba(60,120,225,.28);mix-blend-mode:multiply;box-shadow:inset 0 -1px 0 rgba(45,85,160,.9);border-radius:1px}   /* V29 : appels de note en bleu, avec le trait fin */
+.lien.note.serree::before{display:none}   /* V26 : note trop proche d'un autre lien : pas de zone agrandie */
+.lien.note::before{content:"";position:absolute;left:-100%;right:-100%;top:-90%;bottom:-90%}   /* zone de toucher 3 fois plus grande, invisible */
+.tel{position:absolute;cursor:pointer;border-radius:3px;background:rgba(235,95,80,.24);mix-blend-mode:multiply;box-shadow:inset 0 -1px 0 rgba(200,60,50,.9),inset 0 1px 0 rgba(200,60,50,.9);backface-visibility:hidden;-webkit-backface-visibility:hidden}   /* V43 : trait fin dessus et dessous ; V33 : numéros d'urgence et d'écoute : léger fond corail + trait fin, comme les liens bleus (plus de cadre) */
+.tel.touche{background:rgba(232,100,85,.35)}
+#appel{position:fixed;inset:0;z-index:40;display:flex;align-items:center;justify-content:center;background:rgba(10,12,22,.55);padding:16px}
+#appel[hidden]{display:none}
+#appel .carte{background:#fbfaf6;color:#1f2438;border-radius:18px;padding:22px 22px 18px;max-width:340px;width:100%;box-shadow:0 18px 50px rgba(0,0,0,.55);text-align:center;border-top:6px solid #d6483c}
+#appel .ico{font-size:2.4rem;line-height:1}
+#appel .num{font-size:1.9rem;font-weight:800;letter-spacing:.04em;margin:8px 0 2px;font-variant-numeric:tabular-nums}
+#appel .lib{font-size:1rem;color:#4a4f66;margin-bottom:16px}
+#appel .actions{display:flex;gap:10px;justify-content:center}
+#appel .actions a,#appel .actions button{flex:1;border-radius:999px;padding:13px 10px;font:inherit;font-size:1.05rem;font-weight:700;text-decoration:none;cursor:pointer}
+#appel .ok{background:#d6483c;color:#fff;border:0}
+#appel .non{background:transparent;color:#1f2438;border:1.5px solid #9a9db0}
+#appel .consigne{font-size:1.05rem;font-weight:600;color:#1f2438;margin:-6px 0 16px}
+#appel .essai{display:block;margin-top:12px;font-size:.82rem;color:#6b7086;text-decoration:underline}
+#appel .essai[hidden],#appel .consigne[hidden],#appel .note[hidden]{display:none}
+#appel .note{font-size:.78rem;color:#6b7086;margin-top:12px}
+.eclat{position:absolute;left:7%;width:86%;border-radius:8px;pointer-events:none;z-index:3;background:rgba(242,198,109,.22);mix-blend-mode:multiply;animation:eclat 2.8s ease-in-out forwards}   /* V35 : la référence brille à l'arrivée */
+.eclat::after{content:"";position:absolute;inset:-3px;border-radius:10px;box-shadow:0 0 0 2px rgba(220,160,50,.9),0 0 18px 6px rgba(242,198,109,.75);opacity:0;animation:eclatHalo 2.8s ease-in-out forwards}
+@keyframes eclat{0%{opacity:0}12%{opacity:1}80%{opacity:1}100%{opacity:0}}
+@keyframes eclatHalo{0%{opacity:0}14%{opacity:1}30%{opacity:.25}46%{opacity:1}62%{opacity:.25}78%{opacity:1}100%{opacity:0}}
+.lien:active,.lien.touche{background:rgba(242,198,109,.35);box-shadow:0 0 0 2px rgba(242,198,109,.8)}
+/* une page (portrait) */
+.livre1p{display:none;position:relative;touch-action:none}
+.livre1p .face{position:absolute;inset:0;box-shadow:0 24px 48px -18px rgba(0,0,0,.75);border-radius:3px 6px 6px 3px;transition:opacity .35s ease,transform .35s ease}
+.livre1p.instant .face{transition:none!important}
+.livre1p .face{transition:none!important}   /* V41 : en vertical, changement de page instantané (l'animation provoquait des carrés noirs sur tablette) */   /* V15 : en vertical, pas de fondu quand on saute à une page (barre, renvoi, sommaire) */
+.livre1p .face::after{display:none}
+.livre1p .face.cache{opacity:0;pointer-events:none}
+.livre1p .face.de-droite{transform:translateX(30px)}.livre1p .face.de-gauche{transform:translateX(-30px)}
+/* flèches sur les bords */
+.fleche{position:fixed;top:50%;transform:translateY(-50%);width:clamp(32px,7vmin,54px);height:clamp(32px,7vmin,54px);border-radius:50%;border:1.5px solid rgba(242,198,109,.55);background:rgba(21,25,41,.55);color:#f2c66d;font-size:1.6rem;line-height:1;display:grid;place-items:center;cursor:pointer;z-index:15;transition:opacity .3s}
+#fprec{left:max(4px,env(safe-area-inset-left,0px))}#fsuiv{right:max(4px,env(safe-area-inset-right,0px))}
+.fleche{font-size:clamp(1.05rem,3.6vmin,1.6rem)}   /* V44 : flèches proportionnelles à l'écran (plus petites sur téléphone) */
+.fleche:disabled{opacity:.15}
+@keyframes appel{0%,100%{box-shadow:0 0 0 0 rgba(242,198,109,0)}50%{box-shadow:0 0 0 6px rgba(242,198,109,.35),0 0 20px 6px rgba(242,198,109,.5)}}
+.fleche.appel{animation:appel 1.2s ease-in-out 3}
+/* quitter */
+#quitter{position:fixed;top:max(10px,env(safe-area-inset-top,0px));right:max(10px,env(safe-area-inset-right,0px));z-index:22;width:46px;height:46px;border-radius:50%;border:2px solid #1f2438;background:#f2c66d;color:#1f2438;font:inherit;font-size:1.35rem;font-weight:800;line-height:1;display:grid;place-items:center;cursor:pointer;box-shadow:0 2px 10px rgba(0,0,0,.5)}
+#quitter.discret{opacity:1}
+/* barre du bas */
+#barre{position:fixed;left:0;right:0;bottom:0;display:flex;align-items:center;gap:14px;padding:10px 18px calc(10px + env(safe-area-inset-bottom,0px));background:rgba(21,25,41,.94);transition:transform .3s;z-index:20}
+#barre.cachee{transform:translateY(110%)}
+#barre{right:auto;width:66%;box-sizing:border-box;border-radius:0 16px 0 0}   /* V23 : la barre laisse libre le coin en bas à droite (le petit bonhomme) */
+/* V11 : languette toujours visible qui montre la page et ouvre la barre de défilement */
+#languette{position:fixed;left:50%;bottom:calc(6px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);z-index:19;border:1px solid rgba(242,198,109,.6);border-radius:999px;background:rgba(21,25,41,.82);color:#f2c66d;font:inherit;font-size:.85rem;font-weight:600;font-variant-numeric:tabular-nums;padding:5px 14px;cursor:pointer;transition:opacity .3s;white-space:nowrap}
+#languette .fl{margin-left:6px;font-size:.8rem}
+#languette.cachee{opacity:0;pointer-events:none}
+#barre input{flex:1;accent-color:#f2c66d}
+#barre span{min-width:8em;text-align:center;font-variant-numeric:tabular-nums;font-size:.9rem;color:#d8dbe8}
+#barre button{background:none;border:1px solid #4a5070;color:#eceaf2;border-radius:8px;padding:6px 12px;font:inherit;font-size:.85rem;cursor:pointer}
+*{-webkit-touch-callout:none}
+#accueil,#lecture{display:none}
+#accueil.ouvert{display:flex}
+#connexion{position:fixed;inset:0;z-index:5000;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;padding:24px;text-align:center;background:radial-gradient(120% 90% at 50% 10%,#3a4170 0%,#1f2438 55%,#151929 100%)}
+#connexion.ferme{display:none}
+#connexion .cadenas{font-size:2.2rem;line-height:1}
+#connexion h1{margin:0;font-size:1.35rem;font-weight:700;color:#f2c66d}
+#connexion .sous{margin:0 0 6px;font-size:.95rem;color:#d8dbe8;max-width:30em}
+#connexion form{display:flex;flex-direction:column;gap:10px;align-items:stretch;width:min(320px,86vw)}
+#connexion label{font-size:.9rem;text-align:left;color:#d8dbe8}
+#connexion input[type=text],#connexion input[type=password]{font:inherit;font-size:1.1rem;padding:10px 14px;border-radius:10px;border:1px solid #4a5070;background:#fff;color:#151929;user-select:text;-webkit-user-select:text}
+#connexion .voir{display:flex;gap:8px;align-items:center;font-size:.85rem}
+#connexion button{font:inherit;font-size:1.05rem;font-weight:700;padding:11px 26px;border-radius:999px;border:0;background:#f2c66d;color:#151929;cursor:pointer;margin-top:4px}
+#connexion button:disabled{opacity:.6;cursor:wait}
+#cmsg{margin:4px 0 0;min-height:1.4em;font-size:.95rem;color:#ffb4a8}
+#cmsg.info{color:#f2c66d;font-weight:600}
+#exemplaire{font-size:.85rem;color:#f2c66d}
+#retour-site{color:#b9bdd3;font-size:.85rem}
+@media print{html,body{display:none!important}}
+</style></head><body>
+<div id="connexion">
+  <div class="cadenas" aria-hidden="true">🔒</div>
+  <h1>Je l'aime, mais je n'en peux plus</h1>
+  <p class="sous">Espace réservé aux relecteurs du livre. Entrez l'identifiant et le mot de passe que Lionel vous a transmis.</p>
+  <form id="cform" autocomplete="off">
+    <label for="cid">Identifiant</label>
+    <input id="cid" type="text" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false">
+    <label for="cmdp">Mot de passe</label>
+    <input id="cmdp" type="password" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false">
+    <label class="voir"><input type="checkbox" id="cvoir"> Afficher le mot de passe</label>
+    <button id="cok" type="submit">Ouvrir le livre</button>
+  </form>
+  <p id="cmsg" role="alert"></p>
+  <a id="retour-site" href="/">Retour au site</a>
+</div>
+<div id="accueil">
+  <canvas id="couv" width="1" height="1" aria-label="Couverture du livre"></canvas>
+  <h1>Je l'aime, mais je n'en peux plus</h1>
+  <p id="exemplaire"></p><p id="vinfo"></p>
+  <button class="bouton" id="lire" disabled>Chargement du livre…</button>
+  <button class="bouton second" id="reprendre" hidden>Reprendre à la page <b id="pagerep"></b></button>
+</div>
+<div id="lecture">
+  <div class="scene" id="scene"><div class="livre3d ferme" id="livre3d"></div><div class="livre1p" id="livre1p"></div></div>
+  <button class="fleche" id="fprec" aria-label="Page précédente">‹</button>
+  <button class="fleche" id="fsuiv" aria-label="Page suivante">›</button>
+  <div id="patience" hidden role="status"><span class="sablier" aria-hidden="true">⏳</span>Patientez…</div>
+  <div id="appel" hidden role="dialog" aria-modal="true" aria-labelledby="appel-num"><div class="carte"><div class="ico" id="appel-ico" aria-hidden="true">📞</div><div class="num" id="appel-num"></div><div class="lib" id="appel-lib"></div>
+  <div class="consigne" id="appel-txt" hidden></div>
+  <div class="actions"><button class="non" id="appel-non">Annuler</button><a class="ok" id="appel-ok" href="#">Appeler</a></div>
+  <a class="essai" id="appel-essai" href="#" hidden>Essayer d'appeler depuis cet appareil</a>
+  <div class="note" id="appel-note">Sur une tablette sans téléphone, composez ce numéro depuis votre portable.</div></div></div>
+  <button id="quitter" aria-label="Quitter la lecture" title="Quitter">✕</button>
+  <button class="btn-haut" id="retour" hidden aria-label="Revenir à la page précédente"><span class="fl" aria-hidden="true">↩</span><span id="retour-p"></span></button>
+  <button class="btn-haut" id="sommaire" hidden aria-label="Aller au sommaire"><span class="ic" aria-hidden="true">☰</span>Sommaire</button>
+  <button id="languette" aria-label="Ouvrir la barre de défilement des pages"><span id="lang-p"></span><span class="fl" aria-hidden="true">▲</span></button>
+  <div id="barre" class="cachee"><input type="range" id="curseur" min="0" value="0" aria-label="Aller à la page"><span id="num"></span></div>
+</div>
+<script>
+function demarrerLivre(CFG,PG){
+var P={length:CFG.n};           // P[0] = couverture, P[1..] = pages du livre, éventuellement P[dernier] = 4e de couverture
+var DOS=CFG.dos;           // true si la dernière image est la 4e de couverture
+var RATIO=CFG.ratio;
+var LIENS=CFG.liens||{};
+var TELS=CFG.tels||{};   // V32 : numéros d'urgence et d'écoute {page: [[gauche%, haut%, largeur%, hauteur%, numéro, libellé]]}   // zones cliquables : {image: [[gauche%, haut%, largeur%, hauteur%, image cible], …]}       // largeur / hauteur d'une page
+var NB=DOS?P.length-2:P.length-1;   // nombre de pages intérieures
+var NUMS=CFG.nums||null;   // V45 : vrais numéros des pages (extraits non continus) ; null = numéros = position
+function N(i){return NUMS?NUMS[i]:i;}var NBL=NUMS?'':' / '+NB;
+var cle='liseuse-en-ligne-page-'+CFG.dossier;
+// feuillets : 0 = couverture / verso blanc ; i ≥ 1 = page 2i-1 / page 2i ; dernier = blanc / 4e de couverture
+var F=[[0,'B']];for(var i=1;2*i-1<=NB;i++)F.push([2*i-1,2*i<=NB?2*i:'B']);if(DOS)F.push(['B',P.length-1]);
+var livre=document.getElementById('livre3d'),un=document.getElementById('livre1p');
+function face(cls,n){var d=document.createElement('div');d.className='face '+cls+(n==='B'?' blanc':'');if(n!=='B'){d.dataset.n=n;var im=document.createElement('canvas');im.className='pg';im.width=1;im.height=1;d.appendChild(im);
+  (LIENS[n]||[]).forEach(function(z){var a=document.createElement('span');if(z[6])a.dataset.eclat=z[6].join(',');a.className='lien'+(z[5]===1?' ajoute':(z[5]===2?' note':(z[5]===3?' note serree':'')));a.dataset.cible=z[4];a.style.left=z[0]+'%';a.style.top=z[1]+'%';a.style.width=z[2]+'%';a.style.height=z[3]+'%';d.appendChild(a);});
+ (TELS[n]||[]).forEach(function(z){var a=document.createElement('span');a.className='tel';a.dataset.num=z[4];a.dataset.lib=z[5];a.dataset.aff=z[6]||z[4];a.style.left=z[0]+'%';a.style.top=z[1]+'%';a.style.width=z[2]+'%';a.style.height=z[3]+'%';d.appendChild(a);});}return d;}
+var f=F.map(function(x,i){var e=document.createElement('div');e.className='feuillet';
+ e.appendChild(face('recto'+(i===0?' couv':''),x[0]));e.appendChild(face('verso'+(DOS&&i===F.length-1?' dos':''),x[1]));livre.appendChild(e);return e;});
+var m=[];for(var j0=0;j0<P.length;j0++){var d=face(j0===0?'couv':'',j0);d.classList.add('cache');un.appendChild(d);m.push(d);}
+var k=0,j=0,etroit=false;
+// on ne charge que les images proches de la page lue (le livre entier serait trop lourd en mémoire)
+function charge(){var lo,hi;if(etroit){lo=j-3;hi=j+3;}else{lo=2*k-6;hi=2*k+6;}if(riffle){lo-=4;hi+=4;}
+ document.querySelectorAll('.face[data-n]').forEach(function(d){var n=+d.dataset.n,im=d.querySelector('canvas.pg');if(!im)return;var garder=n>=lo&&n<=hi;
+  if(garder)PG.peindre(im,n);else PG.vider(im);});PG.anticipe(lo,hi);}
+var ZC=0;   // V13 : la dernière page mise en mouvement passe devant toutes les autres
+function zs(){ZC=0;f.forEach(function(e,i){e.style.zIndex=i<k?i+1:f.length-i+10;});fenetre();}
+// seuls les feuillets proches de la page lue existent à l'écran : trop de feuillets en 3D saturent la tablette (carrés noirs, images superposées)
+function fenetre(){var lo=k-2,hi=k+1;if(riffle){lo=k-3;hi=k+2;}f.forEach(function(e,i){var v=i>=lo&&i<=hi;var dsp=v?'':'none';if(e.style.display!==dsp)e.style.display=dsp;});}
+var tRepos=null;
+function reveil(){clearTimeout(tRepos);f.forEach(function(e){e.style.visibility='';e.querySelectorAll('.face').forEach(function(x){x.style.visibility=''});});}
+function repos(){if(etroit)return;f.forEach(function(e,i){var vu=i===k-1||i===k;e.style.visibility=vu?'':'hidden';var r=e.children[0],v=e.children[1];r.style.visibility=(i===k-1)?'hidden':'';v.style.visibility=(i===k)?'hidden':'';});}
+function bientotRepos(){clearTimeout(tRepos);if(riffle)return;tRepos=setTimeout(repos,900);}   /* V22 : pendant un feuilletage, on ne masque pas les pages du dessous (sinon bande noire sous la dernière feuille qui se pose) */
+function taille(){etroit=innerHeight>innerWidth;var mg=12;
+ if(!etroit){var bord=6,h=innerHeight-2*bord,w=h*RATIO*2;if(w>innerWidth-2*bord){w=innerWidth-2*bord;h=w/(2*RATIO);}   /* V14 : livre le plus grand possible ; flèches, boutons et languette se posent dans les marges des pages */
+ livre.style.width=w+'px';livre.style.height=h+'px';livre.style.display='';un.style.display='none';}
+ else{var haut=66,h1=innerHeight-mg-haut-34,w1=h1*RATIO;if(w1>innerWidth-2*mg){w1=innerWidth-2*mg;h1=w1/RATIO;}un.style.width=w1+'px';un.style.height=h1+'px';un.style.marginTop=(haut-mg)+'px';un.style.marginBottom='34px';un.style.display='block';livre.style.display='none';}}
+function pageLue(){return etroit?j:(k===0?0:(k>=f.length?P.length-1:2*k-1));}
+function libelle(){if(etroit){return j===0?'Couverture':(DOS&&j===P.length-1?'4e de couverture':'Page '+N(j)+NBL);}
+ if(k===0)return 'Couverture';if(k>=f.length)return '4e de couverture';var a=2*k-2,b=2*k-1;if(k===1)return 'Page '+N(1)+NBL;if(NUMS&&a>NB)return 'Fin de l’extrait';if(b>NB)return 'Page '+N(a)+NBL;return 'Pages '+N(a)+'-'+N(b)+NBL;}
+var prec=document.getElementById('fprec'),suiv=document.getElementById('fsuiv'),cur=document.getElementById('curseur'),num=document.getElementById('num');
+// V9 : bouton Retour (pile des pages de départ des renvois) et bouton Sommaire
+var PILE=[],SOMM=4,bRet=document.getElementById('retour'),bSom=document.getElementById('sommaire');
+function memePlanche(a,b){if(etroit)return a===b;var s=function(p){return p<=0?0:Math.floor(p/2);};return s(a)===s(b);}
+function suivreRenvoi(cible,dep){if(riffle)return;if(!memePlanche(cible,dep)){PILE.push(dep);if(PILE.length>20)PILE.shift();}feuilleterJusqua(cible);majBoutons();}
+function etiq(p){if(p===0)return 'couverture';if(etroit||p<2)return 'p. '+N(p);var g=2*Math.floor(p/2);return g+1<=NB?'p. '+N(g)+'-'+N(g+1):'p. '+N(g);}
+function majBoutons(){var pl=pageLue();while(!riffle&&PILE.length&&memePlanche(PILE[PILE.length-1],pl))PILE.pop();   /* revenu à la main sur la page de départ : on retire ce retour */
+ bRet.hidden=!PILE.length;if(PILE.length){var p=PILE[PILE.length-1];document.getElementById('retour-p').textContent=etiq(p);}
+ bSom.hidden=pl===0||memePlanche(pl,SOMM)||(etroit&&(pl===SOMM||pl===SOMM+1));}
+bRet.addEventListener('click',function(e){e.stopPropagation();arreterFeuilletage();if(!PILE.length)return;var p=PILE.pop();var z=zoome();if(z)remiseZ(true);setTimeout(function(){feuilleterJusqua(p);},z?300:0);bRet.hidden=true;setTimeout(function(){bRet.hidden=!PILE.length;if(PILE.length){var q=PILE[PILE.length-1];document.getElementById('retour-p').textContent=etiq(q);}},z?320:20);});
+bSom.addEventListener('click',function(e){e.stopPropagation();arreterFeuilletage();if(zoome())remiseZ(true);PILE=[];   /* V12 : le Sommaire repart à zéro, sans proposer de retour */
+ setTimeout(function(){feuilleterJusqua(SOMM);majBoutons();},20);majBoutons();});
+function maj(){var max=etroit?m.length-1:f.length;cur.max=max;cur.value=etroit?j:k;num.textContent=libelle();document.getElementById('lang-p').textContent=libelle();
+ prec.disabled=(etroit?j:k)===0;suiv.disabled=(etroit?j:k)===max;livre.classList.toggle('ferme',k===0);livre.classList.toggle('fin',k===f.length);
+ charge();majBoutons();clearTimeout(tPrep);tPrep=setTimeout(preparePlat,1100);if(!etroit)setTimeout(fenetre,900);try{localStorage.setItem(cle,String(pageLue()));}catch(e){}}
+// V40 : en vertical, seules la page lue et ses voisines existent à l'écran (les 391 pages superposées surchargeaient la tablette : carrés noirs)
+var tFenP=null;
+function fenetreP(c){m.forEach(function(e,i){var v=Math.abs(i-c)<=1||Math.abs(i-j)<=1;var dsp=v?'':'none';if(e.style.display!==dsp)e.style.display=dsp;});
+ [c-1,c,c+1].forEach(function(i){var im=m[i]&&m[i].querySelector('canvas.pg');if(im)PG.peindre(im,i);});
+ clearTimeout(tFenP);tFenP=setTimeout(function(){if(!etroit)return;m.forEach(function(e,i){var dsp=Math.abs(i-j)<=1?'':'none';if(e.style.display!==dsp)e.style.display=dsp;});},450);}
+function tourne(d){if(typeof zoome==='function'&&zoome())remiseZ(false);
+ if(etroit){var n=j+d;if(n<0||n>=m.length)return;fenetreP(n);m[n].classList.remove('cache','de-droite','de-gauche');m[j].classList.add('cache');j=n;}
+ else{var n2=k+d;if(n2<0||n2>f.length)return;reveil();var e=d>0?f[k]:f[k-1];e.style.display='';if(d>0&&f[k+1])f[k+1].style.display='';if(d<0&&f[k-2])f[k-2].style.display='';e.style.zIndex=1000+(++ZC);e.classList.toggle('tourne',d>0);k=n2;setTimeout(zs,420);bientotRepos();}
+ maj();}
+function aller(pg){ // ouvre le livre à une page donnée, sans animation
+ if(etroit){fenetreP(pg);un.classList.add('instant');m.forEach(function(e,i){e.classList.toggle('cache',i!==pg);e.classList.remove('de-droite','de-gauche');});j=pg;void un.offsetWidth;requestAnimationFrame(function(){un.classList.remove('instant');});}
+ else{k=pg<=0?0:(pg>=P.length-1&&DOS?f.length:Math.floor(pg/2)+1);if(k>f.length)k=f.length;f.forEach(function(e,i){e.style.transition='none';e.classList.toggle('tourne',i<k);void e.offsetWidth;e.style.transition='';});zs();reveil();bientotRepos();}
+ maj();if(plat)rafraichirPlat();}
+// V34 : page zoomée + barre de défilement : la vue plate suit les pages (effet folioscope en gros plan)
+function rafraichirPlat(){if(!plat)return;var fs=facesVues(),ks=[].slice.call(plat.children);if(fs.length!==ks.length)return;
+ fs.forEach(function(fa,ix){var c=ks[ix];if(c.dataset.n===fa.dataset.n)return;c.innerHTML='';[].slice.call(fa.children).forEach(function(ch){c.appendChild(ch.cloneNode(true));});PG.copie(fa,c);
+  c.className=fa.className;c.classList.remove('verso','cache','de-droite','de-gauche');if(fa.dataset.n!==undefined)c.dataset.n=fa.dataset.n;});}
+// V32 : bulle de confirmation avant d'appeler (évite un appel par erreur en tournant les pages)
+var bAppel=document.getElementById('appel');
+function joli(sp){return sp.dataset.aff||sp.dataset.num;}
+// V38 : téléphone ou non ? (d'après ce qu'annonce le navigateur ; une tablette ou un ordinateur affiche le numéro à composer)
+function estTelephone(){var ua=navigator.userAgent||'';if(/iPhone|iPod|Windows Phone/i.test(ua))return true;if(/iPad|Tablet/i.test(ua)||(/Macintosh/.test(ua)&&navigator.maxTouchPoints>1))return false;if(/Android/i.test(ua))return /Mobile/i.test(ua);if(navigator.userAgentData&&navigator.userAgentData.mobile)return true;return false;}
+var TELEPHONE=estTelephone();
+function ouvrirAppel(sp){var n=sp.dataset.num,sms=n==='114';sp.classList.add('touche');setTimeout(function(){sp.classList.remove('touche')},400);
+ document.getElementById('appel-ico').textContent=sms?'💬':'📞';document.getElementById('appel-num').textContent=joli(sp);document.getElementById('appel-lib').textContent=sp.dataset.lib+(sms?' (SMS si vous ne pouvez pas parler)':'');
+ var ok=document.getElementById('appel-ok'),es=document.getElementById('appel-essai'),tx=document.getElementById('appel-txt'),no=document.getElementById('appel-non');var lienA=(sms?'sms:':'tel:')+n;
+ ok.textContent=sms?'Envoyer un SMS':'Appeler';ok.href=lienA;es.href=lienA;es.textContent=sms?'Essayer d\'envoyer le SMS depuis cet appareil':'Essayer d\'appeler depuis cet appareil';
+ if(TELEPHONE){ok.hidden=false;ok.style.display='';no.textContent='Annuler';tx.hidden=true;es.hidden=true;document.getElementById('appel-note').hidden=false;}
+ else{ok.style.display='none';no.textContent='Fermer';tx.textContent=sms?'Envoyez un SMS à ce numéro depuis votre téléphone':'Composez ce numéro depuis votre téléphone';tx.hidden=false;es.hidden=false;document.getElementById('appel-note').hidden=true;}
+ bAppel.hidden=false;ouvertA=Date.now();}
+document.getElementById('appel-essai').addEventListener('click',function(e){e.stopPropagation();if(Date.now()-ouvertA<500){e.preventDefault();return;}setTimeout(fermerAppel,300);});
+function fermerAppel(){bAppel.hidden=true;}
+document.getElementById('appel-non').addEventListener('click',function(e){e.stopPropagation();if(Date.now()-ouvertA>350)fermerAppel();});
+document.getElementById('appel-ok').addEventListener('click',function(e){e.stopPropagation();if(Date.now()-ouvertA<500){e.preventDefault();return;}setTimeout(fermerAppel,300);});   /* V36 : jamais d'appel déclenché par le toucher qui a ouvert la bulle */
+var ouvertA=0;   /* V36 : le « clic » qui suit le toucher du doigt ne doit pas refermer aussitôt la bulle (tablette en paysage) */
+bAppel.addEventListener('click',function(e){e.stopPropagation();if(e.target===bAppel&&Date.now()-ouvertA>500)fermerAppel();});
+['pointerdown','pointerup','pointermove'].forEach(function(t){bAppel.addEventListener(t,function(e){e.stopPropagation();});});
+// V35 : après un appel de note, la référence correspondante brille quelques secondes sur la page d'arrivée
+function pageAffichee(T){return etroit?j===T:(T===2*k-2||T===2*k-1||(k===1&&T===1));}
+function programmerEclat(li){if(!li||!li.dataset.eclat)return;var T=+li.dataset.cible,v=li.dataset.eclat.split(',').map(Number),t0=Date.now();
+ (function guette(){if(riffle||!pageAffichee(T)){if(Date.now()-t0<9000)setTimeout(guette,120);return;}
+  setTimeout(function(){var fa=etroit?m[T]:document.querySelector('#livre3d .face[data-n="'+T+'"]');if(!fa)return;var e=document.createElement('div');e.className='eclat';e.style.top=v[0]+'%';e.style.height=v[1]+'%';fa.appendChild(e);setTimeout(function(){e.remove();},3000);},250);})();}
+// V36 : ce qui est réellement sous le doigt (le navigateur peut « corriger » un toucher vers un lien voisin)
+function sousDoigt(e){var l=document.elementsFromPoint(e.clientX,e.clientY);for(var i=0;i<l.length;i++){var el=l[i];if(!el.classList)continue;if(el.classList.contains('tel')||el.classList.contains('lien'))return el;if(el.classList.contains('face'))break;}return null;}
+var riffle=false;
+function feuilleterJusqua(pg){ // tourne rapidement toutes les pages jusqu'à la page voulue
+ if(riffle)return;
+ // V7 : en mode vertical, un renvoi saute directement à la bonne page (pas de feuilletage : il affichait du noir)
+ if(etroit){if(pg!==j)aller(pg);return;}
+ var kc=pg<=0?0:Math.floor(pg/2)+1;if(kc>f.length)kc=f.length;var d=kc>k?1:-1,n=Math.abs(kc-k);if(!n)return;riffle=true;var id=++RID;   /* V37 : chaque feuilletage a un numéro ; s'il est interrompu, il s'arrête net */
+ // V16 : vitesse constante (une feuille toutes les 0,133 s, ~4 s pour 30 feuilles), images préparées avant de feuilleter,
+ // et seules les dernières feuilles retombées restent affichées (moins de travail pour la carte graphique)
+ var LOIN=20;   /* V19 : 20 feuilles, rapides au début puis de plus en plus lentes (comme le pouce qui ralentit) */
+ function pasDe(i,nb){var x=nb>1?i/(nb-1):1;return Math.round(60+380*x*x*x);}   /* V20 : 60 ms au début → 440 ms à la fin, ralentissement très marqué */
+ function dureeDe(i,nb){var x=nb>1?i/(nb-1):1;return (0.3+0.8*x*x).toFixed(2);}   /* V20 : 0,3 s au début → 1,1 s pour la dernière, qui se pose en douceur */
+ // V17 : on prépare d'abord les images en restant sur la page actuelle, puis on saute et on feuillette (plus d'écran noir)
+ var saut=n>LOIN?kc-d*LOIN:k;
+ var a0=Math.max(0,2*Math.min(saut,kc)-3),b0=Math.min(P.length-1,2*Math.max(saut,kc)+1),prepa=[],garde=[];
+ for(var q=a0;q<=b0;q++){prepa.push(PG.pret(q));}
+ /* V18 : message « Patientez… » qui clignote pendant la préparation (s'il dure plus d'un quart de seconde) */
+ var pat=document.getElementById('patience'),tPat=setTimeout(function(){if(!parti)pat.hidden=false;},250);
+ var parti=false;function depart(){if(parti)return;parti=true;if(id!==RID){clearTimeout(tPat);pat.hidden=true;return;}clearTimeout(tPat);pat.hidden=true;
+  var sauté=saut!==k;if(sauté){f.forEach(function(e,i){e.style.transition='none';e.classList.toggle('tourne',i<saut);void e.offsetWidth;e.style.transition='';});k=saut;zs();maj();}
+  var nbT=Math.abs(kc-k),iT=0;
+  setTimeout(function un(){if(id!==RID)return;if(iT>nbT+2||(d>0?k>kc:k<kc)){arreterFeuilletage();return;}if(k===kc){setTimeout(function(){f.forEach(function(e){e.style.transition='';});riffle=false;zs();garde=null;bientotRepos();},2250);return;}var fe=d>0?f[k]:f[k-1];if(fe)fe.style.transition=iT>=nbT-1?'transform 2.2s cubic-bezier(.12,.6,.3,1)':'transform '+dureeDe(iT,nbT)+'s cubic-bezier(.4,.1,.2,1)';   /* V21 : la dernière feuille tourne en 2,2 s et ralentit tout au long du mouvement */tourne(d);
+   // on masque les feuilles déjà retombées et recouvertes
+   f.forEach(function(e,i){var cache=d>0?(i<k-5):(i>k+4);if(cache&&e.style.display!=='none')e.style.display='none';});
+   setTimeout(un,pasDe(iT++,nbT));},sauté?150:0);}
+ Promise.all(prepa).then(function(){setTimeout(depart,30);});setTimeout(depart,2500);}
+// V37 : tout geste du lecteur interrompt un feuilletage en cours (sinon il pouvait continuer tout seul, de plus en plus lentement)
+var RID=0;
+function arreterFeuilletage(){RID++;if(!riffle)return;riffle=false;document.getElementById('patience').hidden=true;f.forEach(function(e){e.style.transition='';});zs();bientotRepos();}
+prec.addEventListener('click',function(e){e.stopPropagation();arreterFeuilletage();tourne(-1)});suiv.addEventListener('click',function(e){e.stopPropagation();arreterFeuilletage();tourne(1)});
+var depB=null;
+cur.addEventListener('pointerdown',function(){depB=pageLue();});
+cur.addEventListener('change',function(){if(depB===null)return;if(!memePlanche(pageLue(),depB)){PILE.push(depB);if(PILE.length>20)PILE.shift();}depB=null;majBoutons();});
+cur.addEventListener('input',function(){arreterFeuilletage();if(depB===null)depB=pageLue();var v=+this.value;if(etroit)aller(v);else aller(v===0?0:(v>=f.length?P.length-1:2*v-1));montrerBarre();});
+// la page suit le doigt, puis se tourne (ou retombe) quand on lâche — comme sur le site
+var gx=null,gy=null,gsens=0,gpage=null,gang=0,gt=0,glisse=false;
+function ombre(e,v){e.style.setProperty('--ombre',v);}
+function debut(x,y){if(riffle)arreterFeuilletage();gx=x;gy=y;gsens=0;gpage=null;gt=Date.now();glisse=false;}
+function bouge(x,y){if(gx===null||etroit||zoome()||pinch)return;var dx=x-gx,dy=y-gy;
+ if(!gsens){if(Math.abs(dx)<8||Math.abs(dx)<Math.abs(dy)*1.2){if(Math.abs(dy)>12)gx=null;return;}
+  gsens=dx<0?1:-1;gpage=gsens>0?(k<f.length?f[k]:null):(k>0?f[k-1]:null);if(!gpage){gx=null;return;}[k-2,k-1,k,k+1].forEach(function(i){if(f[i])f[i].style.display='';});reveil();gpage.style.transition='none';gpage.style.zIndex=1000+(++ZC);glisse=true;}
+ var Lw=livre.getBoundingClientRect().width;var p=Math.max(0,Math.min(1,(gsens>0?-dx:dx)/(Lw*0.8)));gang=gsens>0?-180*p:-180*(1-p);gpage.style.transform='rotateY('+gang+'deg)';ombre(gpage,(Math.sin(p*Math.PI)*0.6).toFixed(3));}
+function lache(x){if(gx===null)return;var dx=x-gx;var e=gpage;gx=null;if(!e)return;var p=gsens>0?-gang/180:1+gang/180;var vite=Math.abs(dx)>30&&Date.now()-gt<280;
+ e.style.transition='';ombre(e,0);void e.offsetWidth;e.style.transform='';if(p>0.35||vite)tourne(gsens);else{setTimeout(zs,820);bientotRepos();}gpage=null;gsens=0;}
+var zone=document.getElementById('lecture');
+// --- zoom en écartant / resserrant deux doigts, déplacement à un doigt quand on est zoomé, double toucher pour revenir ---
+var multi=false,scn=document.getElementById('scene'),Z=1,TX=0,TY=0,ptrs={},pinch=null,pan=null,dernierTap=0;
+var plat=null,tPlat=null;
+function facesVues(){if(etroit)return [m[j]];var r=[];if(k>=1)r.push(f[k-1].children[1]);if(k<f.length)r.push(f[k].children[0]);return r;}
+// V10 : la vue plate est préparée à l'avance (images déjà décodées) pendant que la page est immobile
+var prete=null,cleP='',tPrep=null;
+function clePage(){return (etroit?'p':'l')+(etroit?j:k)+'_'+innerWidth+'x'+innerHeight;}
+function construitPlat(){var R=scn.getBoundingClientRect(),d=document.createElement('div');d.id='plat';
+ facesVues().forEach(function(fa){var r=fa.getBoundingClientRect();if(!r.width)return;var c=fa.cloneNode(true);c.classList.remove('verso','cache','de-droite','de-gauche');c.style.cssText='left:'+(r.left-R.left)+'px;top:'+(r.top-R.top)+'px;width:'+r.width+'px;height:'+r.height+'px;visibility:visible;opacity:1';
+  PG.copie(fa,c);d.appendChild(c);});return d;}
+function preparePlat(){if(plat||zoome()||riffle||zone.style.display!=='flex')return;var cl=clePage();if(prete&&cleP===cl)return;prete=construitPlat();cleP=cl;}
+function montrePlat(){if(plat)return;clearTimeout(tPlat);if(!(prete&&cleP===clePage())){prete=construitPlat();cleP=clePage();}plat=prete;prete=null;cleP='';
+ scn.appendChild(plat);scn.classList.add('a-plat');}
+function cachePlat(){if(!plat)return;plat.remove();prete=plat;cleP=clePage();plat=null;scn.classList.remove('a-plat');}   /* on la garde prête pour un prochain zoom sur la même page */
+// redessin forcé de la page zoomée quand on lâche les doigts (efface un éventuel carré noir resté figé)
+function redessine(){scn.style.willChange='auto';if(!plat)return;var p=plat;p.style.outline='1px solid transparent';requestAnimationFrame(function(){requestAnimationFrame(function(){p.style.outline='';});});}
+function appliqueZ(anim){var vise=(Z>1.01||TX||TY);if(vise)montrePlat();scn.classList.toggle('zoom-anim',!!anim);scn.style.transform=(Z===1&&!TX&&!TY)?'':'translate('+TX+'px,'+TY+'px) scale('+Z+')';
+ clearTimeout(tPlat);if(!vise){if(anim)tPlat=setTimeout(cachePlat,280);else cachePlat();}}
+function bornes(){var r=scn.getBoundingClientRect(),w=r.width/ (Z||1),h=r.height/(Z||1);var L0=r.left-TX,T0=r.top-TY;
+ // garder le livre à l'écran
+ var minX=innerWidth-(L0+w*Z)-40,maxX=-L0+40,minY=innerHeight-(T0+h*Z)-40,maxY=-T0+40;if(minX>maxX){var c=(minX+maxX)/2;minX=maxX=c;}if(minY>maxY){var c2=(minY+maxY)/2;minY=maxY=c2;}
+ TX=Math.max(minX,Math.min(maxX,TX));TY=Math.max(minY,Math.min(maxY,TY));}
+function remiseZ(anim){Z=1;TX=0;TY=0;appliqueZ(anim);}
+function zoome(){return Z>1.01;}
+zone.addEventListener('pointerdown',function(e){if(e.target.closest('button,#barre,#appel'))return;ptrs[e.pointerId]={x:e.clientX,y:e.clientY};var ids=Object.keys(ptrs);
+ if(ids.length===2){multi=true;gx=null;if(gpage){gpage.style.transition='';gpage.style.transform='';ombre(gpage,0);gpage=null;gsens=0;zs();}
+  scn.style.willChange='transform';var a=ptrs[ids[0]],b=ptrs[ids[1]];var r=scn.getBoundingClientRect();pinch={d0:Math.hypot(a.x-b.x,a.y-b.y)||1,z0:Z,mx:(a.x+b.x)/2,my:(a.y+b.y)/2,tx0:TX,ty0:TY,L0:r.left-TX,T0:r.top-TY};pan=null;}
+ else if(ids.length===1&&zoome()){pan={x:e.clientX,y:e.clientY,tx0:TX,ty0:TY,bouge:false};}},true);
+zone.addEventListener('pointermove',function(e){if(!ptrs[e.pointerId])return;ptrs[e.pointerId]={x:e.clientX,y:e.clientY};var ids=Object.keys(ptrs);
+ if(pinch&&ids.length>=2){var a=ptrs[ids[0]],b=ptrs[ids[1]];var d=Math.hypot(a.x-b.x,a.y-b.y);var nz=Math.max(1,Math.min(3,pinch.z0*d/pinch.d0));
+  var mx=(a.x+b.x)/2,my=(a.y+b.y)/2;var ux=(pinch.mx-pinch.L0-pinch.tx0)/pinch.z0,uy=(pinch.my-pinch.T0-pinch.ty0)/pinch.z0;Z=nz;TX=mx-pinch.L0-Z*ux;TY=my-pinch.T0-Z*uy;bornes();appliqueZ(false);e.stopImmediatePropagation();return;}
+ if(pan){var dx=e.clientX-pan.x,dy=e.clientY-pan.y;if(Math.abs(dx)+Math.abs(dy)>6)pan.bouge=true;TX=pan.tx0+dx;TY=pan.ty0+dy;bornes();appliqueZ(false);e.stopImmediatePropagation();}},true);
+function finPtr(e){var etaitPinch=!!pinch,etaitPan=pan;delete ptrs[e.pointerId];var reste=Object.keys(ptrs).length;if(reste<2)pinch=null;
+ if(multi){if(etaitPinch&&Z<1.05)remiseZ(true);if(!reste){multi=false;redessine();}gx=null;e.stopImmediatePropagation();return true;}
+ if(etaitPan){pan=null;if(etaitPan.bouge){redessine();e.stopImmediatePropagation();return true;}}
+ // V7 : page non zoomée = chaque toucher tourne une page (feuilletage rapide) ; on zoome en écartant deux doigts ; page zoomée = double toucher pour revenir
+ if(!zoome()){dernierTap=0;return false;}
+ // V8 : page zoomée + toucher sur un renvoi : on dézoome d'abord, puis on va à la page
+ var sd=sousDoigt(e),tl=sd&&sd.classList.contains('tel')?sd:null;if(tl){dernierTap=0;ouvrirAppel(tl);gx=null;e.stopImmediatePropagation();return true;}
+ var li=sd&&sd.classList.contains('lien')?sd:null;if(li){dernierTap=0;li.classList.add('touche');setTimeout(function(){li.classList.remove('touche')},400);remiseZ(true);var dep=pageLue();setTimeout(function(){suivreRenvoi(+li.dataset.cible,dep);programmerEclat(li);},300);gx=null;e.stopImmediatePropagation();return true;}
+ var now=Date.now();if(now-dernierTap<320&&!e.target.closest('.lien')){dernierTap=0;remiseZ(true);gx=null;e.stopImmediatePropagation();return true;}
+ dernierTap=now;gx=null;e.stopImmediatePropagation();return true;}
+zone.addEventListener('pointerup',finPtr,true);
+zone.addEventListener('pointercancel',function(e){delete ptrs[e.pointerId];pinch=null;pan=null;if(!Object.keys(ptrs).length)multi=false;},true);
+zone.addEventListener('pointerdown',function(e){if(e.target.closest('button,#barre,#appel'))return;debut(e.clientX,e.clientY);});
+zone.addEventListener('pointermove',function(e){if(gx!==null)bouge(e.clientX,e.clientY);});
+zone.addEventListener('pointerup',function(e){if(e.target.closest('button,#barre,#appel')){gx=null;return;}var x0=gx,y0=gy,eu=glisse;lache(e.clientX);
+ var sd=sousDoigt(e),tl=sd&&sd.classList.contains('tel')?sd:null;if(tl&&!eu&&x0!==null&&Math.abs(e.clientX-x0)<12){ouvrirAppel(tl);return;}
+ var li=sd&&sd.classList.contains('lien')?sd:null;if(li&&!eu&&x0!==null&&Math.abs(e.clientX-x0)<12){li.classList.add('touche');setTimeout(function(){li.classList.remove('touche')},400);suivreRenvoi(+li.dataset.cible,pageLue());programmerEclat(li);return;}
+ if(etroit&&x0!==null){var dx=e.clientX-x0,dy=e.clientY-y0;if(Math.abs(dx)>40&&Math.abs(dx)>Math.abs(dy)*1.5){tourne(dx<0?1:-1);return;}}
+ if(!eu&&x0!==null&&Math.abs(e.clientX-x0)<10){var fx=e.clientX/innerWidth;if(fx>0.66)tourne(1);else if(fx<0.34)tourne(-1);else montrerBarre();}});
+zone.addEventListener('pointercancel',function(e){lache(e.clientX);});
+document.addEventListener('keydown',function(e){if(zone.style.display!=='flex')return;if(e.key==='ArrowRight'||e.key===' '){tourne(1);e.preventDefault();}if(e.key==='ArrowLeft'){tourne(-1);e.preventDefault();}if(e.key==='Escape'){if(zoome())remiseZ(true);else quitter();}});
+// barre du bas et bouton Quitter
+var barre=document.getElementById('barre'),qb=document.getElementById('quitter'),minuB=null;
+var lang=document.getElementById('languette');
+function montrerBarre(){barre.classList.remove('cachee');lang.classList.add('cachee');qb.classList.remove('discret');clearTimeout(minuB);minuB=setTimeout(function(){barre.classList.add('cachee');lang.classList.remove('cachee');qb.classList.add('discret');},4000);}
+lang.addEventListener('click',function(e){e.stopPropagation();montrerBarre();});
+function pleinEcran(){var d=document.documentElement,r=d.requestFullscreen||d.webkitRequestFullscreen;if(r&&!document.fullscreenElement){try{var x=r.call(d,{navigationUI:'hide'});if(x&&x.catch)x.catch(function(){});}catch(e){}}}
+function quitter(){arreterFeuilletage();if(document.fullscreenElement||document.webkitFullscreenElement){(document.exitFullscreen||document.webkitExitFullscreen).call(document);}
+ zone.style.display='none';document.getElementById('accueil').style.display='flex';majReprendre();PG.libere();}
+qb.addEventListener('click',function(e){e.stopPropagation();if(zoome()){remiseZ(true);return;}quitter();});   /* V39 : page zoomée → le ✕ dézoome seulement */
+function ouvrir(pg){tailleConnue=innerWidth+'x'+innerHeight;pleinEcran();document.getElementById('accueil').style.display='none';zone.style.display='flex';taille();aller(pg);montrerBarre();
+ prec.classList.remove('appel');suiv.classList.remove('appel');void suiv.offsetWidth;suiv.classList.add('appel');}
+document.getElementById('lire').addEventListener('click',function(){ouvrir(0);});
+var bl0=document.getElementById('lire');bl0.disabled=false;bl0.textContent='Lire le livre';   /* V15 : le livre est prêt */
+var dejaLu=0;
+function majReprendre(){try{dejaLu=parseInt(localStorage.getItem(cle)||'0',10)||0;}catch(e){dejaLu=0;}var b=document.getElementById('reprendre');b.hidden=!(dejaLu>0);document.getElementById('pagerep').textContent=dejaLu;}
+majReprendre();
+document.getElementById('reprendre').addEventListener('click',function(){ouvrir(dejaLu);});
+// V30 : quand on tourne l'appareil, on attend que l'écran ait pris sa nouvelle taille avant de remettre le livre en page (téléphones)
+var pgRot=null,tRot=[];
+function reprendre(){if(zone.style.display!=='flex')return;arreterFeuilletage();ptrs={};pinch=null;pan=null;multi=false;gx=null;remiseZ(false);cachePlat();if(pgRot===null)pgRot=pageLue();taille();aller(pgRot);}
+var tailleConnue='';
+function surRotation(){if(zone.style.display!=='flex')return;var tc=innerWidth+'x'+innerHeight;if(tc===tailleConnue)return;tailleConnue=tc;   /* V37 : on ne réagit qu'à un vrai changement de taille d'écran */
+ if(pgRot===null)pgRot=pageLue();tRot.forEach(clearTimeout);
+ tRot=[setTimeout(reprendre,120),setTimeout(reprendre,450),setTimeout(function(){reprendre();pgRot=null;},900)];}
+addEventListener('resize',surRotation);addEventListener('orientationchange',surRotation);
+if(window.visualViewport)visualViewport.addEventListener('resize',surRotation);
+/* ===== Carnet 52 (ESSAI) : courbure de la page qui tourne, en mode livre ouvert (paysage). =====
+   Pendant qu'un feuillet tourne, ses deux faces sont remplacées par des bandes verticales emboîtées qui tournent chacune un peu
+   plus que la précédente : la page se courbe. Les bandes sont fabriquées au début du mouvement et retirées à la fin.
+   Si le navigateur ne connaît pas les fonctions nécessaires, rien ne change (la page tourne à plat comme avant). */
+var CRB_N=10,crbOK=false;
+try{crbOK=!!(window.CSS&&CSS.registerProperty&&CSS.supports&&CSS.supports('transform','rotateY(calc(pow(0.5,2)*10deg))'));if(crbOK)CSS.registerProperty({name:'--p',syntax:'<number>',inherits:true,initialValue:'0'});}catch(e){crbOK=false;}
+if(crbOK){var stcb=document.createElement('style');stcb.textContent=
+ '.feuillet.crb{transition:--p .8s cubic-bezier(.4,.1,.2,1)!important;--p:0;--lent:calc(pow(var(--p),1.8)*-180deg);--vite:calc((1 - pow(1 - var(--p),1.8))*-180deg);--ch:calc(sin(var(--p)*180deg))}'+
+ '.feuillet.crb.tourne{--p:1}.feuillet.crb.lente{transition:--p var(--cd,2.2s) var(--ct,cubic-bezier(.12,.6,.3,1))!important}.feuillet.crb.gl{transition:none!important}'+   /* pendant le glissé, la page suit le doigt sans retard */
+ '.feuillet.crb.av{--dos:var(--lent);--bord:var(--vite)}.feuillet.crb.ar{--dos:var(--vite);--bord:var(--lent)}'+
+ '.feuillet.crb{transform:perspective(2200px) rotateY(var(--dos))!important}'+
+ '.feuillet.crb>.face{visibility:hidden!important}'+
+ '.feuillet .bd{position:absolute;top:0;height:100%;width:100%;left:100%;transform-origin:left center;transform-style:preserve-3d;transform:rotateY(calc((var(--bord) - var(--dos))/'+(CRB_N-1)+'))}'+
+ '.feuillet .bd.bd0{left:0;width:'+(100/CRB_N)+'%;transform:none}'+
+ '.feuillet .bd>.tr,.feuillet .bd>.tv{position:absolute;top:0;left:0;height:100%;width:calc(100% + 1.5px);overflow:hidden;backface-visibility:hidden;-webkit-backface-visibility:hidden;background:#fbfaf6}'+
+ '.feuillet .bd>.tv{transform:rotateY(180deg);left:-1.5px}'+
+ '.feuillet .bd>.tr::after,.feuillet .bd>.tv::after{content:"";position:absolute;inset:0;pointer-events:none;z-index:9;opacity:var(--ch);background:linear-gradient(90deg,rgb(0 0 0/calc(.04 + var(--i)*.24 - '+(.12/(CRB_N-1)).toFixed(4)+')),rgb(0 0 0/calc(.04 + var(--i)*.24 + '+(.12/(CRB_N-1)).toFixed(4)+')))}'+   /* Carnet 68 : dégradé d'une bande à la suivante, plus de rayures */
+ '.feuillet .bd>.tv::after{background:linear-gradient(90deg,rgb(0 0 0/calc(.28 - var(--i)*.22 - '+(.11/(CRB_N-1)).toFixed(4)+')),rgb(0 0 0/calc(.28 - var(--i)*.22 + '+(.11/(CRB_N-1)).toFixed(4)+')))}'+
+ '.feuillet .bd .face{position:absolute!important;top:0!important;height:100%!important;inset:auto;transform:none!important;visibility:visible!important;border-radius:0!important;backface-visibility:visible!important;box-shadow:none!important}';   /* Carnet 53 : l'ombre de la reliure (pli du livre) est gardée sur la page qui tourne */
+ document.head.appendChild(stcb);}
+/* Carnet 54 : allègement pour la tablette (carrés noirs = mémoire graphique saturée). Chaque bande ne porte plus une copie de la
+   page entière, mais un petit dessin de sa tranche seulement (image de la page + notes), en définition réduite pendant le mouvement.
+   Les éléments posés sur la page (textes, liens, ombres) restent des copies légères, sans l'image. */
+function crbTranche(face,idx){var bo=document.createDocumentFragment(),im=face.querySelector('img'),W=face.offsetWidth,H=face.offsetHeight,q=Math.min(window.devicePixelRatio||1,1.5);
+ var c=face.cloneNode(true);c.removeAttribute('data-n');c.style.cssText='width:'+(CRB_N*100)+'%;left:'+(-idx*100)+'%';c.querySelectorAll('textarea').forEach(function(x){x.remove();});
+ var ok=im&&im.complete&&im.naturalWidth&&W&&H;
+ if(ok){try{var cv=document.createElement('canvas');cv.width=Math.max(1,Math.ceil(W/CRB_N*q));cv.height=Math.max(1,Math.round(H*q));var g=cv.getContext('2d'),nw=im.naturalWidth,nh=im.naturalHeight;
+   g.fillStyle='#fbfaf6';g.fillRect(0,0,cv.width,cv.height);g.drawImage(im,idx*nw/CRB_N,0,nw/CRB_N,nh,0,0,cv.width,cv.height);
+   face.querySelectorAll('canvas').forEach(function(o){if(o.width&&o.height)g.drawImage(o,idx*o.width/CRB_N,0,o.width/CRB_N,o.height,0,0,cv.width,cv.height);});
+   cv.style.cssText='position:absolute;left:0;top:0;width:100%;height:100%;pointer-events:none';bo.appendChild(cv);
+   c.querySelectorAll('img,canvas').forEach(function(x){x.remove();});c.style.background='transparent';}catch(e){ok=false;}}
+ if(!ok){var co=face.querySelectorAll('canvas'),cc=c.querySelectorAll('canvas');for(var q2=0;q2<cc.length;q2++){var o2=co[q2],n=cc[q2];if(!o2||!o2.width||!o2.height){n.remove();continue;}var sw=Math.ceil(o2.width/CRB_N),sx=Math.min(o2.width-sw,Math.round(idx*o2.width/CRB_N));
+   var k2=document.createElement('canvas');k2.width=sw;k2.height=o2.height;try{k2.getContext('2d').drawImage(o2,sx,0,sw,o2.height,0,0,sw,o2.height);}catch(e){}k2.style.cssText='position:absolute;top:0;height:100%;left:'+(sx/o2.width*100)+'%;width:'+(sw/o2.width*100)+'%;z-index:2;pointer-events:none';n.parentNode.replaceChild(k2,n);}}
+ bo.appendChild(c);return bo;}
+var CRB_RIF=0.90;   /* Carnet 66 : durée (s) à partir de laquelle une feuille du feuilletage est courbée. La liseuse donne 0,3 s à la première feuille et 1,1 s à l'avant-dernière (0,3 + 0,8 x²). 0.90 = les 3 dernières d'un feuilletage de 20 feuilles (choix de Lionel) ; 0.795 = les 5 dernières (Carnet 65) ; 2 = seulement la dernière (Carnets 63 et 64) */
+function crbPetit(){return Math.min(window.innerWidth,window.innerHeight)<560;}   /* Carnet 55 : pas de courbure sur un petit écran (téléphone) : la page y tourne à plat, comme dans la version stable */
+function courbe(e,sens,force){if(!crbOK||etroit||!e||(riffle&&!force)||crbPetit())return;clearTimeout(e._crbT);e.classList.toggle('av',sens>0);e.classList.toggle('ar',sens<0);
+ if(!e._crb){var R=e.children[0],V=e.children[1],parent=e,racine=null;for(var i=0;i<CRB_N;i++){var b=document.createElement('div');b.className='bd'+(i===0?' bd0':'');b.style.setProperty('--i',(i/(CRB_N-1)).toFixed(3));
+   var tr=document.createElement('div');tr.className='tr';tr.appendChild(crbTranche(R,i));var tv=document.createElement('div');tv.className='tv';tv.appendChild(crbTranche(V,CRB_N-1-i));b.appendChild(tr);b.appendChild(tv);
+   if(i===0)racine=b;else parent.appendChild(b);parent=b;}
+  var avaitGl=e.classList.contains('gl');e.classList.add('gl');e.appendChild(racine);e._crb=racine;e.classList.add('crb');void e.offsetWidth;getComputedStyle(e).getPropertyValue('--p');if(!avaitGl){e.classList.remove('gl');void e.offsetWidth;}}}   /* Carnet 63 : la courbure démarre de la position réelle de la feuille (à plat à gauche pour un retour en arrière) ; avant, un retour par la flèche sautait sans animation */
+/* Carnet 59 : dès que deux doigts se posent (zoom), les bandes de courbure encore en mémoire sont retirées tout de suite, pour ne pas additionner leur charge à celle du zoom (page restée noire une fois sur la tablette). Si la page est encore en train de tourner, on attend la fin de son mouvement. */
+function crbRetire(e){if(!e||!e._crb)return;clearTimeout(e._crbT);e.style.removeProperty('--cd');e.style.removeProperty('--ct');e.classList.remove('crb','av','ar','gl','lente');e.style.removeProperty('--p');e._crb.remove();e._crb=null;}
+function crbPurge(){try{f.forEach(function(e){if(!e._crb||gpage===e)return;var reste=(e._crbFin||0)-Date.now();if(reste<=0)crbRetire(e);else{clearTimeout(e._crbT);e._crbT=setTimeout(function(){crbRetire(e);},reste+30);}});}catch(e2){}}
+(function(){var touches={};window.addEventListener('pointerdown',function(e){if(e.pointerType!=='touch')return;var t=Date.now();Object.keys(touches).forEach(function(id){if(t-touches[id]>8000)delete touches[id];});touches[e.pointerId]=t;if(Object.keys(touches).length>=2){var gq=gpage;if(gq&&gq._crb){gq.classList.remove('gl','lente');gq.style.removeProperty('--p');decourbe(gq,1000);}crbPurge();}},true);   /* Carnet 64 : la page tirée au moment où un deuxième doigt se pose est relâchée proprement (elle restait figée en l'air) */
+ ['pointerup','pointercancel'].forEach(function(n){window.addEventListener(n,function(e){delete touches[e.pointerId];},true);});})();
+function decourbe(e,delai){if(!e||!e._crb)return;clearTimeout(e._crbT);e._crbFin=Date.now()+Math.min(delai,870);e._crbT=setTimeout(function(){if(!e._crb)return;if(gpage===e){decourbe(e,400);return;}e.style.removeProperty('--cd');e.style.removeProperty('--ct');e.classList.remove('crb','av','ar','gl','lente');e.style.removeProperty('--p');e._crb.remove();e._crb=null;},delai);}
+if(crbOK){try{
+ var tourne0=tourne;tourne=function(d){var e=null,der=false;if(!etroit&&!(typeof zoome==='function'&&zoome())){var n2=k+d;if(n2>=0&&n2<=f.length)e=d>0?f[k]:f[k-1];}
+  var duR=0;if(e&&riffle){var trR=e.style.transition||'',mR=/([\d.]+)s/.exec(trR);duR=mR?+mR[1]:0;der=duR>=CRB_RIF;if(!der)e=null;else{var cbR=/cubic-bezier\([^)]*\)/.exec(trR);e.style.setProperty('--cd',duR+'s');e.style.setProperty('--ct',cbR?cbR[0]:'ease-out');}}   /* Carnet 65 : pendant un feuilletage, les feuilles de la fin (celles qui ralentissent : jusqu'à 5) se courbent, chacune à sa vitesse ; les premières défilent à plat */
+  if(e){e.style.display='';if(der)e.classList.add('lente');else e.classList.remove('lente');courbe(e,d,der);}tourne0(d);if(e){decourbe(e,der?duR*1000+260:1000);if(der)e._crbFin=Date.now()+duR*1000+110;}};
+ var bouge0=bouge;bouge=function(x,y){bouge0(x,y);if(gpage&&gsens){if(!gpage._crb)courbe(gpage,gsens);if(gpage._crb){clearTimeout(gpage._crbT);gpage.classList.remove('lente');gpage.classList.add('gl');
+   /* Carnet 53 : le bord de la page suit le doigt. Un petit glissé décolle tout de suite la page (angle = arc cosinus du déplacement), et il suffit de glisser d'une largeur de page environ. */
+   var Wp=livre.getBoundingClientRect().width/2,dd=Math.max(0,gsens>0?gx-x:x-gx),pf=Math.acos(Math.max(-1,Math.min(1,1-dd/(Wp*0.95))))/Math.PI,pp=gsens>0?pf:1-pf;gang=-180*pp;
+   gpage.style.setProperty('--p',pp.toFixed(4));ombre(gpage,(Math.sin(pf*Math.PI)*0.45).toFixed(3));}}};
+ var lache0=lache;lache=function(x){var e=gpage;if(e)e.classList.remove('gl');lache0(x);if(e&&e._crb){e.style.removeProperty('--p');decourbe(e,1000);}};
+}catch(e){}}
+
+// ===== V46 (16 novembre 2026) : seule correction par rapport à la V45, reprise du Carnet 60 =====
+// V46 : une page en mouvement reste au-dessus des autres. Avant, la remise en ordre des pages (zs), programmée par un geste précédent
+// (petit glissé relâché : 0,8 s ; page tournée : 0,4 s), pouvait tomber pendant le geste suivant : la page tirée passait alors SOUS la page de gauche.
+try{(function(){var zs0=zs,zsT=null;
+ zs=function(){zs0();var t=Date.now(),mx=0,reste=0;
+  f.forEach(function(e){if(e!==gpage&&e._zH&&e._zH>t&&e._zV>=1000){e.style.zIndex=e._zV;if(e._zV-1000>mx)mx=e._zV-1000;if(e._zH-t>reste)reste=e._zH-t;}});
+  ZC=mx;if(gpage){gpage.style.zIndex=1000+(++ZC);gpage._zV=1000+ZC;}
+  if(reste){clearTimeout(zsT);zsT=setTimeout(zs,reste+40);}};
+ function garde(e,ms){if(!e)return;var z=+e.style.zIndex;if(z>=1000){e._zV=z;e._zH=Date.now()+ms;}}
+ var tourneZ=tourne;tourne=function(d){var e=null,n2=k+d;if(n2>=0&&n2<=f.length)e=d>0?f[k]:f[k-1];tourneZ(d);garde(e,950);};
+ var lacheZ=lache;lache=function(x){var e=gpage;lacheZ(x);garde(e,880);};
+})();}catch(e){}
+}
+</script>
+<script>
+/* ===== Liseuse en ligne (relecteurs) — connexion, déchiffrement et pages en mémoire (V1, 18/11/2026) =====
+   Rien du livre n'est dans cette page. Après identifiant + mot de passe :
+   - le dossier du relecteur = empreinte de son identifiant (même calcul que la fabrique) ;
+   - la clé est tirée du mot de passe (PBKDF2-SHA256, 600 000 itérations) et reste dans le navigateur, non exportable ;
+   - chaque page est téléchargée chiffrée, déchiffrée (AES-GCM), décodée en image EN MÉMOIRE (createImageBitmap, sans adresse
+     d'image), puis dessinée dans un canvas ; seules les pages proches de la page lue sont gardées.
+   Si l'on enregistre la page (« Enregistrer sous… », même « page complète »), le fichier ne contient que cet écran de connexion. */
+(function(){
+'use strict';
+var SEL_SITE='jlmjnpp-liseuse-v1|';
+var cn=document.getElementById('connexion'),form=document.getElementById('cform'),cid=document.getElementById('cid'),cmdp=document.getElementById('cmdp'),
+    cok=document.getElementById('cok'),cmsg=document.getElementById('cmsg');
+// au chargement (y compris d'un fichier enregistré), on repart toujours de l'écran de connexion, livre vidé
+(function nettoie(){['livre3d','livre1p'].forEach(function(id){var e=document.getElementById(id);if(e)e.innerHTML='';});
+ var a=document.getElementById('accueil');if(a)a.style.display='none';var l=document.getElementById('lecture');if(l)l.style.display='none';
+ var p=document.getElementById('plat');if(p)p.remove();cn.classList.remove('ferme');
+ [].forEach.call(document.querySelectorAll('canvas'),function(c){c.width=1;c.height=1;});
+ cok.disabled=false;cmsg.textContent='';cmsg.className='';cid.value='';cmdp.value='';})();
+// l'écran de connexion est masqué par une feuille de style ajoutée par le programme (« adoptée ») : elle n'est jamais enregistrée
+// avec la page ; un fichier enregistré pendant la lecture (HTML ou MHTML) rouvre donc toujours sur l'écran de connexion
+var masque=null;try{masque=new CSSStyleSheet();masque.replaceSync('#connexion{display:none!important}');}catch(e){masque=null;}
+function cacheConnexion(){if(masque)document.adoptedStyleSheets=document.adoptedStyleSheets.concat([masque]);else cn.classList.add('ferme');}
+// dissuasion : pas de clic droit, pas de glisser, pas de sélection, pas d'enregistrement ni d'impression au clavier
+document.addEventListener('contextmenu',function(e){if(!e.target.closest('#connexion input'))e.preventDefault();});
+document.addEventListener('dragstart',function(e){e.preventDefault();});
+document.addEventListener('selectstart',function(e){if(!e.target.closest('#connexion input'))e.preventDefault();});
+document.addEventListener('keydown',function(e){var k=(e.key||'').toLowerCase();if((e.ctrlKey||e.metaKey)&&(k==='s'||k==='p'||k==='u')){e.preventDefault();e.stopPropagation();}},true);
+document.getElementById('cvoir').addEventListener('change',function(){cmdp.type=this.checked?'text':'password';});
+if(!(window.crypto&&crypto.subtle&&window.createImageBitmap)){cmsg.textContent='Ce navigateur est trop ancien pour ouvrir le livre. Essayez avec Chrome, Edge, Firefox ou Safari à jour.';cok.disabled=true;return;}
+function txt(s){return new TextEncoder().encode(s);}
+function norm(s){return s.trim().toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'');}
+function hex(b){return Array.prototype.map.call(new Uint8Array(b),function(x){return (x<16?'0':'')+x.toString(16);}).join('');}
+function b64(s){var b=atob(s),o=new Uint8Array(b.length);for(var i=0;i<b.length;i++)o[i]=b.charCodeAt(i);return o;}
+function dechiffre(cle,buf){return crypto.subtle.decrypt({name:'AES-GCM',iv:new Uint8Array(buf,0,12)},cle,new Uint8Array(buf,12));}
+function lit(url){return fetch(url,{cache:'no-cache',credentials:'omit'}).then(function(r){if(!r.ok)throw new Error('absent');return r;});}
+var essais=0;
+function refus(){essais++;cmsg.className='';cmsg.textContent='Identifiant ou mot de passe incorrect.';setTimeout(function(){cok.disabled=false;},Math.min(8000,700*essais));cmdp.select&&cmdp.select();}
+form.addEventListener('submit',function(ev){ev.preventDefault();if(cok.disabled)return;
+ var id=norm(cid.value),mdp=cmdp.value.trim().normalize('NFC');if(!id||!mdp){cmsg.className='';cmsg.textContent='Entrez votre identifiant et votre mot de passe.';return;}
+ cok.disabled=true;cmsg.className='info';cmsg.textContent='Vérification…';
+ var base,cle,man;
+ crypto.subtle.digest('SHA-256',txt(SEL_SITE+id)).then(function(h){base='c/'+hex(h).slice(0,24)+'/';return lit(base+'cle.json');})
+ .then(function(r){return r.json();})
+ .then(function(c){return crypto.subtle.importKey('raw',txt(mdp),'PBKDF2',false,['deriveKey']).then(function(k){
+   return crypto.subtle.deriveKey({name:'PBKDF2',salt:b64(c.sel),iterations:c.it,hash:'SHA-256'},k,{name:'AES-GCM',length:256},false,['decrypt']);});})
+ .then(function(k){cle=k;return lit(base+'m.bin');}).then(function(r){return r.arrayBuffer();})
+ .then(function(b){return dechiffre(cle,b);})
+ .then(function(d){man=JSON.parse(new TextDecoder().decode(d));if(man.controle!=='jlmjnpp')throw new Error('contrôle');
+   cmsg.textContent='Ouverture du livre…';cmdp.value='';mdp=null;
+   var PG=fournisseur(cle,base,man);
+   return PG.pret(0).then(function(){return PG;});})
+ .then(function(PG){ouvre(PG,man,base);})
+ .catch(function(e){cle=null;refus();});});
+
+// ---------- les pages : téléchargées chiffrées, déchiffrées et décodées en mémoire, autour de la page lue ----------
+function fournisseur(cle,base,man){
+ var dispo={};(man.pages||[]).forEach(function(n){dispo[n]=1;});
+ var octets=new Map(),images=new Map(),MAXO=160,MAXI=48,nom=man.nom||'';
+ function retire(map,max,ferme){while(map.size>max){var k=map.keys().next().value,p=map.get(k);map.delete(k);if(ferme)p.then(function(b){try{b.close();}catch(e){}},function(){});}}
+ function charge(n){if(!dispo[n])return Promise.reject(new Error('absente'));
+  if(octets.has(n)){var p0=octets.get(n);octets.delete(n);octets.set(n,p0);return p0;}
+  var p=lit(base+'p/'+('000'+n).slice(-4)+'.bin').then(function(r){return r.arrayBuffer();}).then(function(b){return dechiffre(cle,b);})
+   .then(function(d){return new Blob([d],{type:'image/webp'});});
+  octets.set(n,p);p.catch(function(){octets.delete(n);});retire(octets,MAXO,false);return p;}
+ function image(n){if(images.has(n)){var p0=images.get(n);images.delete(n);images.set(n,p0);return p0;}
+  var p=charge(n).then(function(b){return createImageBitmap(b);});images.set(n,p);p.catch(function(){images.delete(n);});retire(images,MAXI,true);return p;}
+ // filigrane visible, ajouté à l'affichage : bords haut et bas de la page, discret
+ function filigrane(g,W,H){var t='Exemplaire de '+nom+' · lecture réservée · lionelgarnier.fr',fs=Math.max(9,Math.round(H/112));
+  g.save();g.font='500 '+fs+'px system-ui,-apple-system,"Segoe UI",Roboto,sans-serif';g.textAlign='center';g.textBaseline='middle';
+  [Math.round(fs*0.95),H-Math.round(fs*0.95)].forEach(function(y){var d;try{d=g.getImageData(Math.round(W*.2),Math.max(0,y-fs),Math.round(W*.6),2*fs).data;}catch(e){d=null;}
+   var s=0,n=0;if(d)for(var i=0;i<d.length;i+=16){s+=d[i]*.3+d[i+1]*.59+d[i+2]*.11;n++;}var fonce=n&&s/n<150;
+   g.fillStyle=fonce?'rgba(255,255,255,.42)':'rgba(80,80,90,.40)';g.fillText(t,W/2,y);});g.restore();}
+ function absente(cv,n){cv.width=310;cv.height=440;var g=cv.getContext('2d');g.fillStyle='#f3f1ea';g.fillRect(0,0,310,440);g.fillStyle='#8a8ea3';g.font='15px system-ui,sans-serif';g.textAlign='center';
+  g.fillText(n===0?'':'Page non incluse',155,210);g.fillText(n===0?'':'dans cet essai',155,232);}
+ return {
+  peindre:function(cv,n){if(cv._n===n)return;cv._n=n;
+   if(!dispo[n]){absente(cv,n);return;}
+   image(n).then(function(bm){if(cv._n!==n)return;cv.width=bm.width;cv.height=bm.height;var g=cv.getContext('2d');g.drawImage(bm,0,0);
+    if(n>0&&n<man.n-1)filigrane(g,cv.width,cv.height);},function(){if(cv._n===n)cv._n=undefined;});},
+  vider:function(cv){if(cv._n===undefined)return;cv._n=undefined;cv.width=1;cv.height=1;},
+  pret:function(n){return dispo[n]?image(n).then(function(){},function(){}):Promise.resolve();},
+  anticipe:function(lo,hi){for(var n=Math.max(0,lo-10);n<=Math.min(man.n-1,hi+10);n++)if(dispo[n])charge(n).catch(function(){});},
+  copie:function(fa,c){var o=fa.querySelector('canvas.pg'),d=c.querySelector('canvas.pg');if(o&&d&&o.width>1){d.width=o.width;d.height=o.height;d.getContext('2d').drawImage(o,0,0);d._n=o._n;}},
+  libere:function(){images.forEach(function(p){p.then(function(b){try{b.close();}catch(e){}},function(){});});images.clear();}
+ };}
+
+function ouvre(PG,man,base){
+ cacheConnexion();cmsg.textContent='';cmsg.className='';cok.disabled=false;cid.value='';
+ var cv=document.getElementById('couv');PG.peindre(cv,0);
+ document.getElementById('exemplaire').textContent='Exemplaire personnel de '+man.nom;
+ var nb=man.dos?man.n-2:man.n-1;document.getElementById('vinfo').textContent='Version '+(man.version||'')+' · '+nb+' pages';
+ document.getElementById('accueil').style.display='flex';
+ demarrerLivre({n:man.n,dos:!!man.dos,ratio:man.ratio,liens:man.liens,tels:man.tels,nums:man.nums,dossier:base.split('/')[1]},PG);}
+})();
+
+</script></body></html>
