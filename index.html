@@ -588,7 +588,7 @@ a.marque:focus-visible{outline:3px solid var(--or);outline-offset:4px;border-rad
 </head>
 <body>
 <div id="intro" aria-hidden="true"></div>
-<script>if(location.hash){var _i=document.getElementById('intro');if(_i)_i.remove();}</script>
+<script>if(location.hash==='#aide'){location.replace('/numeros-aide');}addEventListener('hashchange',function(){if(location.hash==='#aide')location.replace('/numeros-aide');});if(location.hash){var _i=document.getElementById('intro');if(_i)_i.remove();}</script>
 <a class="evitement" href="#contenu">Aller au contenu</a>
 
 <header class="nav">
@@ -596,7 +596,7 @@ a.marque:focus-visible{outline:3px solid var(--or);outline-offset:4px;border-rad
     <a class="marque" href="#top" title="Retour à l’accueil"><img class="marque-ico" src="/icone-192.png" width="30" height="30" alt="">Lionel Garnier</a>
     <nav aria-label="Menu du site" class="menu">
       <button type="button" class="menu-btn" id="menu-btn" aria-expanded="false" aria-controls="menu-liste"><span class="burger" aria-hidden="true"></span><span class="txt">Menu</span></button>
-      <a class="sos" href="#aide"><svg class="ico-tel" viewBox="0 0 24 24" width="16" height="16" aria-hidden="true" focusable="false"><path fill="currentColor" d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.25 11.4 11.4 0 0 0 3.6.57 1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.25.2 2.45.57 3.57a1 1 0 0 1-.25 1z"/></svg>Numéros d’aide</a>
+      <a class="sos" href="/numeros-aide"><svg class="ico-tel" viewBox="0 0 24 24" width="16" height="16" aria-hidden="true" focusable="false"><path fill="currentColor" d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.25 11.4 11.4 0 0 0 3.6.57 1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.25.2 2.45.57 3.57a1 1 0 0 1-.25 1z"/></svg>Numéros d’aide</a>
       <div class="menu-liste" id="menu-liste" hidden>
         <a href="/#top" class="menu-accueil" aria-current="page">Accueil</a>
         <p class="menu-groupe">Le livre</p>
@@ -611,7 +611,7 @@ a.marque:focus-visible{outline:3px solid var(--or);outline-offset:4px;border-rad
         <a href="#contact" class="menu-contact">Contact</a>
         <a href="/lire/" class="menu-relecteurs" rel="nofollow">🔒 Espace relecteurs</a>
         <button type="button" class="menu-mode" id="menu-mode"><span class="ico" aria-hidden="true"></span><span class="txt"></span></button>
-        <a href="#aide" class="menu-aide"><svg class="ico-tel" viewBox="0 0 24 24" width="16" height="16" aria-hidden="true" focusable="false"><path fill="currentColor" d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.25 11.4 11.4 0 0 0 3.6.57 1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.25.2 2.45.57 3.57a1 1 0 0 1-.25 1z"/></svg>Numéros d’aide</a>
+        <a href="/numeros-aide" class="menu-aide"><svg class="ico-tel" viewBox="0 0 24 24" width="16" height="16" aria-hidden="true" focusable="false"><path fill="currentColor" d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.25 11.4 11.4 0 0 0 3.6.57 1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.25.2 2.45.57 3.57a1 1 0 0 1-.25 1z"/></svg>Numéros d’aide</a>
       </div>
     </nav>
   </div>
@@ -627,7 +627,7 @@ a.marque:focus-visible{outline:3px solid var(--or);outline-offset:4px;border-rad
       <div class="actions">
         <a class="btn btn-or" href="#section-feuilleter">Feuilleter le début du livre</a>
       </div>
-      <p class="aide-vite"><a href="#aide">Besoin de parler ce soir ? Des lignes d’écoute répondent aussi aux proches <span aria-hidden="true">→</span></a></p>
+      <p class="aide-vite"><a href="/numeros-aide">Besoin de parler ce soir ? Des lignes d’écoute répondent aussi aux proches <span aria-hidden="true">→</span></a></p>
       <p class="parution">Parution prochaine sur Amazon · <a href="mailto:contact@lionelgarnier.fr?subject=Pr%C3%A9venez-moi%20de%20la%20sortie%20du%20livre">Être prévenu(e) de la sortie (par e-mail)</a></p>
     </div>
     <a class="couv-lien" href="#section-feuilleter" title="Feuilleter le début du livre"><img class="couv-livre" src="/couverture.jpg" width="560" height="795" alt="Feuilleter le début du livre « Je l’aime, mais je n’en peux plus », de Lionel Garnier"></a>
@@ -740,44 +740,7 @@ a.marque:focus-visible{outline:3px solid var(--or);outline-offset:4px;border-rad
     </div>
   </section>
 
-  <section id="aide">
-    <div class="wrap">
-      <p class="etiquette">Numéros d’aide</p>
-      <h2>Besoin de parler ce soir ?</h2>
-      <p class="chapo-aide">Ces deux lignes répondent aussi aux proches, de façon anonyme.</p>
-      <div class="lignes parler">
-        <a class="ligne fort" href="tel:0980980930"><b>0 980 980 930</b><span>Alcool Info Service : de 8 h à 23 h, 7 jours sur 7, prix d’un appel normal</span><span class="appel" aria-hidden="true">Appeler</span></a>
-        <a class="ligne fort" href="tel:0800231313"><b>0 800 23 13 13</b><span>Drogues Info Service : de 8 h à 23 h, 7 jours sur 7, appel gratuit</span><span class="appel" aria-hidden="true">Appeler</span></a>
-      </div>
-      <p class="nuit">Après 23 h, les lignes rouvrent à 8 h. Dès ce soir, vous pouvez déjà leur écrire depuis leur site, <a href="https://www.alcool-info-service.fr/">alcool-info-service.fr</a> ou <a href="https://www.drogues-info-service.fr/">drogues-info-service.fr</a> (questions par écrit, forum). Si vous avez des idées noires, le <a class="tel" href="tel:3114">3114</a> répond jour et nuit.</p>
-      <p class="nuit">Pour ne plus rester seul(e) : des groupes de parole pour les proches existent, souvent gratuits. Ces lignes peuvent vous indiquer le plus proche de chez vous.</p>
-      <h2 class="danger">En cas de danger, appelez</h2>
-      <div class="urgence" role="list">
-        <div role="listitem"><a class="pastille" href="tel:15"><b>15</b>SAMU</a></div>
-        <div role="listitem"><a class="pastille" href="tel:17"><b>17</b>Police, gendarmerie</a></div>
-        <div role="listitem"><a class="pastille" href="tel:18"><b>18</b>Pompiers</a></div>
-        <div role="listitem"><a class="pastille" href="tel:112"><b>112</b>Urgence européenne</a></div>
-        <div role="listitem"><a class="pastille" href="sms:114"><b>114</b>Par SMS, si vous ne pouvez pas parler</a></div>
-      </div>
-      <div class="lignes">
-        <a class="ligne" href="tel:3919"><b>3919</b><span>Violences conjugales, écoute anonyme et gratuite, jour et nuit</span><span class="appel" aria-hidden="true">Appeler</span></a>
-        <a class="ligne" href="tel:3114"><b>3114</b><span>Prévention du suicide, jour et nuit, pour vous ou pour un proche</span><span class="appel" aria-hidden="true">Appeler</span></a>
-      </div>
-      <details class="autres-num">
-        <summary>Autres numéros utiles (enfance en danger, victimes, cannabis, jeux, jeunes)</summary>
-        <div class="lignes">
-          <a class="ligne" href="tel:119"><b>119</b><span>Enfance en danger, jour et nuit ; un enfant peut appeler lui-même</span><span class="appel" aria-hidden="true">Appeler</span></a>
-          <a class="ligne" href="tel:116006"><b>116 006</b><span>Aide aux victimes, 7 jours sur 7, de 9 h à 20 h</span><span class="appel" aria-hidden="true">Appeler</span></a>
-          <a class="ligne" href="tel:0980980940"><b>0 980 980 940</b><span>Écoute Cannabis, prix d’un appel normal</span><span class="appel" aria-hidden="true">Appeler</span></a>
-          <a class="ligne" href="tel:0974751313"><b>09 74 75 13 13</b><span>Joueurs Info Service, prix d’un appel normal</span><span class="appel" aria-hidden="true">Appeler</span></a>
-          <a class="ligne" href="tel:0800235236"><b>0 800 235 236</b><span>Fil Santé Jeunes (gratuit), de 12 à 25 ans</span><span class="appel" aria-hidden="true">Appeler</span></a>
-        </div>
-      </details>
-      <p class="note">Ce site ne remplace pas un professionnel. Pour trouver un lieu d’aide près de chez vous : les annuaires de <a href="https://www.drogues-info-service.fr">drogues-info-service.fr</a> et <a href="https://www.alcool-info-service.fr">alcool-info-service.fr</a>.</p>
-    </div>
-  </section>
-
-  <section id="pros" style="padding-top:0">
+  <section id="pros">
     <div class="wrap duo">
       <div class="carte">
         <p class="etiquette">Pour les professionnels</p>
@@ -797,7 +760,7 @@ a.marque:focus-visible{outline:3px solid var(--or);outline-offset:4px;border-rad
 </main>
 
 <footer>
-  <nav class="wrap pied-nav" aria-label="Liens du site"><a href="/#top" aria-current="page">Accueil</a><a href="/le-livre">Le livre</a><a href="/methode-craft">La méthode CRAFT</a><a href="/auteur">L’auteur</a><a href="/professionnels">Pour les professionnels</a><a href="/#contact">Contact</a><a href="/#aide">Numéros d’aide</a></nav>
+  <nav class="wrap pied-nav" aria-label="Liens du site"><a href="/#top" aria-current="page">Accueil</a><a href="/le-livre">Le livre</a><a href="/methode-craft">La méthode CRAFT</a><a href="/auteur">L’auteur</a><a href="/professionnels">Pour les professionnels</a><a href="/#contact">Contact</a><a href="/numeros-aide">Numéros d’aide</a></nav>
   <div class="wrap cols">
     <div>
       <h2 class="pied-titre">Mentions légales</h2>
@@ -1010,7 +973,7 @@ document.getElementById('copier').addEventListener('click', async (e) => {
     const liens = [...l.querySelectorAll('a[href^="#"]')].filter(x => x.getAttribute('href').length > 1);
     liens.forEach(x => { if (x.getAttribute('aria-current') === 'location') x.removeAttribute('aria-current'); });
     const repere = window.innerHeight * 0.35; let choix = null;
-    ['livre','section-feuilleter','editions','auteur','aide','pros','contact'].forEach(id => {
+    ['livre','section-feuilleter','editions','auteur','pros','contact'].forEach(id => {
       const s = document.getElementById(id); if (s && s.getBoundingClientRect().top <= repere) choix = id;
     });
     if (choix === 'pros') choix = 'contact';
