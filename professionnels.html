@@ -885,7 +885,10 @@ function cible(h){if(!h||h.length<2)return null;var el=null;try{el=document.getE
 A.forEach(function(a,i){a.setAttribute('role','button');a.setAttribute('aria-controls',P[i]);a.addEventListener('click',function(e){e.preventDefault();if(ouvert()===i){maj(-1);return}maj(i);requestAnimationFrame(function(){va(C[i],true)})});a.addEventListener('keydown',function(e){if(e.key===' '||e.key==='Spacebar'){e.preventDefault();a.click()}})});
 document.addEventListener('click',function(e){var a=e.target.closest&&e.target.closest('a[href*="#"]');if(!a||A.indexOf(a)>=0)return;var u;try{u=new URL(a.href,location.href)}catch(x){return}if(u.pathname!==location.pathname)return;var c=cible(u.hash);if(c&&ouvert()!==c.k){maj(c.k)}},true);
 function depuisHash(){var c=cible(location.hash);if(c){maj(c.k);requestAnimationFrame(function(){va(c.el,false)})}}
-maj(-1);depuisHash();window.addEventListener('hashchange',depuisHash)})();</script><script>
+maj(-1);
+/* V85 : arrivée par un lien vers une des deux parties (ex. « poste de patient expert » sur l'accueil → #emploi) : même ouverture animée qu'un toucher sur la porte (déroulé, fond qui s'éclaire, effet sur le CV) */
+(function(){var c=cible(location.hash);if(!c||c.el!==C[c.k]){depuisHash();return}try{history.replaceState(null,'',location.pathname)}catch(x){}var nav=A[c.k].closest('nav')||A[c.k];va(nav,false);function go(){setTimeout(function(){if(ouvert()!==c.k)A[c.k].click()},450)}if(document.readyState==='complete')go();else window.addEventListener('load',go)})();
+window.addEventListener('hashchange',depuisHash)})();</script><script>
 (function(){
   var b=document.getElementById('menu-mode'); if(!b) return;
   var r=document.documentElement, sys=window.matchMedia('(prefers-color-scheme: dark)');

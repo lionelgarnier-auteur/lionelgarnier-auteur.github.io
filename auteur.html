@@ -574,6 +574,23 @@ a.marque{color:inherit;text-decoration:none}
 /* V82 : dans le menu, « Lire en ligne » est séparé de « Contact » par un trait et aligné comme lui (il avait l'air d'en dépendre) */
 .nav nav.menu .menu-liste a.menu-relecteurs{margin-top:8px;border-top:1px solid var(--ligne);border-radius:0;padding-top:15px;padding-left:12px;font-weight:600}
 </style>
+<style>
+/* ===== V85 : Contact mis en forme comme les Professionnels (demande de Lionel) : même cadre doré, titre et adresse centrés, texte justifié si la place le permet. Seuls les boutons se cliquent (pas tout le cadre). Bouton « Copier » retiré : toucher l'adresse = écrire ET copier ; rester appuyé = copier seulement ; petit mot « Adresse copiée ✓ ». ===== */
+#contact{position:relative;container-type:inline-size;border:1px solid rgba(242,198,109,.7);background:radial-gradient(130% 120% at 50% 0%,rgba(242,198,109,.13),rgba(242,198,109,0) 62%),var(--surface);box-shadow:0 0 0 5px rgba(242,198,109,.07),0 16px 36px rgba(0,0,0,.18)}
+#contact .etiquette,#contact .h-carte,#contact h2,#contact .mail-ligne,#contact .mail-aide{text-align:center}
+#contact .mail-ligne{margin:14px 0 6px}
+#contact .lienmail{display:inline-flex;align-items:center;gap:12px;min-height:48px;padding:10px 24px;border-radius:999px;border:1.5px solid #f2c66d;color:var(--or-fonce);font-weight:700;text-decoration:none;transition:background .2s,color .2s}
+#contact .lienmail::before{content:'✉';font-size:1.2rem;line-height:1}
+#contact .mail-aide{font-size:.82rem;opacity:.7;margin:0 0 14px}
+@container (min-width:600px){#contact > p:not(.etiquette):not(.mail-ligne):not(.mail-aide){text-align:justify;hyphens:auto;-webkit-hyphens:auto;text-wrap:pretty}}
+#contact .lienmail{-webkit-touch-callout:none;-webkit-user-select:none;user-select:none;touch-action:manipulation}
+#contact .lienmail:hover,#contact .lienmail:focus-visible{background:#f2c66d;color:#1a1d33}
+#contact .mail-aide{transition:color .3s ease,opacity .3s ease;min-height:1.3em}
+#contact .mail-aide.copie{color:#f2c66d;opacity:1;font-weight:700}
+#contact .lienmail.appui{animation:lgAppui .5s linear forwards}
+@keyframes lgAppui{from{box-shadow:0 0 0 0 rgba(242,198,109,0)}to{box-shadow:0 0 0 6px rgba(242,198,109,.35),0 0 22px rgba(242,198,109,.35)}}
+@media (prefers-reduced-motion:reduce){#contact .lienmail.appui{animation:none}}
+</style>
 </head>
 <body>
 <a class="evitement" href="#contenu">Aller au contenu</a>
@@ -652,7 +669,8 @@ a.marque{color:inherit;text-decoration:none}
       <div class="carte contact-auteur" id="contact">
         <p class="etiquette">Contact</p>
         <h2>Écrire à l’auteur</h2>
-        <div class="mail"><a href="mailto:contact@lionelgarnier.fr" class="lienmail"><code id="adresse">contact@lionelgarnier.fr</code></a><button type="button" id="copier">Copier</button><span class="sr" id="copie-etat" aria-live="polite"></span></div>
+        <p class="mail-ligne"><a href="mailto:contact@lionelgarnier.fr" class="lienmail"><span id="adresse">contact@lionelgarnier.fr</span></a></p>
+        <p class="mail-aide" id="mail-aide" aria-live="polite">Touchez pour écrire · restez appuyé pour copier</p>
         <p>Je lis tous les messages. Je ne peux pas donner d’avis médical ni suivre une situation personnelle, mais je peux vous dire vers qui vous tourner. En cas d’urgence, appelez le 15 ou le 112.</p>
       </div>
 
@@ -688,14 +706,7 @@ a.marque{color:inherit;text-decoration:none}
   </div>
 </footer>
 
-<script>
-document.getElementById('copier').addEventListener('click', async (e) => {
-  const b = e.currentTarget, t = document.getElementById('adresse');
-  try { await navigator.clipboard.writeText(t.textContent); b.textContent = 'Copié'; document.getElementById('copie-etat').textContent = 'Adresse copiée'; }
-  catch (_) { const r = document.createRange(); r.selectNodeContents(t); const s = getSelection(); s.removeAllRanges(); s.addRange(r); b.textContent = 'Sélectionné'; document.getElementById('copie-etat').textContent = 'Adresse sélectionnée, copiez-la avec Ctrl+C'; }
-  setTimeout(() => { b.textContent = 'Copier'; document.getElementById('copie-etat').textContent = ''; }, 2000);
-});
-</script>
+
 
 
 
@@ -758,6 +769,20 @@ document.getElementById('copier').addEventListener('click', async (e) => {
     maj(); });
   if (sys.addEventListener) sys.addEventListener('change', maj);
   maj();
+})();
+</script>
+<script>
+/* V85 : l'adresse de contact. Toucher = ouvrir la messagerie ET copier l'adresse ; rester appuyé (0,5 s) = copier seulement. Petit mot doré « Adresse copiée ✓ » pendant 2,5 s. */
+(function(){
+  const a=document.querySelector('#contact .lienmail'),aide=document.getElementById('mail-aide');if(!a||!aide)return;
+  const adr='contact@lionelgarnier.fr',base=aide.textContent;let t=null,long=false,minu=null;
+  function dit(m){aide.textContent=m;aide.classList.add('copie');clearTimeout(minu);minu=setTimeout(()=>{aide.textContent=base;aide.classList.remove('copie');},2500);}
+  async function copie(){try{await navigator.clipboard.writeText(adr);return true;}catch(_){try{const z=document.createElement('textarea');z.value=adr;z.setAttribute('readonly','');z.style.cssText='position:fixed;opacity:0';document.body.appendChild(z);z.select();const ok=document.execCommand('copy');z.remove();return ok;}catch(__){return false;}}}
+  function fin(){clearTimeout(t);a.classList.remove('appui');}
+  a.addEventListener('pointerdown',e=>{if(e.button)return;long=false;a.classList.add('appui');t=setTimeout(async()=>{long=true;a.classList.remove('appui');if(navigator.vibrate)try{navigator.vibrate(15);}catch(_){}dit(await copie()?'Adresse copiée ✓':'Adresse : '+adr);},500);});
+  ['pointerup','pointercancel','pointerleave'].forEach(n=>a.addEventListener(n,fin));
+  a.addEventListener('contextmenu',e=>e.preventDefault());
+  a.addEventListener('click',async e=>{if(long){e.preventDefault();long=false;return;}const ok=await copie();if(ok)dit('Adresse copiée ✓ · votre messagerie s’ouvre');});
 })();
 </script>
 </body>
