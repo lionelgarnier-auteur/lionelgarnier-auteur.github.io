@@ -2,8 +2,8 @@
 <html lang="fr">
 <head>
 <meta charset="utf-8">
-<meta name="color-scheme" content="light dark">
-<script>try{var t=localStorage.getItem('lg-mode');if(t==='light'||t==='dark')document.documentElement.setAttribute('data-theme',t)}catch(e){}</script>
+<meta name="color-scheme" content="dark light">
+<script>/* V80 : le site s'ouvre toujours en mode nuit ; le mode jour reste possible par le bouton du menu (choix gardé sur l'appareil) */try{var t=localStorage.getItem('lg-mode');document.documentElement.setAttribute('data-theme',t==='light'?'light':'dark')}catch(e){document.documentElement.setAttribute('data-theme','dark')}</script>
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="description" content="Lionel Garnier, auteur de « Je l’aime, mais je n’en peux plus », patient expert en formation en addictologie : son parcours, son engagement auprès des familles, ses interventions, et sa recherche de poste de patient expert ou de pair-aidant.">
 <link rel="canonical" href="https://lionelgarnier.fr/auteur">
@@ -748,8 +748,8 @@ document.getElementById('copier').addEventListener('click', async (e) => {
     b.querySelector('.ico').textContent = nuit ? '\u2600\uFE0F' : '\uD83C\uDF19';
     b.querySelector('.txt').textContent = nuit ? 'Passer en mode jour' : 'Passer en mode nuit'; }
   b.addEventListener('click', function(e){ e.stopPropagation();
-    var voulu = actuel()==='dark' ? 'light' : 'dark', auto = sys.matches ? 'dark' : 'light';
-    if (voulu===auto) { r.removeAttribute('data-theme'); try{localStorage.removeItem('lg-mode')}catch(x){} }
+    var voulu = actuel()==='dark' ? 'light' : 'dark', auto = 'dark';   /* V80 : le mode nuit est le mode normal du site */
+    if (voulu===auto) { r.setAttribute('data-theme','dark'); try{localStorage.removeItem('lg-mode')}catch(x){} }
     else { r.setAttribute('data-theme', voulu); try{localStorage.setItem('lg-mode', voulu)}catch(x){} }
     maj(); });
   if (sys.addEventListener) sys.addEventListener('change', maj);
