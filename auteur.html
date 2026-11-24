@@ -577,6 +577,16 @@ a.marque{color:inherit;text-decoration:none}
 <style>
 /* ===== V85 : Contact mis en forme comme les Professionnels (demande de Lionel) : même cadre doré, titre et adresse centrés, texte justifié si la place le permet. Seuls les boutons se cliquent (pas tout le cadre). Bouton « Copier » retiré : toucher l'adresse = écrire ET copier ; rester appuyé = copier seulement ; petit mot « Adresse copiée ✓ ». ===== */
 #contact{position:relative;container-type:inline-size;border:1px solid rgba(242,198,109,.7);background:radial-gradient(130% 120% at 50% 0%,rgba(242,198,109,.13),rgba(242,198,109,0) 62%),var(--surface);box-shadow:0 0 0 5px rgba(242,198,109,.07),0 16px 36px rgba(0,0,0,.18)}
+/* V86 : le petit losange doré sur le cadre, comme pour les professionnels (demande de Lionel) */
+/* V86 : l'urgence sur sa propre ligne, bien visible (demande de Lionel). Quand Contact est à côté des professionnels, elle descend en bas de la carte (plus de vide). */
+#contact{display:flex;flex-direction:column}
+#contact > p.urgence-ligne{margin:auto 0 0;padding-top:20px;text-align:center}
+#contact .urgence-ligne > span{display:inline-flex;align-items:center;gap:10px;padding:11px 18px;border-radius:12px;border:1px solid rgba(255,138,128,.55);background:rgba(180,35,24,.16);color:#fff;font-weight:600;line-height:1.35;text-align:left}
+#contact .urgence-ligne svg{flex:none;color:#ff8a80}
+#contact .urgence-ligne a{color:#ffb3a8;font-weight:800;text-decoration:none;border-bottom:1.5px solid rgba(255,179,168,.6)}
+#contact .urgence-ligne{display:block}
+#contact .urgence-ligne .u-txt{display:block;text-wrap:balance}
+#contact::before{content:'';position:absolute;top:-7px;left:calc(50% - 6.5px);width:13px;height:13px;transform:rotate(45deg);background:#f2c66d;box-shadow:0 0 0 4px var(--bg)}
 #contact .etiquette,#contact .h-carte,#contact h2,#contact .mail-ligne,#contact .mail-aide{text-align:center}
 #contact .mail-ligne{margin:14px 0 6px}
 #contact .lienmail{display:inline-flex;align-items:center;gap:12px;min-height:48px;padding:10px 24px;border-radius:999px;border:1.5px solid #f2c66d;color:var(--or-fonce);font-weight:700;text-decoration:none;transition:background .2s,color .2s}
@@ -671,7 +681,8 @@ a.marque{color:inherit;text-decoration:none}
         <h2>Écrire à l’auteur</h2>
         <p class="mail-ligne"><a href="mailto:contact@lionelgarnier.fr" class="lienmail"><span id="adresse">contact@lionelgarnier.fr</span></a></p>
         <p class="mail-aide" id="mail-aide" aria-live="polite">Touchez pour écrire · restez appuyé pour copier</p>
-        <p>Je lis tous les messages. Je ne peux pas donner d’avis médical ni suivre une situation personnelle, mais je peux vous dire vers qui vous tourner. En cas d’urgence, appelez le 15 ou le 112.</p>
+        <p>Je lis tous les messages. Je ne peux pas donner d’avis médical ni suivre une situation personnelle, mais je peux vous dire vers qui vous tourner.</p>
+        <p class="urgence-ligne"><span><svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" focusable="false"><path fill="currentColor" d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.25 11.4 11.4 0 0 0 3.6.57 1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.25.2 2.45.57 3.57a1 1 0 0 1-.25 1z"/></svg><span class="u-txt">En cas d’urgence, appelez le <a href="tel:15">15</a> ou le <a href="tel:112">112</a></span></span></p>
       </div>
 
       <p class="liens">Pour être transparent (liens d’intérêts) : j’anime des groupes de parole à l’association <a href="https://vivresansaddiction.fr/">Vivre Sans Addiction</a> (Isère) ; je suis membre du conseil d’administration de cette association et de la <a href="https://cptsduvoironnais.com/index.php/cpts-du-voironnais/">CPTS du Voironnais</a> (le réseau des professionnels de santé du secteur) ; actions de prévention avec ces deux structures. Je ne perçois aucune rémunération de ces structures pour ce livre ; je perçois les revenus de sa vente.</p>
