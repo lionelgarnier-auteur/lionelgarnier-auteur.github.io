@@ -585,6 +585,13 @@ a.marque:focus-visible{outline:3px solid var(--or);outline-offset:4px;border-rad
 .nav nav.menu .menu-liste button.menu-mode:hover,.nav nav.menu .menu-liste button.menu-mode:focus-visible{background:var(--bg)}
 .menu-mode .ico{display:inline-block;width:1.4em}
 </style>
+<style>
+/* V79 : le paysage de la couverture derrière le haut de la page (même image que l'accueil du livre en ligne) ; la lueur est calée sur celle de la couverture par caleHero() */
+.hero{background:linear-gradient(90deg,rgba(15,19,34,.78) 0%,rgba(15,19,34,.5) 50%,rgba(15,19,34,.15) 100%),#151929 url(/fond-paysage.jpg) center 42%/cover no-repeat}
+@media (max-width:820px){.hero{background:linear-gradient(180deg,rgba(15,19,34,.2) 0%,rgba(15,19,34,.6) 45%,rgba(15,19,34,.9) 100%),#151929 url(/fond-paysage.jpg) center 42%/cover no-repeat}}
+/* léger démarquage du tour du livre : fin liseré ivoire + halo sombre */
+.hero .couv-livre{box-shadow:0 0 0 1px rgba(236,226,200,.38),0 0 0 2px rgba(10,13,26,.55),0 0 22px 6px rgba(8,10,20,.6),0 24px 50px rgba(0,0,0,.55)}
+</style>
 </head>
 <body>
 <div id="intro" aria-hidden="true"></div>
@@ -1124,6 +1131,22 @@ window.INTRO_VIDEO='/teaser-accueil-V16.mp4';
     maj(); });
   if (sys.addEventListener) sys.addEventListener('change', maj);
   maj();
+})();
+</script>
+<script>
+/* V79 : place le paysage du haut de page à l'échelle de la couverture, lueur du fond (41 % de la hauteur de l'image) à la hauteur de celle de la couverture (57 %) */
+(function(){var R=1672/941;
+ function caleHero(){var h=document.querySelector('.hero'),c=document.querySelector('.hero .couv-livre');if(!h||!c)return;var H=h.getBoundingClientRect(),q=c.getBoundingClientRect();if(q.height<40||H.width<50)return;
+  var ty=q.top-H.top+q.height*0.57,cx=q.left-H.left+q.width/2,W=H.width,Hh=H.height,rh,rw;
+  if(window.matchMedia('(max-width:820px)').matches){ /* téléphone : le paysage en bandeau derrière la couverture, puis fondu vers le bleu nuit */
+   rh=Math.max(ty/0.41,q.height*2.3,W/R)*1.001;rw=rh*R;var top=ty-0.41*rh,bc=q.bottom-H.top;
+   h.style.background='linear-gradient(180deg,rgba(21,25,41,.55) 0px,rgba(21,25,41,.18) '+Math.round(ty-q.height*0.12)+'px,rgba(21,25,41,.3) '+Math.round(ty+q.height*0.1)+'px,rgba(21,25,41,.9) '+Math.round(bc+6)+'px,#151929 '+Math.round(Math.min(top+rh,bc+q.height*0.45))+'px,#151929 100%),#151929 url(/fond-paysage.jpg) '+Math.round(cx-rw/2)+'px '+Math.round(top)+'px/'+Math.ceil(rw)+'px '+Math.ceil(rh)+'px no-repeat';return;}
+  h.style.background='';rh=Math.max(Hh,W/R,ty/0.41,(Hh-ty)/0.59,2*Math.max(cx,W-cx)/R)*1.001;rw=rh*R;
+  h.style.backgroundSize='auto, '+Math.ceil(rw)+'px '+Math.ceil(rh)+'px';h.style.backgroundPosition='0 0, '+Math.round(cx-rw/2)+'px '+Math.round(ty-0.41*rh)+'px';}
+ var t=null;function plusTard(){clearTimeout(t);t=setTimeout(caleHero,60);}
+ caleHero();window.addEventListener('load',caleHero);window.addEventListener('resize',plusTard);
+ var im=document.querySelector('.hero .couv-livre');if(im&&!im.complete)im.addEventListener('load',caleHero);
+ if(window.ResizeObserver){var h=document.querySelector('.hero');if(h)new ResizeObserver(plusTard).observe(h);}
 })();
 </script>
 </body>
