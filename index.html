@@ -601,7 +601,8 @@ main > section{position:relative}main > section:not(.feuilleter)::before,main > 
 .feuilleter .commandes:has(> .loupe-btn:only-child){display:none}.feuilleter .loupe-btn{display:none!important}
 /* V80 : chaque étape se touche et montre ses chapitres dans un panneau qui s'ouvre sous sa rangée, sur toute la largeur : les cartes gardent leur taille, aucun vide (demande de Lionel) */
 .etape{cursor:pointer;position:relative;transition:border-color .25s,box-shadow .25s;-webkit-tap-highlight-color:transparent}
-.etape:hover{border-color:rgba(242,198,109,.55)}
+/* V81 : le survol ne s'applique qu'à la souris (sur un écran tactile, il restait collé à la dernière carte touchée) */
+@media (hover:hover){.etape:hover{border-color:rgba(242,198,109,.55)}}
 .etape.ouverte{border-color:rgba(242,198,109,.75);box-shadow:0 10px 28px rgba(0,0,0,.18)}
 /* une flèche dorée pleine part de l'étape touchée et descend vers le détail */
 .etape.ouverte::after{content:'';position:absolute;left:50%;bottom:-17px;width:0;height:0;transform:translateX(-50%);border-left:15px solid transparent;border-right:15px solid transparent;border-top:16px solid #f2c66d;filter:drop-shadow(0 2px 3px rgba(0,0,0,.35));z-index:2}
@@ -609,7 +610,7 @@ main > section{position:relative}main > section:not(.feuilleter)::before,main > 
 .etape .voir .chev{width:8px;height:8px;border-right:2px solid currentColor;border-bottom:2px solid currentColor;transform:translateY(-2px) rotate(45deg);transition:transform .3s}
 .etape.ouverte .voir .chev{transform:translateY(2px) rotate(-135deg)}
 .etape .chap{display:none}
-.chap-panneau{grid-column:1 / -1!important;background:var(--surface);border:1px solid rgba(242,198,109,.75);border-radius:16px;padding:20px 22px 22px;animation:panIn .4s ease both}
+.chap-panneau{cursor:pointer;-webkit-tap-highlight-color:transparent;grid-column:1 / -1!important;background:var(--surface);border:1px solid rgba(242,198,109,.75);border-radius:16px;padding:20px 22px 22px;animation:panIn .4s ease both}
 .chap-panneau .titre{font-family:var(--display);font-weight:800;font-size:.85rem;letter-spacing:.08em;color:var(--or-fonce);text-transform:uppercase}
 .chap-panneau ul{list-style:none;margin:14px 0 0;padding:0;display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,280px),1fr));gap:12px 28px}
 .chap-panneau li{display:grid;grid-template-columns:1.9em 1fr;gap:8px;font-size:.95rem;line-height:1.45;color:var(--fg);animation:chapIn .45s ease both}
@@ -633,9 +634,16 @@ main > section{position:relative}main > section:not(.feuilleter)::before,main > 
 .carte-pro .pro-bouton{margin-top:22px;text-align:center}
 .carte-pro .pro-bouton a{display:inline-flex;align-items:center;gap:10px;min-height:48px;padding:10px 22px;border-radius:999px;border:1.5px solid #f2c66d;color:var(--or-fonce);font-weight:700;text-decoration:none;transition:background .2s,color .2s}
 .carte-pro .pro-bouton a:hover,.carte-pro .pro-bouton a:focus-visible{background:#f2c66d;color:#1a1d33}
+/* V81 : le lien « Lire le sommaire complet et l'avant-propos » est centré sous les étapes (demande de Lionel) */
+#livre .plus-livre{text-align:center;margin-top:28px}
+/* V81 : dans le menu, les raccourcis « Sur cette page » portent une petite flèche vers le bas (on reste sur la page, elle glisse jusqu'à la partie) */
+.nav nav.menu .menu-liste a.menu-simple[href="/professionnels"]{margin-top:0;border-top:0;border-radius:9px;padding:11px 12px 11px 22px;font-weight:400}
+.nav nav.menu .menu-liste a.menu-relecteurs{margin-top:8px;border-top:1px solid var(--ligne);padding-top:15px}
+#pros-carte{scroll-margin-top:100px}
+.menu-liste a.menu-ici::before{content:'↓';display:inline-block;width:1.3em;color:var(--or-fonce);font-weight:700}
 /* V80 : la phrase « Ce livre ne promet pas… » posée sur le paysage de la couverture ; quand elle arrive à l'écran, le paysage s'éclaire doucement (lever du jour) */
 .promesse{position:relative;isolation:isolate;margin-top:56px;margin-bottom:18px;padding:64px 32px 58px;border:1px solid rgba(242,198,109,.5);background:#151929 url(/fond-paysage.jpg) center 40%/cover no-repeat;box-shadow:0 18px 40px rgba(0,0,0,.3);gap:14px;overflow:hidden}
-.promesse::before{content:'';position:absolute;inset:0;z-index:-1;background:linear-gradient(rgba(15,19,34,.5),rgba(15,19,34,.62))}
+.promesse::before{content:'';position:absolute;inset:0;z-index:-1;background:linear-gradient(rgba(15,19,34,0.12),rgba(15,19,34,0.28))}
 .promesse::after{content:'';position:absolute;inset:0;z-index:-1;background:rgba(9,11,22,.9);opacity:0;pointer-events:none}
 .promesse.attend::after{opacity:1}
 .promesse.attend strong,.promesse.attend span{opacity:.5}
@@ -661,16 +669,18 @@ main > section{position:relative}main > section:not(.feuilleter)::before,main > 
       <a class="sos" href="/numeros-aide"><svg class="ico-tel" viewBox="0 0 24 24" width="16" height="16" aria-hidden="true" focusable="false"><path fill="currentColor" d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.25 11.4 11.4 0 0 0 3.6.57 1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.25.2 2.45.57 3.57a1 1 0 0 1-.25 1z"/></svg>Numéros d’aide</a>
       <div class="menu-liste" id="menu-liste" hidden>
         <a href="/#top" class="menu-accueil" aria-current="page">Accueil</a>
-        <p class="menu-groupe">Le livre</p>
-        <a href="#livre">Présentation</a>
+        <p class="menu-groupe">Sur cette page</p>
+        <a href="#livre" class="menu-ici">Le livre</a>
+        <a href="#section-feuilleter" class="menu-ici">Feuilleter les premières pages</a>
+        <a href="#editions" class="menu-ici">Les deux éditions</a>
+        <a href="#auteur" class="menu-ici">L’auteur</a>
+        <a href="#contact" class="menu-ici">Contact</a>
+        <a href="#pros-carte" class="menu-ici">Pour les professionnels</a>
+        <p class="menu-groupe">Les autres pages</p>
         <a href="/le-livre">Sommaire et avant-propos</a>
-        <a href="#section-feuilleter">Feuilleter</a>
-        <a href="#editions">Les deux éditions</a>
         <a href="/methode-craft">La méthode CRAFT</a>
-        <p class="menu-groupe">L’auteur</p>
-        <a href="/auteur">Parcours</a>
-        <a href="/professionnels">Pour les professionnels</a>
-        <a href="#contact" class="menu-contact">Contact</a>
+        <a href="/auteur">Le parcours de l’auteur</a>
+        <a href="/professionnels" class="menu-simple">La page des professionnels</a>
         <a href="https://edition-discrete.pages.dev/" class="menu-relecteurs" rel="nofollow">🔒 Lire en ligne</a>
         <button type="button" class="menu-mode" id="menu-mode"><span class="ico" aria-hidden="true"></span><span class="txt"></span></button>
         <a href="/numeros-aide" class="menu-aide"><svg class="ico-tel" viewBox="0 0 24 24" width="16" height="16" aria-hidden="true" focusable="false"><path fill="currentColor" d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.25 11.4 11.4 0 0 0 3.6.57 1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.25.2 2.45.57 3.57a1 1 0 0 1-.25 1z"/></svg>Numéros d’aide</a>
@@ -810,7 +820,7 @@ main > section{position:relative}main > section:not(.feuilleter)::before,main > 
         <div class="mail"><a href="mailto:contact@lionelgarnier.fr" class="lienmail"><code id="adresse">contact@lionelgarnier.fr</code></a><button type="button" id="copier">Copier</button><span class="sr" id="copie-etat" aria-live="polite"></span></div>
         <p>Je lis tous les messages. Je ne peux pas donner d’avis médical ni suivre une situation personnelle, mais je peux vous dire vers qui vous tourner. En cas d’urgence, appelez le 15 ou le 112.</p>
       </div>
-      <div class="carte carte-pro">
+      <div class="carte carte-pro" id="pros-carte">
         <p class="etiquette">Pour les professionnels</p>
         <h2 class="h-carte">Vous accompagnez des familles ?</h2>
         <p>CSAPA, CJC, médecins, associations, groupes de parole, travail social : je peux venir présenter le livre, témoigner de mon parcours ou échanger avec vos équipes et vos groupes. Les pages d’exercices peuvent être photocopiées pour vos groupes, à certaines conditions.</p>
@@ -1223,6 +1233,8 @@ window.INTRO_VIDEO='/teaser-accueil-V16.mp4';
   P.innerHTML='<p class="titre"></p><ul></ul>';P.firstChild.textContent=c.querySelector('.n').textContent+' · '+c.querySelector('h3').textContent;P.lastChild.innerHTML=l.innerHTML;P.setAttribute('aria-label','Chapitres de l’'+c.querySelector('.n').textContent.toLowerCase());place();}
  C.forEach(function(c){var b=c.querySelector('.voir'),l=c.querySelector('.chap');if(!b||!l)return;b.setAttribute('aria-controls','chap-panneau');l.removeAttribute('hidden');
   c.addEventListener('click',function(e){if(e.target.closest('a'))return;if(act===c)ferme();else ouvre(c);});});
+ /* V81 : toucher le panneau des chapitres le referme aussi (demande de Lionel), sauf si on est en train de sélectionner du texte */
+ P.addEventListener('click',function(){if(String(window.getSelection&&window.getSelection())!=='')return;ferme();});
  var t=null;window.addEventListener('resize',function(){clearTimeout(t);t=setTimeout(place,120);});})();
 </script>
 <script>
