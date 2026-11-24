@@ -796,6 +796,13 @@ main > section#livre::after{box-shadow:0 0 18px rgba(242,198,109,.22)}
 .promesse.jour > span > .doux{background:linear-gradient(90deg,#f6d791 0%,#c9a258 50%,#8c713f 100%);-webkit-background-clip:text;background-clip:text;color:transparent!important;text-shadow:none!important;filter:drop-shadow(0 2px 8px rgba(0,0,0,.75))}
 .promesse > span > .fort{white-space:nowrap}
 @media (max-width:520px){.promesse > span > .fort{white-space:normal}}
+/* V91 : bandeaux fermés : un seul fond uni pour tout le groupe « Le livre » (les fonds alternés de chaque partie faisaient des bandes plus claires et plus foncées, demande de Lionel) */
+main > section.pliable:not(.ouvert){background:var(--bg,#14172a)!important;background-image:none!important;box-shadow:none!important;border-top-color:transparent!important;border-bottom-color:transparent!important}
+main > section.pliable{border-top:0!important;border-bottom:0!important}
+:root[data-theme="light"] #section-feuilleter .bandeau{background:linear-gradient(100deg,rgba(242,198,109,.1),rgba(242,198,109,.02) 55%),#fff!important}
+:root[data-theme="light"] #section-feuilleter .bandeau .b-titre{color:#1e2233!important}:root[data-theme="light"] #section-feuilleter .bandeau .b-sous{color:#5b6075!important}:root[data-theme="light"] #section-feuilleter .bandeau .b-mot{color:#8a5d10!important}:root[data-theme="light"] #section-feuilleter .bandeau .b-rond{color:#8a5d10;border-color:currentColor}
+/* V91 : « Feuilleter » sur ordinateur et tablette couchée : le livre ouvert prend nettement plus de place, pour donner envie de lire (demande de Lionel) ; le téléphone ne change pas */
+@media (min-width:1000px) and (min-height:560px){.feuilleter .livre3d{width:min(1260px,94vw,calc((100svh - 178px)*296/210))!important;max-width:none!important;flex-shrink:0!important}}
 /* ===== V83 : accueil « à bandeaux » (demande de Lionel) : chaque partie se déroule comme un rouleau, du même geste que le menu ; « Le livre » est déroulé à l'arrivée. Sans JavaScript, tout reste affiché normalement. ===== */
 main > section.pliable{padding-block:14px}
 /* V84 : la ligne du bandeau et celle du bouton « Replier » occupent toujours toute la largeur (dans « L'auteur », la mise en page en deux colonnes les réduisait à une colonne étroite sur tablette couchée) */
@@ -841,6 +848,14 @@ main > section.pliable{padding-block:14px}
 @media (max-width:380px){.nav .wrap{gap:6px}.nav .sos,.nav nav.menu > a.sos{padding:6px 10px!important;font-size:.78rem!important;gap:5px}.menu-btn{padding-inline:10px!important}.marque{gap:7px!important}}
 @media (max-width:340px){.nav .sos,.nav nav.menu > a.sos{font-size:0!important;padding:8px 12px!important;gap:0}.nav .sos svg{width:18px;height:18px}}
 </style>
+<style>
+/* V91 : bouton « Plein écran » dans la barre du haut, sur ordinateur et tablette (demande de Lionel) ; caché sur téléphone et là où le navigateur ne le permet pas */
+.plein-btn{display:inline-flex;align-items:center;justify-content:center;width:40px;height:40px;padding:0;border-radius:999px;border:1.5px solid rgba(255,255,255,.35);background:transparent;color:#fff;cursor:pointer;flex:none;transition:border-color .2s,color .2s}
+.plein-btn:hover,.plein-btn:focus-visible{border-color:#f2c66d;color:#f2c66d}
+.plein-btn[hidden]{display:none!important}
+.plein-btn .ferme{display:none}.plein-btn.dedans .ouvre{display:none}.plein-btn.dedans .ferme{display:inline}
+@media (max-width:699px){.plein-btn{display:none!important}}
+</style>
 </head>
 <body>
 <div id="intro"></div>
@@ -851,6 +866,7 @@ main > section.pliable{padding-block:14px}
   <div class="wrap">
     <a class="marque" href="#top" title="Retour à l’accueil"><img class="marque-ico" src="/icone-192.png" width="30" height="30" alt="">Lionel Garnier</a>
     <nav aria-label="Menu du site" class="menu">
+      <button type="button" class="plein-btn" id="plein-btn" hidden aria-label="Plein écran" title="Plein écran"><svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" focusable="false"><path class="ouvre" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/><path class="ferme" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" d="M9 4v5H4M15 4v5h5M9 20v-5H4M15 20v-5h5"/></svg></button>
       <button type="button" class="menu-btn" id="menu-btn" aria-expanded="false" aria-controls="menu-liste"><span class="burger" aria-hidden="true"></span><span class="txt">Menu</span></button>
       <a class="sos" href="/numeros-aide"><svg class="ico-tel" viewBox="0 0 24 24" width="16" height="16" aria-hidden="true" focusable="false"><path fill="currentColor" d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.25 11.4 11.4 0 0 0 3.6.57 1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.25.2 2.45.57 3.57a1 1 0 0 1-.25 1z"/></svg>Numéros d’aide</a>
       <div class="menu-liste" id="menu-liste" hidden>
@@ -1521,6 +1537,13 @@ window.INTRO_VIDEO='/teaser-accueil-V16.mp4';
  function dedans(){return !!(document.fullscreenElement||document.webkitFullscreenElement);}
  function maj(){b.querySelector('.txt').textContent=dedans()?'Quitter le plein écran':'Plein écran';}
  b.addEventListener('click',function(){try{if(dedans()){(document.exitFullscreen||document.webkitExitFullscreen).call(document);}else{var r=(d.requestFullscreen||d.webkitRequestFullscreen).call(d);if(r&&r.catch)r.catch(function(){});}}catch(e){}});
+ ['fullscreenchange','webkitfullscreenchange'].forEach(function(n){document.addEventListener(n,maj);});maj();})();
+</script>
+<script>
+(function(){var b=document.getElementById('plein-btn');if(!b)return;var d=document.documentElement;if(!(d.requestFullscreen||d.webkitRequestFullscreen))return;b.hidden=false;
+ function dedans(){return !!(document.fullscreenElement||document.webkitFullscreenElement);}
+ function maj(){var x=dedans();b.classList.toggle('dedans',x);b.setAttribute('aria-label',x?'Quitter le plein écran':'Plein écran');b.title=x?'Quitter le plein écran':'Plein écran';}
+ b.addEventListener('click',function(){try{if(dedans())(document.exitFullscreen||document.webkitExitFullscreen).call(document);else{var r=(d.requestFullscreen||d.webkitRequestFullscreen).call(d);if(r&&r.catch)r.catch(function(){});}}catch(e){}});
  ['fullscreenchange','webkitfullscreenchange'].forEach(function(n){document.addEventListener(n,maj);});maj();})();
 </script>
 </body>
