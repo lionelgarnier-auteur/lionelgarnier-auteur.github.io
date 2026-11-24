@@ -790,6 +790,12 @@ main > section#livre::before{top:-8px;height:11px;-webkit-mask-image:none;mask-i
 main > section#livre::after{box-shadow:0 0 18px rgba(242,198,109,.22)}
 :root[data-theme="light"] main > section#livre::after{background:var(--surface,#fff);color:var(--or-fonce);border-color:var(--or-fonce);box-shadow:0 0 0 5px var(--bg,#f6f5f1)}
 :root[data-theme="light"] main > section#pros::after{box-shadow:0 0 0 4px var(--bg,#f6f5f1)}
+/* V90 : la lumière monte sur « Il vous aide à », culmine sur « aller mieux, » (plus marqué), puis redescend sur « quoi qu'il fasse. » (demande de Lionel) */
+.promesse.jour > span > .fort .monte{background:linear-gradient(90deg,#9e8248 0%,#d9b469 55%,#ffe7a6 100%);-webkit-background-clip:text;background-clip:text;color:transparent!important;text-shadow:none!important;filter:drop-shadow(0 2px 8px rgba(0,0,0,.75))}
+.promesse.jour > span > .fort .mieux{color:#fff3cc!important;font-weight:800;text-shadow:0 0 26px rgba(255,214,120,.95),0 0 10px rgba(255,226,150,.8),0 2px 12px rgba(0,0,0,.8)!important}
+.promesse.jour > span > .doux{background:linear-gradient(90deg,#f6d791 0%,#c9a258 50%,#8c713f 100%);-webkit-background-clip:text;background-clip:text;color:transparent!important;text-shadow:none!important;filter:drop-shadow(0 2px 8px rgba(0,0,0,.75))}
+.promesse > span > .fort{white-space:nowrap}
+@media (max-width:520px){.promesse > span > .fort{white-space:normal}}
 /* ===== V83 : accueil « à bandeaux » (demande de Lionel) : chaque partie se déroule comme un rouleau, du même geste que le menu ; « Le livre » est déroulé à l'arrivée. Sans JavaScript, tout reste affiché normalement. ===== */
 main > section.pliable{padding-block:14px}
 /* V84 : la ligne du bandeau et celle du bouton « Replier » occupent toujours toute la largeur (dans « L'auteur », la mise en page en deux colonnes les réduisait à une colonne étroite sur tablette couchée) */
@@ -897,7 +903,7 @@ main > section.pliable{padding-block:14px}
   <div class="wrap promesse-place">
   <div class="promesse promesse-accueil">
       <strong>Ce livre ne promet pas que votre proche arrêtera.</strong>
-      <span><span class="fort">Il vous aide à aller mieux,</span> <span class="doux">quoi qu’il fasse.</span></span>
+      <span><span class="fort"><span class="monte">Il vous aide à </span><span class="mieux">aller mieux,</span></span> <span class="doux">quoi qu’il fasse.</span></span>
     </div>
   </div>
   <section id="livre">
