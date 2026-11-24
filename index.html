@@ -720,11 +720,10 @@ main > section{position:relative}main > section:not(.feuilleter)::before,main > 
 .carte-pro p:not(.pro-bouton) a{text-decoration:none;background-image:linear-gradient(currentColor,currentColor);background-size:100% 1.5px;background-position:0 calc(100% - 1px);background-repeat:no-repeat;padding-bottom:2px;-webkit-box-decoration-break:clone;box-decoration-break:clone}
 .carte-pro p:not(.pro-bouton) a .insec{text-decoration:none}
 .carte-pro p:not(.pro-bouton) a:hover{background-size:100% 2.5px}
-/* V86 : « Le livre » : la question, puis la phrase animée, puis « Ce guide vous accompagne… » ; une seule colonne */
-#livre .intro-titre,#livre .intro-suite{grid-template-columns:1fr;gap:0}
-#livre .promesse-haut{margin-top:30px;margin-bottom:30px}
-/* sur un écran large (ordinateur, tablette couchée) : la question à gauche, la phrase animée à droite, côte à côte, sans vide */
-@media (min-width:900px){#livre .livre-tete{display:grid;grid-template-columns:.85fr 1.15fr;gap:40px;align-items:center;margin-bottom:34px}#livre .livre-tete .promesse-haut{margin:0;padding:44px 26px}}
+/* V88 : la phrase animée sous le haut de page, plus compacte */
+.promesse-place{padding-top:8px;padding-bottom:26px}
+.promesse-place .promesse{margin:0;padding:40px 26px}
+@media (max-width:600px){.promesse-place .promesse{padding:30px 18px}}
 /* ===== V87 : bandeau « La méthode CRAFT » en tête de l'accueil ===== */
 .craft-bref .grand{font-family:var(--display);font-size:clamp(1.35rem,2.6vw,1.8rem);font-weight:700;line-height:1.3;letter-spacing:-.015em;margin:6px 0 0}
 .craft-bref .grand em{font-style:normal;color:var(--or-fonce)}
@@ -736,6 +735,10 @@ main > section{position:relative}main > section:not(.feuilleter)::before,main > 
 .craft-bouton{margin-top:20px;text-align:center}
 .craft-bouton a{display:inline-flex;align-items:center;min-height:48px;padding:10px 24px;border-radius:999px;border:1.5px solid #f2c66d;color:var(--or-fonce);font-weight:700;text-decoration:none;transition:background .2s,color .2s}
 .craft-bouton a:hover,.craft-bouton a:focus-visible{background:#f2c66d;color:#1a1d33}
+/* V88 : à l'arrivée sur l'accueil, le petit marcheur du logo avance pendant 6 secondes, comme dans les coins du livre quand on le feuillette (les 135 images du livre), il finit la main tendue */
+a.marque{position:relative}
+.marque-anim{position:absolute;left:0;top:50%;width:30px;height:30px;margin-top:-15px;border-radius:8px;background:url(/marcheur-anim.webp) 0 0/4050px 30px no-repeat;box-shadow:0 0 0 1.5px rgba(255,255,255,.25);pointer-events:none}
+.marque-anim{opacity:0;transition:opacity 1.2s ease}.marque-anim.vu{opacity:1}
 /* ===== V83 : accueil « à bandeaux » (demande de Lionel) : chaque partie se déroule comme un rouleau, du même geste que le menu ; « Le livre » est déroulé à l'arrivée. Sans JavaScript, tout reste affiché normalement. ===== */
 main > section.pliable{padding-block:14px}
 /* V84 : la ligne du bandeau et celle du bouton « Replier » occupent toujours toute la largeur (dans « L'auteur », la mise en page en deux colonnes les réduisait à une colonne étroite sur tablette couchée) */
@@ -831,22 +834,20 @@ main > section.pliable{padding-block:14px}
   </div>
 </div>
 
+  <!-- V88 : la phrase animée, en pleine largeur, juste sous le haut de page (demande de Lionel) : on voit l'effet de lumière dès l'arrivée -->
+  <div class="wrap promesse-place">
+  <div class="promesse promesse-accueil">
+      <strong>Ce livre ne promet pas que votre proche arrêtera.</strong>
+      <span><span class="fort">Il vous aide à aller mieux,</span> <span class="doux">quoi qu’il fasse.</span></span>
+    </div>
+  </div>
   <section id="livre">
     <div class="wrap">
-      <div class="livre-tete">
-      <div class="intro intro-titre">
+      <div class="intro">
         <div>
           <p class="etiquette">Le contenu du livre</p>
           <h2 class="grand">Comment tenir sans vous perdre ? Poser des limites <em>sans avoir l’impression d’abandonner</em> ?</h2>
         </div>
-      </div>
-      <!-- V86 : la phrase animée remonte juste sous la question (demande de Lionel), pour qu'on la voie tout de suite -->
-      <div class="promesse promesse-haut">
-        <strong>Ce livre ne promet pas que votre proche arrêtera.</strong>
-        <span><span class="fort">Il vous aide à aller mieux,</span> <span class="doux">quoi qu’il fasse.</span></span>
-      </div>
-      </div>
-      <div class="intro intro-suite">
         <div>
           <p>Ce guide vous accompagne pas à pas, avec des outils issus de <a href="/methode-craft">CRAFT</a>, une méthode conçue pour les familles et étudiée depuis la fin des années 1980. Elle aide les proches à aller mieux, à apaiser la relation et à encourager la personne vers les soins, sans affrontement.</p>
           <p>Il s’appuie aussi sur d’autres approches reconnues, expliquées simplement, avec des exemples, des exercices et leurs réponses, un parcours express pour les jours sans force, les numéros utiles et une annexe pour les enfants.</p>
@@ -1430,6 +1431,20 @@ window.INTRO_VIDEO='/teaser-accueil-V16.mp4';
   a.addEventListener('contextmenu',e=>e.preventDefault());
   a.addEventListener('click',async e=>{if(long){e.preventDefault();long=false;return;}const ok=await copie();if(ok)dit('Adresse copiée ✓ · votre messagerie s’ouvre');});
 })();
+</script>
+<script>
+/* V88 : le marcheur du logo (demande de Lionel) : une fois à chaque arrivée sur l'accueil, après la petite vidéo d'ouverture s'il y en a une ; pas d'animation si la personne a demandé à limiter les mouvements */
+(function(){if(window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches)return;
+ var a=document.querySelector('a.marque'),ic=a&&a.querySelector('.marque-ico');if(!ic)return;
+ var pre=new Image();pre.src='/marcheur-anim.webp';var t0=Date.now();
+ function intro(){var i=document.getElementById('intro');return i&&getComputedStyle(i).display!=='none'&&!i.classList.contains('fin');}
+ function pret(){if(Date.now()-t0>40000)return;if(intro()||!pre.complete||document.hidden){setTimeout(pret,250);return;}setTimeout(lance,400);}
+ function lance(){var s=document.createElement('span');s.className='marque-anim';s.setAttribute('aria-hidden','true');a.appendChild(s);
+  /* le premier dessin apparaît en fondu sur le logo (1,2 s), puis le marcheur avance 6 s et s'arrête, la main tendue (demande de Lionel) : l'image reste ensuite immobile, sans rien consommer, et ne gêne pas le clic sur le logo */
+  var N=135,D=6000,d=null,k=-1;function pas(t){if(d===null)d=t;var i=Math.min(N-1,Math.floor((t-d)/D*N));if(i!==k){k=i;s.style.backgroundPosition=(-i*30)+'px 0';}
+   if(t-d<D)requestAnimationFrame(pas);}
+  requestAnimationFrame(function(){s.classList.add('vu');setTimeout(function(){requestAnimationFrame(pas);},1300);});}
+ if(document.readyState==='complete')pret();else window.addEventListener('load',pret);})();
 </script>
 </body>
 </html>
