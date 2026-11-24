@@ -5,14 +5,14 @@
 <meta name="color-scheme" content="dark light">
 <script>/* V80 : le site s'ouvre toujours en mode nuit ; le mode jour reste possible par le bouton du menu (choix gardé sur l'appareil) */try{var t=localStorage.getItem('lg-mode');document.documentElement.setAttribute('data-theme',t==='light'?'light':'dark')}catch(e){document.documentElement.setAttribute('data-theme','dark')}</script>
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="description" content="Je l'aime, mais je n'en peux plus : guide pour les proches d'une personne dépendante à l'alcool, aux drogues ou aux médicaments, par Lionel Garnier.">
+<meta name="description" content="Votre conjoint, votre enfant ou un parent est alcoolique, se drogue et refuse de se soigner ? Un guide pour les proches, inspiré de la méthode CRAFT, pour tenir sans vous perdre.">
 <link rel="canonical" href="https://lionelgarnier.fr/">
 <meta property="og:type" content="book">
 <meta property="og:locale" content="fr_FR">
 <meta property="og:site_name" content="Lionel Garnier">
 <meta property="og:url" content="https://lionelgarnier.fr/">
-<meta property="og:title" content="Je l'aime, mais je n'en peux plus – Lionel Garnier">
-<meta property="og:description" content="Guide pour les proches d'une personne dépendante à l'alcool, aux drogues ou aux médicaments : reprendre sa place sans s'épuiser.">
+<meta property="og:title" content="Je l’aime, mais je n’en peux plus – aider un proche dépendant sans s’épuiser">
+<meta property="og:description" content="Un guide pour les proches d’une personne alcoolique ou dépendante (alcool, drogues, médicaments), inspiré de la méthode CRAFT : reprendre sa place sans s’épuiser.">
 <meta property="og:image" content="https://lionelgarnier.fr/partage.jpg">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
@@ -93,7 +93,7 @@ h2.danger{margin-top:44px}
 .liens a{color:inherit;text-underline-offset:3px}
 .ico-tel{flex:none;margin-right:6px;vertical-align:-3px}
 </style>
-<title>Je l’aime, mais je n’en peux plus – Guide pour les proches | Lionel Garnier</title>
+<title>Aider un proche alcoolique sans s’épuiser – Je l’aime, mais je n’en peux plus</title>
 <link rel="icon" href="/favicon.ico" sizes="48x48">
 <link rel="icon" type="image/png" href="/icone-192.png" sizes="192x192">
 <link rel="apple-touch-icon" href="/apple-touch-icon.png">
@@ -692,6 +692,31 @@ main > section{position:relative}main > section:not(.feuilleter)::before,main > 
 #contact .etiquette::before,#contact .etiquette::after,#pros-carte .etiquette::before,#pros-carte .etiquette::after{content:'';flex:0 1 38px;height:1px;background:linear-gradient(90deg,rgba(242,198,109,0),#f2c66d)}
 #contact .etiquette::after,#pros-carte .etiquette::after{background:linear-gradient(90deg,#f2c66d,rgba(242,198,109,0))}
 :root[data-theme="light"] #contact .u-titre{color:#5b6075}:root[data-theme="light"] #contact .u-nums a{color:#1e2233;border-color:rgba(30,34,51,.3)}:root[data-theme="light"] #contact .u-nums small{color:#5b6075}:root[data-theme="light"] #contact .urgence-ligne{border-top-color:rgba(30,34,51,.12)}:root[data-theme="light"] #contact .etiquette,:root[data-theme="light"] #pros-carte .etiquette{color:var(--or-fonce)}
+/* V89 : « Pour les professionnels » un peu plus en valeur, en douceur (demande de Lionel) : titre légèrement plus grand, traits plus longs, léger halo doré */
+#pros-carte .etiquette{font-size:1.04rem;letter-spacing:.15em;white-space:nowrap;text-shadow:0 0 14px rgba(242,198,109,.35)}
+#pros-carte .etiquette::before,#pros-carte .etiquette::after{flex:0 1 50px;min-width:14px}
+@media (max-width:400px){#pros-carte .etiquette{font-size:.96rem;letter-spacing:.11em;gap:8px}}
+#pros-carte .h-carte{font-size:clamp(1.3rem,2.4vw,1.55rem)}
+:root[data-theme="light"] #pros-carte .etiquette{text-shadow:none}
+/* V89 : sur ordinateur, la carte « Professionnels » se termine comme sa voisine : son bouton descend en bas */
+#pros-carte{display:flex;flex-direction:column}
+#pros-carte .pro-bouton{margin-top:auto;padding-top:22px}
+/* V89 : « Contact » et « Pour les professionnels » dans une bulle dorée, comme « Le livre » : trait doré qui finit par un petit losange au bord de la bulle (demande de Lionel) */
+#contact .etiquette,#pros-carte .etiquette{gap:6px!important;align-items:center}
+#contact .etiquette .bulle,#pros-carte .etiquette .bulle{display:inline-block;padding:5px 16px 6px;border:1.5px solid #f2c66d;border-radius:999px;box-shadow:0 0 16px rgba(242,198,109,.22);white-space:nowrap;line-height:1.1}
+#contact .etiquette::before,#pros-carte .etiquette::before{flex:0 1 60px!important;height:11px!important;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 10 10'%3E%3Cpath d='M5 0L10 5L5 10L0 5Z' fill='%23f2c66d'/%3E%3C/svg%3E") 100% 50%/10px 10px no-repeat,linear-gradient(90deg,rgba(242,198,109,0),#f2c66d) 0 50%/calc(100% - 9px) 1.5px no-repeat!important}
+#contact .etiquette::after,#pros-carte .etiquette::after{flex:0 1 60px!important;height:11px!important;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 10 10'%3E%3Cpath d='M5 0L10 5L5 10L0 5Z' fill='%23f2c66d'/%3E%3C/svg%3E") 0 50%/10px 10px no-repeat,linear-gradient(90deg,#f2c66d,rgba(242,198,109,0)) 100% 50%/calc(100% - 9px) 1.5px no-repeat!important}
+@media (max-width:400px){#contact .etiquette::before,#contact .etiquette::after,#pros-carte .etiquette::before,#pros-carte .etiquette::after{flex-basis:34px!important;min-width:20px}#pros-carte .etiquette .bulle{padding:5px 11px 6px}}
+:root[data-theme="light"] #contact .etiquette .bulle,:root[data-theme="light"] #pros-carte .etiquette .bulle{border-color:var(--or-fonce);box-shadow:none}
+/* V89 : la bulle se pose SUR le cadre, à la place du losange, et les cadres se resserrent (demande de Lionel) */
+#pros .duo{row-gap:44px!important}
+#contact::before,#pros-carte::before{display:none!important}
+#contact,#pros-carte{padding-top:34px!important}
+#contact .etiquette,#pros-carte .etiquette{position:absolute;left:50%;top:0;transform:translate(-50%,-50%);margin:0!important;z-index:2;max-width:calc(100% - 24px)}
+#contact .etiquette .bulle,#pros-carte .etiquette .bulle{background:var(--bg,#14172a);box-shadow:0 0 0 5px var(--bg,#14172a),0 0 18px rgba(242,198,109,.28)}
+#contact .etiquette::before,#contact .etiquette::after,#pros-carte .etiquette::before,#pros-carte .etiquette::after{flex:0 0 12px!important;width:12px;height:12px!important;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 10 10'%3E%3Cpath d='M5 0L10 5L5 10L0 5Z' fill='%23f2c66d'/%3E%3C/svg%3E") 50% 50%/10px 10px no-repeat!important;min-width:0!important}
+#contact .h-carte,#pros-carte .h-carte{margin-top:4px}
+@media (max-width:400px){#contact,#pros-carte{padding-top:30px!important}#pros-carte .etiquette .bulle{font-size:.85rem;letter-spacing:.1em}}
 #contact::before{content:'';position:absolute;top:-7px;left:calc(50% - 6.5px);width:13px;height:13px;transform:rotate(45deg);background:#f2c66d;box-shadow:0 0 0 4px var(--bg)}
 #contact .etiquette,#contact .h-carte,#contact .mail-ligne,#contact .mail-aide{text-align:center}
 #contact .mail-ligne{margin:14px 0 6px}
@@ -739,6 +764,32 @@ main > section{position:relative}main > section:not(.feuilleter)::before,main > 
 a.marque{position:relative}
 .marque-anim{position:absolute;left:0;top:50%;width:30px;height:30px;margin-top:-15px;border-radius:8px;background:url(/marcheur-anim.webp) 0 0/4050px 30px no-repeat;box-shadow:0 0 0 1.5px rgba(255,255,255,.25);pointer-events:none}
 .marque-anim{opacity:0;transition:opacity 1.2s ease}.marque-anim.vu{opacity:1}
+/* V89 : pendant la vidéo d'ouverture (gardée, demande de Lionel) : « Passer » bien visible, centré en bas ; un toucher n'importe où ferme la vidéo ; petit lien « Numéros d'aide » en haut à gauche */
+#intro.mv .boutons{left:50%;right:auto;transform:translateX(-50%);bottom:calc(22px + env(safe-area-inset-bottom,0px));gap:12px;animation:vPasse .8s 1.2s ease-out both}
+@keyframes vPasse{from{opacity:0;transform:translate(-50%,10px)}to{opacity:1;transform:translateX(-50%)}}
+#intro.mv .passer{min-height:50px;padding:0 26px;font-size:17px;background:rgba(15,19,34,.78);border-width:2px;box-shadow:0 6px 22px rgba(0,0,0,.45),0 0 18px rgba(242,198,109,.25)}
+#intro.mv .passer .long{display:inline}#intro.mv .passer .court{display:none}
+#intro.mv .passer,#intro.mv .plein{white-space:nowrap}
+@media (max-width:420px){#intro.mv .passer{font-size:16px;padding:0 20px}#intro.mv .plein{padding:0 14px;font-size:14px}#intro.mv .boutons{gap:8px}}
+#intro.mv .passer:hover,#intro.mv .passer:focus-visible{background:#f2c66d;color:#1a1d33}
+#intro .v-aide{position:absolute;left:14px;top:calc(12px + env(safe-area-inset-top,0px));z-index:3;color:rgba(255,255,255,.8);font:600 13px 'Inter Site',system-ui,sans-serif;text-decoration:underline;text-underline-offset:3px;padding:8px 6px;background:rgba(0,0,0,.35);border-radius:8px}
+#intro.finale .v-aide{opacity:0;transition:opacity 1s}
+/* V89 : le bouton « Plein écran » en haut à droite de la vidéo (demande de Lionel) */
+#intro .plein-haut{position:absolute;top:calc(12px + env(safe-area-inset-top,0px));right:14px;z-index:3;min-height:40px;padding:0 16px;font-size:14px;white-space:nowrap;animation:vPasse2 .8s 1.2s ease-out both}
+@keyframes vPasse2{from{opacity:0}to{opacity:1}}
+#intro.finale .plein-haut{opacity:0;pointer-events:none;transition:opacity 1s}
+@media (orientation:landscape) and (max-height:520px){#intro.mv .passer{min-height:42px;font-size:15px;padding:0 20px}#intro.mv .passer .long{display:none}#intro.mv .passer .court{display:inline}}
+@media (prefers-reduced-motion:reduce){#intro.mv .boutons{animation:none}}
+/* ===== V89 : les bandeaux du livre (de « Le contenu du livre » à « L'auteur ») forment un ensemble : un double trait doré avec l'étiquette « Le livre » au-dessus, et le même double trait pour le refermer en dessous (demande de Lionel) ===== */
+main > section#livre::before,main > section#pros::before{width:min(860px,92%);height:7px;top:-4px;background:linear-gradient(90deg,rgba(242,198,109,0),#f2c66d 18%,#f2c66d 82%,rgba(242,198,109,0)) 0 0/100% 1.5px no-repeat,linear-gradient(90deg,rgba(242,198,109,0),rgba(242,198,109,.55) 18%,rgba(242,198,109,.55) 82%,rgba(242,198,109,0)) 0 5px/100% 1px no-repeat}
+main > section#livre::after{content:'Le livre';position:absolute;left:50%;top:-15px;transform:translateX(-50%);z-index:2;padding:4px 18px 5px;border:1.5px solid #f2c66d;border-radius:999px;background:#151a2f;color:#f2c66d;font:800 .78rem/1.1 var(--texte);letter-spacing:.22em;text-transform:uppercase;white-space:nowrap;box-shadow:0 0 0 5px #151a2f,0 0 18px rgba(242,198,109,.25)}
+main > section#pros::after{content:'';position:absolute;left:50%;top:-7px;transform:translateX(-50%) rotate(45deg);width:10px;height:10px;background:#f2c66d;box-shadow:0 0 0 4px #151a2f;z-index:2}
+main > section#livre{margin-top:18px}
+/* le double trait s'arrête en douceur de part et d'autre de l'étiquette « Le livre » */
+main > section#livre::before{top:-8px;height:11px;-webkit-mask-image:none;mask-image:none;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 10 10'%3E%3Cpath d='M5 0L10 5L5 10L0 5Z' fill='%23f2c66d'/%3E%3C/svg%3E") calc(50% - 69px) 50%/11px 11px no-repeat,url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 10 10'%3E%3Cpath d='M5 0L10 5L5 10L0 5Z' fill='%23f2c66d'/%3E%3C/svg%3E") calc(50% + 69px) 50%/11px 11px no-repeat,linear-gradient(90deg,rgba(242,198,109,0),#f2c66d 40%) 0 3px/calc(50% - 70px) 1.5px no-repeat,linear-gradient(90deg,rgba(242,198,109,0),rgba(242,198,109,.55) 40%) 0 7px/calc(50% - 70px) 1px no-repeat,linear-gradient(90deg,#f2c66d 60%,rgba(242,198,109,0)) 100% 3px/calc(50% - 70px) 1.5px no-repeat,linear-gradient(90deg,rgba(242,198,109,.55) 60%,rgba(242,198,109,0)) 100% 7px/calc(50% - 70px) 1px no-repeat}
+main > section#livre::after{box-shadow:0 0 18px rgba(242,198,109,.22)}
+:root[data-theme="light"] main > section#livre::after{background:var(--surface,#fff);color:var(--or-fonce);border-color:var(--or-fonce);box-shadow:0 0 0 5px var(--bg,#f6f5f1)}
+:root[data-theme="light"] main > section#pros::after{box-shadow:0 0 0 4px var(--bg,#f6f5f1)}
 /* ===== V83 : accueil « à bandeaux » (demande de Lionel) : chaque partie se déroule comme un rouleau, du même geste que le menu ; « Le livre » est déroulé à l'arrivée. Sans JavaScript, tout reste affiché normalement. ===== */
 main > section.pliable{padding-block:14px}
 /* V84 : la ligne du bandeau et celle du bouton « Replier » occupent toujours toute la largeur (dans « L'auteur », la mise en page en deux colonnes les réduisait à une colonne étroite sur tablette couchée) */
@@ -777,9 +828,16 @@ main > section.pliable{padding-block:14px}
 @media (max-width:560px){.bandeau{padding:15px 14px 15px 16px;gap:12px}.bandeau .b-titre{font-size:1.1rem}.bandeau .b-action .b-mot{display:none}.bandeau .b-rond{width:36px;height:36px}}
 @media (prefers-reduced-motion:reduce){.pliable:not(.ouvert) .bandeau .b-rond{animation:none}.rouleau-corps.bouge{transition:none}.rouleau-barre{display:none}}
 </style>
+<style>
+/* V89 (relecture accessibilité) : en mode nuit, le contour qui montre où l'on est au clavier devient doré (il était bleu nuit sur bleu nuit) */
+:root[data-theme="dark"]{--focus:#f2c66d}
+/* V89 : très petits téléphones (360 px et moins) : l'en-tête ne déborde plus */
+@media (max-width:380px){.nav .wrap{gap:6px}.nav .sos,.nav nav.menu > a.sos{padding:6px 10px!important;font-size:.78rem!important;gap:5px}.menu-btn{padding-inline:10px!important}.marque{gap:7px!important}}
+@media (max-width:340px){.nav .sos,.nav nav.menu > a.sos{font-size:0!important;padding:8px 12px!important;gap:0}.nav .sos svg{width:18px;height:18px}}
+</style>
 </head>
 <body>
-<div id="intro" aria-hidden="true"></div>
+<div id="intro"></div>
 <script>if(location.hash==='#aide'){location.replace('/numeros-aide');}addEventListener('hashchange',function(){if(location.hash==='#aide')location.replace('/numeros-aide');});if(location.hash){var _i=document.getElementById('intro');if(_i)_i.remove();}</script>
 <a class="evitement" href="#contenu">Aller au contenu</a>
 
@@ -804,7 +862,8 @@ main > section.pliable{padding-block:14px}
         <a href="/methode-craft">La méthode CRAFT</a>
         <a href="/auteur">Le parcours de l’auteur</a>
         <a href="/professionnels" class="menu-simple">La page des professionnels</a>
-        <a href="https://edition-discrete.pages.dev/" class="menu-relecteurs" rel="nofollow">🔒 Lire en ligne</a>
+        <a href="https://edition-discrete.pages.dev/" class="menu-relecteurs" rel="nofollow"><span aria-hidden="true">🔒 </span>Lire en ligne</a>
+        <button type="button" class="menu-mode menu-plein" id="menu-plein" hidden><span class="ico" aria-hidden="true">⛶</span><span class="txt">Plein écran</span></button>
         <button type="button" class="menu-mode" id="menu-mode"><span class="ico" aria-hidden="true"></span><span class="txt"></span></button>
         <a href="/numeros-aide" class="menu-aide"><svg class="ico-tel" viewBox="0 0 24 24" width="16" height="16" aria-hidden="true" focusable="false"><path fill="currentColor" d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.25 11.4 11.4 0 0 0 3.6.57 1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.25.2 2.45.57 3.57a1 1 0 0 1-.25 1z"/></svg>Numéros d’aide</a>
       </div>
@@ -824,13 +883,13 @@ main > section.pliable{padding-block:14px}
       </div>
       <!-- V83 : les deux liens du haut de page rangés en deux lignes nettes (demande de Lionel) -->
       <div class="hero-liens">
-        <a class="hero-lien" href="/numeros-aide"><svg class="hl-ico" viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" focusable="false"><path fill="currentColor" d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.25 11.4 11.4 0 0 0 3.6.57 1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.25.2 2.45.57 3.57a1 1 0 0 1-.25 1z"/></svg><span class="hl-txt"><strong>Besoin de parler ce soir ?</strong><span>Des lignes d’écoute répondent aussi aux proches</span></span><span class="hl-fl" aria-hidden="true">→</span></a>
-        <a class="hero-lien" href="mailto:contact@lionelgarnier.fr?subject=Pr%C3%A9venez-moi%20de%20la%20sortie%20du%20livre"><svg class="hl-ico" viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" focusable="false"><path fill="currentColor" d="M20 4H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2zm0 4.2-8 5-8-5V6l8 5 8-5z"/></svg><span class="hl-txt"><strong>Parution prochaine sur Amazon</strong><span>Être prévenu(e) de la sortie, par e-mail</span></span><span class="hl-fl" aria-hidden="true">→</span></a>
-        <a class="hero-lien hero-numerique" href="https://edition-discrete.pages.dev/" rel="nofollow"><svg class="hl-ico" viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" focusable="false"><path fill="currentColor" d="M17 1H7a2 2 0 0 0-2 2v18a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V3a2 2 0 0 0-2-2zm0 18H7V5h10v14zM9 7h6v1.6H9zm0 3h6v1.6H9zm0 3h4v1.6H9z"/></svg><span class="hl-txt"><strong>Édition numérique interactive</strong><span>Bientôt disponible · vous avez reçu un accès ? C’est ici</span></span><span class="hl-fl" aria-hidden="true">→</span></a>
+        <a class="hero-lien" href="/numeros-aide"><svg class="hl-ico" viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" focusable="false"><path fill="currentColor" d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.25 11.4 11.4 0 0 0 3.6.57 1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.25.2 2.45.57 3.57a1 1 0 0 1-.25 1z"/></svg><span class="hl-txt"><strong>Besoin de parler ce soir ?</strong><span>Des lignes d’écoute répondent aussi aux proches, de 8 h à 23 h</span></span><span class="hl-fl" aria-hidden="true">→</span></a>
+        <a class="hero-lien" href="mailto:contact@lionelgarnier.fr?subject=Pr%C3%A9venez-moi%20de%20la%20sortie%20du%20livre"><svg class="hl-ico" viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" focusable="false"><path fill="currentColor" d="M20 4H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2zm0 4.2-8 5-8-5V6l8 5 8-5z"/></svg><span class="hl-txt"><strong>Parution prochaine sur Amazon</strong><span>Dès 19,90 € · être prévenu(e) de la sortie, par e-mail</span></span><span class="hl-fl" aria-hidden="true">→</span></a>
+        <a class="hero-lien hero-numerique" href="https://edition-discrete.pages.dev/" rel="nofollow"><svg class="hl-ico" viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" focusable="false"><path fill="currentColor" d="M17 1H7a2 2 0 0 0-2 2v18a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V3a2 2 0 0 0-2-2zm0 18H7V5h10v14zM9 7h6v1.6H9zm0 3h6v1.6H9zm0 3h4v1.6H9z"/></svg><span class="hl-txt"><strong>Édition numérique interactive</strong><span>Découvrir l’édition en ligne, ou se connecter avec son accès</span></span><span class="hl-fl" aria-hidden="true">→</span></a>
       </div>
     </div>
     <div class="couv-col"><a class="couv-lien" href="#section-feuilleter" title="Feuilleter le début du livre"><img class="couv-livre" src="/couverture.jpg" width="560" height="795" alt="Feuilleter le début du livre « Je l’aime, mais je n’en peux plus », de Lionel Garnier"></a>
-      <a class="couv-numerique" href="https://edition-discrete.pages.dev/" rel="nofollow"><b>Édition numérique interactive</b><span>Bientôt disponible<br>Accès reçu ? C’est ici</span></a></div>
+      <a class="couv-numerique" href="https://edition-discrete.pages.dev/" rel="nofollow"><b>Édition numérique interactive</b><span>Découvrir l’édition en ligne<br>ou se connecter avec son accès</span></a></div>
   </div>
 </div>
 
@@ -960,7 +1019,7 @@ main > section.pliable{padding-block:14px}
   <section id="pros">
     <div class="wrap duo">
       <div class="carte" id="contact">
-        <p class="etiquette">Contact</p>
+        <p class="etiquette"><span class="bulle">Contact</span></p>
         <h2 class="h-carte">Écrire à l’auteur</h2>
         <p class="mail-ligne"><a href="mailto:contact@lionelgarnier.fr" class="lienmail"><span id="adresse">contact@lionelgarnier.fr</span></a></p>
         <p class="mail-aide" id="mail-aide" aria-live="polite">Touchez pour écrire · restez appuyé pour copier</p>
@@ -969,7 +1028,7 @@ main > section.pliable{padding-block:14px}
         <p class="urgence-ligne"><span class="u-titre">En cas d’urgence</span><span class="u-nums"><a href="tel:15"><b>15</b><small>Samu</small></a><a href="tel:112"><b>112</b><small>Urgences</small></a></span></p>
       </div>
       <div class="carte carte-pro" id="pros-carte">
-        <p class="etiquette">Pour les professionnels</p>
+        <p class="etiquette"><span class="bulle">Pour les professionnels</span></p>
         <h2 class="h-carte">Vous accompagnez des familles ?</h2>
         <p>CSAPA, CJC, médecins, associations, groupes de parole, travail social : je peux venir présenter le livre, témoigner de mon parcours ou échanger avec vos équipes et vos groupes. Les pages d’exercices peuvent être photocopiées pour vos groupes, à certaines conditions.</p>
         <p>Je suis aussi à la recherche d’un <a href="/professionnels#emploi">poste de patient expert ou de <span class="insec">pair-aidant</span></a>.</p>
@@ -1289,16 +1348,17 @@ window.INTRO_VIDEO='/teaser-accueil-V16.mp4';
   var tactile=window.matchMedia&&window.matchMedia('(pointer: coarse)').matches;
   function enPlein(){ return !!(document.fullscreenElement||document.webkitFullscreenElement); }
   function possible(){ return !!(el.requestFullscreen||el.webkitRequestFullscreen||(v&&v.webkitEnterFullscreen)); }
-  function plein(){ calme=Date.now(); var f=el.requestFullscreen||el.webkitRequestFullscreen;
-    if(f){ try{ var p=f.call(el); var verrou=function(){ if(tactile){ try{ screen.orientation.lock('landscape').catch(function(){}) }catch(e){} } };
+  function plein(){ calme=Date.now(); var D=document.documentElement,f=D.requestFullscreen||D.webkitRequestFullscreen;   /* V89 : toute la page passe en plein écran, et elle y reste après la vidéo (demande de Lionel) */
+    if(f){ try{ var p=f.call(D); var verrou=function(){ if(tactile){ try{ screen.orientation.lock('landscape').catch(function(){}) }catch(e){} } };
       if(p&&p.then) p.then(verrou).catch(function(){}); else verrou(); }catch(e){} }
     else if(v&&v.webkitEnterFullscreen){ try{ v.webkitEnterFullscreen() }catch(e){} } }
   function sortir(){ try{ if(screen.orientation&&screen.orientation.unlock) screen.orientation.unlock() }catch(e){}
     try{ if(document.exitFullscreen&&document.fullscreenElement) document.exitFullscreen(); else if(document.webkitExitFullscreen&&document.webkitFullscreenElement) document.webkitExitFullscreen(); }catch(e){} }
-  function fermer(lent){ if(!el.parentNode) return; sortir(); if(v){ try{v.pause()}catch(e){} } if(lent===true) el.classList.add('lent'); else el.classList.remove('lent'); el.classList.add('fin'); clearTimeout(t); clearTimeout(t2); t2=setTimeout(function(){ if(!DEMO){el.remove()} else {el.style.display='none'} }, lent===true ? 2050 : 650); }
+  function fermer(lent){ if(!el.parentNode) return; try{ if(screen.orientation&&screen.orientation.unlock) screen.orientation.unlock() }catch(e){} if(v){ try{v.pause()}catch(e){} } if(lent===true) el.classList.add('lent'); else el.classList.remove('lent'); el.classList.add('fin'); clearTimeout(t); clearTimeout(t2); t2=setTimeout(function(){ if(!DEMO){el.remove()} else {el.style.display='none'} }, lent===true ? 2050 : 650); }
   function jouer(){
-    el.className='mv'; el.style.display='flex';
-    el.innerHTML='<video class="film" muted playsinline autoplay preload="auto" disablepictureinpicture></video><div class="tourner"><svg viewBox="0 0 64 64" width="60" height="60" aria-hidden="true"><g class="tel"><rect x="23" y="13" width="18" height="38" rx="3.5" fill="none" stroke="currentColor" stroke-width="2.6"/><circle cx="32" cy="46" r="1.6" fill="currentColor"/></g><g class="fl"><path d="M51.7 18.2 A24 24 0 0 0 12.3 18.2" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/><polygon class="pointe" points="8.9,23.1 8.9,15.8 15.8,20.6" fill="currentColor"/></g></svg><span>Touchez « Plein écran »,<br>puis tournez votre téléphone</span></div><div class="boutons"><button class="plein" type="button" tabindex="-1" hidden>⛶&nbsp;Plein écran</button><button class="passer" type="button" tabindex="-1"><span class="long">Passer l’introduction</span><span class="court">Passer ›</span></button></div>';
+    el.className='mv'; el.style.display='flex'; el.setAttribute('role','dialog'); el.setAttribute('aria-modal','true'); el.setAttribute('aria-label','Présentation du livre');
+    el.innerHTML='<video class="film" muted playsinline autoplay preload="auto" disablepictureinpicture></video><div class="tourner"><svg viewBox="0 0 64 64" width="60" height="60" aria-hidden="true"><g class="tel"><rect x="23" y="13" width="18" height="38" rx="3.5" fill="none" stroke="currentColor" stroke-width="2.6"/><circle cx="32" cy="46" r="1.6" fill="currentColor"/></g><g class="fl"><path d="M51.7 18.2 A24 24 0 0 0 12.3 18.2" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/><polygon class="pointe" points="8.9,23.1 8.9,15.8 15.8,20.6" fill="currentColor"/></g></svg><span>Touchez « Plein écran »,<br>puis tournez votre téléphone</span></div><button class="plein plein-haut" type="button" hidden>⛶&nbsp;Plein écran</button><div class="boutons"><button class="passer" type="button"><span class="long">Passer l’introduction</span><span class="court">Passer ›</span></button></div><a class="v-aide" href="/numeros-aide">Numéros d’aide</a>';
+    setTimeout(function(){ var b=el.querySelector('.passer'); if(b) try{ b.focus({preventScroll:true}); }catch(x){} },50);
     v=el.querySelector('video'); v.muted=true; v.defaultMuted=true; v.src=window.INTRO_VIDEO;
     v.addEventListener('ended',function(){ fermer(true); });
     v.addEventListener('timeupdate',function(){ if(v.duration && v.duration-v.currentTime<6) el.classList.add('finale'); });
@@ -1308,15 +1368,14 @@ window.INTRO_VIDEO='/teaser-accueil-V16.mp4';
     t=setTimeout(function(){ if(!v || v.currentTime<0.1) fermer(false); },5000);
     var p=v.play(); if(p&&p.catch) p.catch(function(){ fermer(false); });
   }
-  el.addEventListener('click',function(e){ var b=e.target.closest&&e.target.closest('button');
+  el.addEventListener('click',function(e){ var b=e.target.closest&&e.target.closest('button,a');
     if(b&&b.classList.contains('plein')){ plein(); return; }
-    if(b&&b.classList.contains('passer')){ fermer(false); return; }
-    if(tactile){ if(!enPlein()) plein(); return; }
+    if(b&&b.classList.contains('v-aide')){ return; }
     fermer(false); });
   window.addEventListener('resize',function(){ calme=Date.now(); });
   ['fullscreenchange','webkitfullscreenchange'].forEach(function(ev){ document.addEventListener(ev,function(){ calme=Date.now(); var bp=el.querySelector('.plein'); if(bp) bp.hidden=enPlein()||!possible(); }); });
   ['wheel','touchmove','scroll'].forEach(function(ev){ window.addEventListener(ev,function(){ if(Date.now()-calme<1500) return; if(el.parentNode && !el.classList.contains('fin')) fermer(false); },{passive:true}); });
-  document.addEventListener('keydown',function(e){ if(el.style.display!=='none') fermer(false); },{once:!DEMO});
+  document.addEventListener('keydown',function(e){ if(!el.parentNode||el.style.display==='none') return; if(e.key!=='Tab') fermer(false); });
   window.introJouer=function(){ clearTimeout(t); clearTimeout(t2); el.classList.remove('fin','lent'); jouer(); };
   if(reduit || eco || (!DEMO && vue())){ el.remove(); return; }
   marque(); jouer();
@@ -1381,7 +1440,11 @@ window.INTRO_VIDEO='/teaser-accueil-V16.mp4';
 <script>
 /* V80 : le bloc « Ce livre ne promet pas… » s'éclaire une fois, quand il est bien visible à l'écran */
 (function(){var p=document.querySelector('.promesse');if(!p||!window.IntersectionObserver||(window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches))return;
- p.classList.add('attend');var o=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting&&e.intersectionRatio>=0.6){o.disconnect();setTimeout(function(){p.classList.remove('attend');p.classList.add('jour');},250);}});},{threshold:[0.6]});o.observe(p);})();
+ /* V89 (demande de Lionel) : on laisse 3 secondes au visiteur pour se poser : l'éclairage part 3 s après que la phrase est bien visible (et que la vidéo d'ouverture est fermée) ; si elle sort de l'écran avant, on recommence à attendre */
+ p.classList.add('attend');var t=null,vu=false;function intro(){var i=document.getElementById('intro');return !!(i&&getComputedStyle(i).display!=='none'&&!i.classList.contains('fin'));}
+ function lance(){clearTimeout(t);if(intro()){t=setTimeout(lance,300);return;}t=setTimeout(function(){if(!vu||document.hidden)return;if(intro()){lance();return;}o.disconnect();p.classList.remove('attend');p.classList.add('jour');},3000);}
+ var o=new IntersectionObserver(function(es){es.forEach(function(e){vu=e.isIntersecting&&e.intersectionRatio>=0.6;if(vu)lance();else clearTimeout(t);});},{threshold:[0,0.6]});o.observe(p);
+ document.addEventListener('visibilitychange',function(){if(!document.hidden&&vu)lance();});})();
 </script>
 <script>
 /* V83 : accueil à bandeaux. Règles de Lionel : « Le livre » déroulé à chaque arrivée ; on déroule et on replie SEULEMENT par le bandeau du titre ou par le bouton « Replier » en bas ; un toucher à l'intérieur ne replie jamais ; les liens et le menu ouvrent la bonne partie. */
@@ -1415,7 +1478,7 @@ window.INTRO_VIDEO='/teaser-accueil-V16.mp4';
  /* un lien vers une partie (menu « Sur cette page », bouton « Feuilleter le début du livre », lien d'une autre page) la déroule d'abord */
  document.addEventListener('click',function(e){var a=e.target.closest&&e.target.closest('a[href*="#"]');if(!a)return;var h=a.getAttribute('href'),i=h.indexOf('#'),id=h.slice(i+1);if(!id||(i>0&&h.slice(0,i)!=='/'&&h.slice(0,i)!==location.pathname))return;var c=document.getElementById(id);if(!c)return;var o=pour(c);if(o&&!o.ouvert)o.ouvre(false);},true);
  function selonAdresse(){var id=(location.hash||'').slice(1),c=id&&document.getElementById(id),o=c&&pour(c);if(o&&!o.ouvert){o.ouvre(false);setTimeout(function(){c.scrollIntoView();},60);}}
- var PL=P.filter(function(o){return o.sec.id==='livre';})[0]||P[0];if(PL)PL.ouvre(false);   /* « Le livre » est déroulé à chaque arrivée sur l'accueil */
+ /* V89 : plus aucune partie ouverte à l'arrivée : on voit d'un coup d'œil tous les bandeaux du livre (demande de Lionel) */   /* « Le livre » est déroulé à chaque arrivée sur l'accueil */
  selonAdresse();window.addEventListener('hashchange',selonAdresse);window.__bandeaux=P;})();
 </script>
 <script>
@@ -1445,6 +1508,14 @@ window.INTRO_VIDEO='/teaser-accueil-V16.mp4';
    if(t-d<D)requestAnimationFrame(pas);}
   requestAnimationFrame(function(){s.classList.add('vu');setTimeout(function(){requestAnimationFrame(pas);},1300);});}
  if(document.readyState==='complete')pret();else window.addEventListener('load',pret);})();
+</script>
+<script>
+/* V89 : « Plein écran » dans le menu (demande de Lionel) ; caché là où le navigateur ne le permet pas (iPhone) */
+(function(){var b=document.getElementById('menu-plein');if(!b)return;var d=document.documentElement,ok=!!(d.requestFullscreen||d.webkitRequestFullscreen);if(!ok)return;b.hidden=false;
+ function dedans(){return !!(document.fullscreenElement||document.webkitFullscreenElement);}
+ function maj(){b.querySelector('.txt').textContent=dedans()?'Quitter le plein écran':'Plein écran';}
+ b.addEventListener('click',function(){try{if(dedans()){(document.exitFullscreen||document.webkitExitFullscreen).call(document);}else{var r=(d.requestFullscreen||d.webkitRequestFullscreen).call(d);if(r&&r.catch)r.catch(function(){});}}catch(e){}});
+ ['fullscreenchange','webkitfullscreenchange'].forEach(function(n){document.addEventListener(n,maj);});maj();})();
 </script>
 </body>
 </html>

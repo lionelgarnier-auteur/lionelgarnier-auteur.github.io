@@ -5,7 +5,7 @@
 <meta name="color-scheme" content="dark light">
 <script>/* V80 : le site s'ouvre toujours en mode nuit ; le mode jour reste possible par le bouton du menu (choix gardé sur l'appareil) */try{var t=localStorage.getItem('lg-mode');document.documentElement.setAttribute('data-theme',t==='light'?'light':'dark')}catch(e){document.documentElement.setAttribute('data-theme','dark')}</script>
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="description" content="Lionel Garnier, auteur de « Je l’aime, mais je n’en peux plus », patient expert en formation en addictologie : son parcours, son engagement auprès des familles, ses interventions, et sa recherche de poste de patient expert ou de pair-aidant.">
+<meta name="description" content="Lionel Garnier, patient expert en formation en addictologie à Voiron (Isère), auteur d’un guide pour les proches. Recherche un poste de patient expert ou de pair-aidant.">
 <link rel="canonical" href="https://lionelgarnier.fr/auteur">
 <meta property="og:type" content="profile">
 <meta property="og:locale" content="fr_FR">
@@ -597,6 +597,21 @@ a.marque{color:inherit;text-decoration:none}
 #contact .etiquette::before,#contact .etiquette::after,#pros-carte .etiquette::before,#pros-carte .etiquette::after{content:'';flex:0 1 38px;height:1px;background:linear-gradient(90deg,rgba(242,198,109,0),#f2c66d)}
 #contact .etiquette::after,#pros-carte .etiquette::after{background:linear-gradient(90deg,#f2c66d,rgba(242,198,109,0))}
 :root[data-theme="light"] #contact .u-titre{color:#5b6075}:root[data-theme="light"] #contact .u-nums a{color:#1e2233;border-color:rgba(30,34,51,.3)}:root[data-theme="light"] #contact .u-nums small{color:#5b6075}:root[data-theme="light"] #contact .urgence-ligne{border-top-color:rgba(30,34,51,.12)}:root[data-theme="light"] #contact .etiquette,:root[data-theme="light"] #pros-carte .etiquette{color:var(--or-fonce)}
+/* V89 : « Contact » et « Pour les professionnels » dans une bulle dorée, comme « Le livre » : trait doré qui finit par un petit losange au bord de la bulle (demande de Lionel) */
+#contact .etiquette,#pros-carte .etiquette{gap:6px!important;align-items:center}
+#contact .etiquette .bulle,#pros-carte .etiquette .bulle{display:inline-block;padding:5px 16px 6px;border:1.5px solid #f2c66d;border-radius:999px;box-shadow:0 0 16px rgba(242,198,109,.22);white-space:nowrap;line-height:1.1}
+#contact .etiquette::before,#pros-carte .etiquette::before{flex:0 1 60px!important;height:11px!important;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 10 10'%3E%3Cpath d='M5 0L10 5L5 10L0 5Z' fill='%23f2c66d'/%3E%3C/svg%3E") 100% 50%/10px 10px no-repeat,linear-gradient(90deg,rgba(242,198,109,0),#f2c66d) 0 50%/calc(100% - 9px) 1.5px no-repeat!important}
+#contact .etiquette::after,#pros-carte .etiquette::after{flex:0 1 60px!important;height:11px!important;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 10 10'%3E%3Cpath d='M5 0L10 5L5 10L0 5Z' fill='%23f2c66d'/%3E%3C/svg%3E") 0 50%/10px 10px no-repeat,linear-gradient(90deg,#f2c66d,rgba(242,198,109,0)) 100% 50%/calc(100% - 9px) 1.5px no-repeat!important}
+@media (max-width:400px){#contact .etiquette::before,#contact .etiquette::after,#pros-carte .etiquette::before,#pros-carte .etiquette::after{flex-basis:34px!important;min-width:20px}#pros-carte .etiquette .bulle{padding:5px 11px 6px}}
+:root[data-theme="light"] #contact .etiquette .bulle,:root[data-theme="light"] #pros-carte .etiquette .bulle{border-color:var(--or-fonce);box-shadow:none}
+/* V89 : la bulle se pose SUR le cadre, à la place du losange, et les cadres se resserrent (demande de Lionel) */
+#contact::before,#pros-carte::before{display:none!important}
+#contact,#pros-carte{padding-top:34px!important}
+#contact .etiquette,#pros-carte .etiquette{position:absolute;left:50%;top:0;transform:translate(-50%,-50%);margin:0!important;z-index:2;max-width:calc(100% - 24px)}
+#contact .etiquette .bulle,#pros-carte .etiquette .bulle{background:var(--bg,#14172a);box-shadow:0 0 0 5px var(--bg,#14172a),0 0 18px rgba(242,198,109,.28)}
+#contact .etiquette::before,#contact .etiquette::after,#pros-carte .etiquette::before,#pros-carte .etiquette::after{flex:0 0 12px!important;width:12px;height:12px!important;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 10 10'%3E%3Cpath d='M5 0L10 5L5 10L0 5Z' fill='%23f2c66d'/%3E%3C/svg%3E") 50% 50%/10px 10px no-repeat!important;min-width:0!important}
+#contact .h-carte,#pros-carte .h-carte{margin-top:4px}
+@media (max-width:400px){#contact,#pros-carte{padding-top:30px!important}#pros-carte .etiquette .bulle{font-size:.85rem;letter-spacing:.1em}}
 #contact::before{content:'';position:absolute;top:-7px;left:calc(50% - 6.5px);width:13px;height:13px;transform:rotate(45deg);background:#f2c66d;box-shadow:0 0 0 4px var(--bg)}
 #contact .etiquette,#contact .h-carte,#contact h2,#contact .mail-ligne,#contact .mail-aide{text-align:center}
 #contact .mail-ligne{margin:14px 0 6px}
@@ -612,6 +627,13 @@ a.marque{color:inherit;text-decoration:none}
 @keyframes lgAppui{from{box-shadow:0 0 0 0 rgba(242,198,109,0)}to{box-shadow:0 0 0 6px rgba(242,198,109,.35),0 0 22px rgba(242,198,109,.35)}}
 @media (prefers-reduced-motion:reduce){#contact .lienmail.appui{animation:none}}
 </style>
+<style>
+/* V89 (relecture accessibilité) : en mode nuit, le contour qui montre où l'on est au clavier devient doré (il était bleu nuit sur bleu nuit) */
+:root[data-theme="dark"]{--focus:#f2c66d}
+/* V89 : très petits téléphones (360 px et moins) : l'en-tête ne déborde plus */
+@media (max-width:380px){.nav .wrap{gap:6px}.nav .sos,.nav nav.menu > a.sos{padding:6px 10px!important;font-size:.78rem!important;gap:5px}.menu-btn{padding-inline:10px!important}.marque{gap:7px!important}}
+@media (max-width:340px){.nav .sos,.nav nav.menu > a.sos{font-size:0!important;padding:8px 12px!important;gap:0}.nav .sos svg{width:18px;height:18px}}
+</style>
 </head>
 <body>
 <a class="evitement" href="#contenu">Aller au contenu</a>
@@ -625,16 +647,17 @@ a.marque{color:inherit;text-decoration:none}
       <div class="menu-liste" id="menu-liste" hidden>
         <a href="/#top" class="menu-accueil">Accueil</a>
         <p class="menu-groupe">Le livre</p>
-        <a href="/#livre">Présentation</a>
+        <a href="/#livre">Le contenu du livre</a>
         <a href="/le-livre">Sommaire et avant-propos</a>
         <a href="/#section-feuilleter">Feuilleter</a>
         <a href="/#editions">Les deux éditions</a>
         <a href="/methode-craft">La méthode CRAFT</a>
         <p class="menu-groupe">L’auteur</p>
-        <a href="/auteur" aria-current="page">Parcours</a>
-        <a href="/professionnels">Pour les professionnels</a>
+        <a href="/auteur" aria-current="page">Le parcours de l’auteur</a>
+        <a href="/professionnels">La page des professionnels</a>
         <a href="#contact" class="menu-contact">Contact</a>
-        <a href="https://edition-discrete.pages.dev/" class="menu-relecteurs" rel="nofollow">🔒 Lire en ligne</a>
+        <a href="https://edition-discrete.pages.dev/" class="menu-relecteurs" rel="nofollow"><span aria-hidden="true">🔒 </span>Lire en ligne</a>
+        <button type="button" class="menu-mode menu-plein" id="menu-plein" hidden><span class="ico" aria-hidden="true">⛶</span><span class="txt">Plein écran</span></button>
         <button type="button" class="menu-mode" id="menu-mode"><span class="ico" aria-hidden="true"></span><span class="txt"></span></button>
         <a href="/numeros-aide" class="menu-aide"><svg class="ico-tel" viewBox="0 0 24 24" width="16" height="16" aria-hidden="true" focusable="false"><path fill="currentColor" d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.25 11.4 11.4 0 0 0 3.6.57 1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.25.2 2.45.57 3.57a1 1 0 0 1-.25 1z"/></svg>Numéros d’aide</a>
       </div>
@@ -684,11 +707,11 @@ a.marque{color:inherit;text-decoration:none}
       <div class="carte pros-auteur">
         <p class="etiquette">Aller plus loin</p>
         <h2>Mon parcours en détail</h2>
-        <p>Formations, engagements, interventions, recherche de poste : tout est détaillé sur ma page consacrée aux professionnels, avec mon CV complet. Elle s’adresse surtout aux structures (CSAPA, associations, services de soins), mais chacun peut la consulter. <a href="/professionnels">Découvrir mon parcours détaillé →</a></p>
+        <p>Formations, engagements, interventions, recherche de poste : tout est détaillé sur ma page consacrée aux professionnels, avec mon CV complet. Elle s’adresse surtout aux structures (CSAPA, associations, services de soins), mais chacun peut la consulter. <a href="/professionnels">Mon parcours détaillé et mon CV, sur la page des professionnels →</a></p>
       </div>
 
       <div class="carte contact-auteur" id="contact">
-        <p class="etiquette">Contact</p>
+        <p class="etiquette"><span class="bulle">Contact</span></p>
         <h2>Écrire à l’auteur</h2>
         <p class="mail-ligne"><a href="mailto:contact@lionelgarnier.fr" class="lienmail"><span id="adresse">contact@lionelgarnier.fr</span></a></p>
         <p class="mail-aide" id="mail-aide" aria-live="polite">Touchez pour écrire · restez appuyé pour copier</p>
@@ -807,6 +830,14 @@ a.marque{color:inherit;text-decoration:none}
   a.addEventListener('contextmenu',e=>e.preventDefault());
   a.addEventListener('click',async e=>{if(long){e.preventDefault();long=false;return;}const ok=await copie();if(ok)dit('Adresse copiée ✓ · votre messagerie s’ouvre');});
 })();
+</script>
+<script>
+/* V89 : « Plein écran » dans le menu (demande de Lionel) ; caché là où le navigateur ne le permet pas (iPhone) */
+(function(){var b=document.getElementById('menu-plein');if(!b)return;var d=document.documentElement,ok=!!(d.requestFullscreen||d.webkitRequestFullscreen);if(!ok)return;b.hidden=false;
+ function dedans(){return !!(document.fullscreenElement||document.webkitFullscreenElement);}
+ function maj(){b.querySelector('.txt').textContent=dedans()?'Quitter le plein écran':'Plein écran';}
+ b.addEventListener('click',function(){try{if(dedans()){(document.exitFullscreen||document.webkitExitFullscreen).call(document);}else{var r=(d.requestFullscreen||d.webkitRequestFullscreen).call(d);if(r&&r.catch)r.catch(function(){});}}catch(e){}});
+ ['fullscreenchange','webkitfullscreenchange'].forEach(function(n){document.addEventListener(n,maj);});maj();})();
 </script>
 </body>
 </html>

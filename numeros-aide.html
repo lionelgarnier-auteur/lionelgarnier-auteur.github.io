@@ -5,7 +5,7 @@
 <meta name="color-scheme" content="dark light">
 <script>/* V80 : le site s'ouvre toujours en mode nuit ; le mode jour reste possible par le bouton du menu (choix gardé sur l'appareil) */try{var t=localStorage.getItem('lg-mode');document.documentElement.setAttribute('data-theme',t==='light'?'light':'dark')}catch(e){document.documentElement.setAttribute('data-theme','dark')}</script>
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="description" content="Numéros d’aide pour les proches d’une personne dépendante : lignes d’écoute (Alcool Info Service, Drogues Info Service), numéros d’urgence, violences conjugales, prévention du suicide.">
+<meta name="description" content="Numéros d’aide pour les proches d’une personne alcoolique ou dépendante : Alcool Info Service, Drogues Info Service, urgences, violences conjugales, prévention du suicide.">
 <link rel="canonical" href="https://lionelgarnier.fr/numeros-aide">
 <meta property="og:type" content="article">
 <meta property="og:locale" content="fr_FR">
@@ -509,6 +509,13 @@ a.marque{color:inherit;text-decoration:none}
 /* V82 : dans le menu, « Lire en ligne » est séparé de « Contact » par un trait et aligné comme lui (il avait l'air d'en dépendre) */
 .nav nav.menu .menu-liste a.menu-relecteurs{margin-top:8px;border-top:1px solid var(--ligne);border-radius:0;padding-top:15px;padding-left:12px;font-weight:600}
 </style>
+<style>
+/* V89 (relecture accessibilité) : en mode nuit, le contour qui montre où l'on est au clavier devient doré (il était bleu nuit sur bleu nuit) */
+:root[data-theme="dark"]{--focus:#f2c66d}
+/* V89 : très petits téléphones (360 px et moins) : l'en-tête ne déborde plus */
+@media (max-width:380px){.nav .wrap{gap:6px}.nav .sos,.nav nav.menu > a.sos{padding:6px 10px!important;font-size:.78rem!important;gap:5px}.menu-btn{padding-inline:10px!important}.marque{gap:7px!important}}
+@media (max-width:340px){.nav .sos,.nav nav.menu > a.sos{font-size:0!important;padding:8px 12px!important;gap:0}.nav .sos svg{width:18px;height:18px}}
+</style>
 </head>
 <body>
 <a class="evitement" href="#contenu">Aller au contenu</a>
@@ -521,16 +528,17 @@ a.marque{color:inherit;text-decoration:none}
       <div class="menu-liste" id="menu-liste" hidden>
         <a href="/#top" class="menu-accueil">Accueil</a>
         <p class="menu-groupe">Le livre</p>
-        <a href="/#livre">Présentation</a>
+        <a href="/#livre">Le contenu du livre</a>
         <a href="/le-livre">Sommaire et avant-propos</a>
         <a href="/#section-feuilleter">Feuilleter</a>
         <a href="/#editions">Les deux éditions</a>
         <a href="/methode-craft">La méthode CRAFT</a>
         <p class="menu-groupe">L’auteur</p>
-        <a href="/auteur">Parcours</a>
-        <a href="/professionnels">Pour les professionnels</a>
+        <a href="/auteur">Le parcours de l’auteur</a>
+        <a href="/professionnels">La page des professionnels</a>
         <a href="/#contact" class="menu-contact">Contact</a>
-        <a href="https://edition-discrete.pages.dev/" class="menu-relecteurs" rel="nofollow">🔒 Lire en ligne</a>
+        <a href="https://edition-discrete.pages.dev/" class="menu-relecteurs" rel="nofollow"><span aria-hidden="true">🔒 </span>Lire en ligne</a>
+        <button type="button" class="menu-mode menu-plein" id="menu-plein" hidden><span class="ico" aria-hidden="true">⛶</span><span class="txt">Plein écran</span></button>
         <button type="button" class="menu-mode" id="menu-mode"><span class="ico" aria-hidden="true"></span><span class="txt"></span></button>
         <a href="/numeros-aide" class="menu-aide" aria-current="page"><svg class="ico-tel" viewBox="0 0 24 24" width="16" height="16" aria-hidden="true" focusable="false"><path fill="currentColor" d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.25 11.4 11.4 0 0 0 3.6.57 1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.25.2 2.45.57 3.57a1 1 0 0 1-.25 1z"/></svg>Numéros d’aide</a>
       </div>
@@ -579,7 +587,7 @@ a.marque{color:inherit;text-decoration:none}
   <section class="suite-livre">
     <div class="wrap">
       <p class="grand-suite">Vous aussi, vous avez le droit d’être aidé(e).</p>
-      <div class="actions"><a class="btn btn-or" href="/le-livre">Découvrir le livre</a><a class="btn btn-ligne-clair" href="/#contact">Écrire à l’auteur</a></div>
+      <div class="actions"><a class="btn btn-or" href="/le-livre">Découvrir le livre</a></div>
     </div>
   </section>
 </main>
@@ -668,6 +676,14 @@ a.marque{color:inherit;text-decoration:none}
   if (sys.addEventListener) sys.addEventListener('change', maj);
   maj();
 })();
+</script>
+<script>
+/* V89 : « Plein écran » dans le menu (demande de Lionel) ; caché là où le navigateur ne le permet pas (iPhone) */
+(function(){var b=document.getElementById('menu-plein');if(!b)return;var d=document.documentElement,ok=!!(d.requestFullscreen||d.webkitRequestFullscreen);if(!ok)return;b.hidden=false;
+ function dedans(){return !!(document.fullscreenElement||document.webkitFullscreenElement);}
+ function maj(){b.querySelector('.txt').textContent=dedans()?'Quitter le plein écran':'Plein écran';}
+ b.addEventListener('click',function(){try{if(dedans()){(document.exitFullscreen||document.webkitExitFullscreen).call(document);}else{var r=(d.requestFullscreen||d.webkitRequestFullscreen).call(d);if(r&&r.catch)r.catch(function(){});}}catch(e){}});
+ ['fullscreenchange','webkitfullscreenchange'].forEach(function(n){document.addEventListener(n,maj);});maj();})();
 </script>
 </body>
 </html>
