@@ -617,6 +617,7 @@ main > section{position:relative}main > section:not(.feuilleter)::before,main > 
 .chap-panneau li:nth-child(2){animation-delay:.06s}.chap-panneau li:nth-child(3){animation-delay:.12s}.chap-panneau li:nth-child(4){animation-delay:.18s}
 .chap-panneau .num{font-family:var(--display);font-weight:800;color:var(--or-fonce);text-align:right}
 @keyframes chapIn{from{opacity:0;transform:translateY(-4px)}to{opacity:1;transform:none}}
+.chap-panneau.sans-anim,.chap-panneau.sans-anim li{animation:none!important}
 @keyframes panIn{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:none}}
 /* le panneau est un enfant de la grille : la place de chaque étape est donc fixée par son nom, plus par son rang */
 @media (min-width:1001px){.etapes .etape.e1,.etapes .etape.e2,.etapes .etape.e3{grid-column:span 2}.etapes .etape.e4{grid-column:2 / span 2}.etapes .etape.e5{grid-column:4 / span 2}}
@@ -1292,14 +1293,14 @@ window.INTRO_VIDEO='/teaser-accueil-V16.mp4';
 /* V80 : un toucher sur une étape ouvre, sous sa rangée, le panneau de ses chapitres (un seul à la fois) ; un second toucher le referme */
 (function(){var G=document.querySelector('.etapes');if(!G)return;var C=[].slice.call(G.querySelectorAll('.etape')),P=document.createElement('div'),act=null;P.className='chap-panneau';P.id='chap-panneau';P.setAttribute('role','region');P.setAttribute('aria-live','polite');
  function ferme(){if(P.parentNode)P.parentNode.removeChild(P);C.forEach(function(c){c.classList.remove('ouverte');var b=c.querySelector('.voir');if(b){b.setAttribute('aria-expanded','false');b.querySelector('.lib').textContent='Voir les chapitres';}});act=null;}
- function place(){if(!act)return;if(P.parentNode)P.parentNode.removeChild(P);var y=act.offsetTop,der=act;C.forEach(function(c){if(Math.abs(c.offsetTop-y)<4)der=c;});G.insertBefore(P,der.nextSibling);}
+ function place(deplace){if(!act)return;var y=act.offsetTop,der=act;C.forEach(function(c){if(Math.abs(c.offsetTop-y)<4)der=c;});if(P.parentNode===G&&P.previousSibling===der)return;/* V86 : déjà à sa place, on ne touche à rien (sinon l'animation d'ouverture se rejouait) */P.classList.toggle('sans-anim',!!deplace);G.insertBefore(P,der.nextSibling);}
  function ouvre(c){ferme();act=c;var b=c.querySelector('.voir'),l=c.querySelector('.chap');c.classList.add('ouverte');b.setAttribute('aria-expanded','true');b.querySelector('.lib').textContent='Masquer les chapitres';
   P.innerHTML='<p class="titre"></p><ul></ul>';P.firstChild.textContent=c.querySelector('.n').textContent+' · '+c.querySelector('h3').textContent;P.lastChild.innerHTML=l.innerHTML;P.setAttribute('aria-label','Chapitres de l’'+c.querySelector('.n').textContent.toLowerCase());place();}
  C.forEach(function(c){var b=c.querySelector('.voir'),l=c.querySelector('.chap');if(!b||!l)return;b.setAttribute('aria-controls','chap-panneau');l.removeAttribute('hidden');
   c.addEventListener('click',function(e){if(e.target.closest('a'))return;if(act===c)ferme();else ouvre(c);});});
  /* V81 : toucher le panneau des chapitres le referme aussi (demande de Lionel), sauf si on est en train de sélectionner du texte */
  P.addEventListener('click',function(){if(String(window.getSelection&&window.getSelection())!=='')return;ferme();});
- var t=null;window.addEventListener('resize',function(){clearTimeout(t);t=setTimeout(place,120);});})();
+ /* V86 : sur téléphone et tablette, la barre d'adresse qui se cache ou réapparaît pendant le défilement change la HAUTEUR de l'écran : on ne recalcule que si la LARGEUR change (rotation), sans rejouer l'animation */var t=null,L0=window.innerWidth;window.addEventListener('resize',function(){if(window.innerWidth===L0)return;L0=window.innerWidth;clearTimeout(t);t=setTimeout(function(){place(true);},120);});})();
 </script>
 <script>
 /* V80 : le bloc « Ce livre ne promet pas… » s'éclaire une fois, quand il est bien visible à l'écran */
