@@ -671,6 +671,8 @@ main > section{position:relative}main > section:not(.feuilleter)::before,main > 
 @media (max-width:820px){.hero-liens{margin-inline:auto}}
 /* ===== V83 : accueil « à bandeaux » (demande de Lionel) : chaque partie se déroule comme un rouleau, du même geste que le menu ; « Le livre » est déroulé à l'arrivée. Sans JavaScript, tout reste affiché normalement. ===== */
 main > section.pliable{padding-block:14px}
+/* V84 : la ligne du bandeau et celle du bouton « Replier » occupent toujours toute la largeur (dans « L'auteur », la mise en page en deux colonnes les réduisait à une colonne étroite sur tablette couchée) */
+.pliable > .bandeau-ligne,.pliable .replier-ligne{display:block!important;grid-template-columns:none!important}
 .bandeau{position:relative;overflow:hidden;display:flex;align-items:center;gap:16px;width:100%;text-align:left;padding:18px 20px 18px 22px;border-radius:18px;border:1px solid rgba(242,198,109,.45);background:linear-gradient(100deg,rgba(242,198,109,.10),rgba(242,198,109,.02) 55%),var(--surface);color:var(--fg);font:inherit;cursor:pointer;-webkit-tap-highlight-color:transparent;transition:border-color .25s,box-shadow .25s,background .25s}
 .feuilleter .bandeau{background:linear-gradient(100deg,rgba(242,198,109,.12),rgba(242,198,109,.03) 55%),#1c2036;color:#eceaf2}
 @media (hover:hover){.bandeau:hover{border-color:rgba(242,198,109,.9);box-shadow:0 8px 26px rgba(0,0,0,.22)}}
@@ -1303,7 +1305,7 @@ window.INTRO_VIDEO='/teaser-accueil-V16.mp4';
  LISTE.forEach(function(z,k){var sec=document.getElementById(z[0]);if(!sec)return;
   var corps=document.createElement('div'),int=document.createElement('div');corps.className='rouleau-corps';corps.id='corps-'+z[0];int.className='rouleau-int';
   while(sec.firstChild)int.appendChild(sec.firstChild);corps.appendChild(int);
-  var w=document.createElement('div');w.className='wrap';var b=document.createElement('button');b.type='button';b.className='bandeau';b.style.setProperty('--k',k);b.setAttribute('aria-controls',corps.id);
+  var w=document.createElement('div');w.className='wrap bandeau-ligne';var b=document.createElement('button');b.type='button';b.className='bandeau';b.style.setProperty('--k',k);b.setAttribute('aria-controls',corps.id);
   b.innerHTML='<span class="b-txt"><span class="b-titre"></span><span class="b-sous"></span></span><span class="b-action"><span class="b-mot"></span><span class="b-rond" aria-hidden="true"></span></span>';
   b.querySelector('.b-titre').textContent=z[1];b.querySelector('.b-sous').textContent=z[2];w.appendChild(b);
   var rl=document.createElement('div');rl.className='wrap replier-ligne';var r=document.createElement('button');r.type='button';r.className='replier';r.textContent='Replier « '+z[1]+' »';rl.appendChild(r);int.appendChild(rl);
