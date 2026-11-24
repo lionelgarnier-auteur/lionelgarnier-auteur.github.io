@@ -1,6 +1,12 @@
 <!doctype html>
 <html lang="fr">
 <head>
+<style>body{zoom:var(--z,1)}.menu-liste{max-height:calc(100dvh / var(--z,1) - 110px)!important}</style>
+<script>
+/* V93 : « zoom automatique » sur ordinateur et grande tablette (demande de Lionel) : au-delà de 1240 px de large, tout le site grossit ensemble pour remplir l'écran (jusqu'à × 1,5) ; téléphone et tablette debout inchangés */
+(function(){var d=document.documentElement;function z(){var w=window.innerWidth,v=w>=1300?Math.min(1.5,w/1240):1;v=Math.round(v*100)/100;d.style.setProperty('--z',v);window.__z=v;}z();window.addEventListener('resize',z);})();
+</script>
+
 <meta charset="utf-8">
 <meta name="color-scheme" content="dark light">
 <script>/* V80 : le site s'ouvre toujours en mode nuit ; le mode jour reste possible par le bouton du menu (choix gardé sur l'appareil) */try{var t=localStorage.getItem('lg-mode');document.documentElement.setAttribute('data-theme',t==='light'?'light':'dark')}catch(e){document.documentElement.setAttribute('data-theme','dark')}</script>
@@ -802,7 +808,9 @@ main > section.pliable{border-top:0!important;border-bottom:0!important}
 :root[data-theme="light"] #section-feuilleter .bandeau{background:linear-gradient(100deg,rgba(242,198,109,.1),rgba(242,198,109,.02) 55%),#fff!important}
 :root[data-theme="light"] #section-feuilleter .bandeau .b-titre{color:#1e2233!important}:root[data-theme="light"] #section-feuilleter .bandeau .b-sous{color:#5b6075!important}:root[data-theme="light"] #section-feuilleter .bandeau .b-mot{color:#8a5d10!important}:root[data-theme="light"] #section-feuilleter .bandeau .b-rond{color:#8a5d10;border-color:currentColor}
 /* V91 : « Feuilleter » sur ordinateur et tablette couchée : le livre ouvert prend nettement plus de place, pour donner envie de lire (demande de Lionel) ; le téléphone ne change pas */
-@media (min-width:1000px) and (min-height:560px){.feuilleter .livre3d{width:min(1260px,94vw,calc((100svh - 178px)*296/210))!important;max-width:none!important;flex-shrink:0!important}}
+@media (min-width:1000px) and (min-height:560px){.feuilleter .livre3d{width:min(1300px,calc(94vw / var(--z,1)),calc((100svh / var(--z,1) - 178px)*296/210))!important;max-width:none!important;flex-shrink:0!important}}
+/* V93 : sur ordinateur et tablette couchée, le livre ouvert prend toute la hauteur de l'écran sous la barre du haut ; les flèches sont juste dessous (on fait défiler un peu, choix de Lionel) */
+@media (min-width:1000px){.feuilleter .livre3d{width:min(1400px,calc(94vw / var(--z,1)),calc((100svh / var(--z,1) - 96px)*296/210))!important}}
 /* V92 : plus de trait sous le haut de page (il dessinait une bande) */
 .hero{border-bottom:0!important}
 /* ===== V83 : accueil « à bandeaux » (demande de Lionel) : chaque partie se déroule comme un rouleau, du même geste que le menu ; « Le livre » est déroulé à l'arrivée. Sans JavaScript, tout reste affiché normalement. ===== */
@@ -1425,7 +1433,7 @@ window.INTRO_VIDEO='/teaser-accueil-V16.mp4';
 <script>
 /* V79 : place le paysage du haut de page à l'échelle de la couverture, lueur du fond (41 % de la hauteur de l'image) à la hauteur de celle de la couverture (57 %) */
 (function(){var R=1672/941;
- function caleHero(){var h=document.querySelector('.hero'),c=document.querySelector('.hero .couv-livre');if(!h||!c)return;var H=h.getBoundingClientRect(),q=c.getBoundingClientRect();if(q.height<40||H.width<50)return;
+ function caleHero(){var h=document.querySelector('.hero'),c=document.querySelector('.hero .couv-livre');if(!h||!c)return;var Z=window.__z||1,H0=h.getBoundingClientRect(),q0=c.getBoundingClientRect(),H={top:H0.top/Z,left:H0.left/Z,width:H0.width/Z,height:H0.height/Z},q={top:q0.top/Z,left:q0.left/Z,width:q0.width/Z,height:q0.height/Z,bottom:q0.bottom/Z};if(q.height<40||H.width<50)return;
   var ty=q.top-H.top+q.height*0.57,cx=q.left-H.left+q.width/2,W=H.width,Hh=H.height,rh,rw;
   if(window.matchMedia('(max-width:820px)').matches){ /* téléphone : le paysage en bandeau derrière la couverture, puis fondu vers le bleu nuit */
    rh=Math.max(ty/0.41,q.height*2.3,W/R,2*Math.max(cx,W-cx)/R)*1.001;   /* V92 : l'image couvre toujours toute la largeur (sinon une bande verticale apparaissait sur le côté) */rw=rh*R;var top=ty-0.41*rh,bc=q.bottom-H.top;
@@ -1441,7 +1449,7 @@ window.INTRO_VIDEO='/teaser-accueil-V16.mp4';
 <script>
 /* V80 : dans « Feuilleter », le paysage de la couverture passe derrière le livre, à son échelle, lueur du fond (41 % de l'image) à la hauteur de celle de la couverture (57 % de la page), puis se fond dans le bleu nuit au-dessus et en dessous */
 (function(){var sec=document.querySelector('.feuilleter');if(!sec)return;var R=1672/941,nuit=getComputedStyle(sec).backgroundColor,m=/(\d+)[, ]+(\d+)[, ]+(\d+)/.exec(nuit)||[0,21,25,41],c=function(a){return 'rgba('+m[1]+','+m[2]+','+m[3]+','+a+')';};
- function cale(){var S=sec.getBoundingClientRect(),pg=null;[].forEach.call(sec.querySelectorAll('#livre3d,.livre3d,.livre1p'),function(e){var q=e.getBoundingClientRect();if(q.height>60&&q.width>60&&(!pg||q.height>pg.height))pg=q;});
+ function cale(){var Z=window.__z||1,dz=function(r){return {top:r.top/Z,left:r.left/Z,width:r.width/Z,height:r.height/Z};},S=dz(sec.getBoundingClientRect()),pg=null;[].forEach.call(sec.querySelectorAll('#livre3d,.livre3d,.livre1p'),function(e){var q=dz(e.getBoundingClientRect());if(q.height>60&&q.width>60&&(!pg||q.height>pg.height))pg=q;});
   if(!pg||S.width<50){sec.style.background='';return;}
   var h=pg.height,top=pg.top-S.top,ty=top+h*0.57,W=S.width,rh=Math.max(h*2,W/R)*1.001,rw=rh*R,y=ty-0.41*rh,px=function(v){return Math.round(v)+'px';};
   sec.style.background='linear-gradient(180deg,'+c(1)+' 0px,'+c(1)+' '+px(Math.max(0,y+4))+','+c(.42)+' '+px(top+h*0.12)+','+c(.2)+' '+px(ty-h*0.1)+','+c(.3)+' '+px(ty+h*0.2)+','+c(.82)+' '+px(top+h+10)+','+c(1)+' '+px(Math.min(y+rh-4,top+h*1.3))+','+c(1)+' 100%),'+nuit+' url(/fond-paysage.jpg) '+px((W-rw)/2)+' '+px(y)+'/'+Math.ceil(rw)+'px '+Math.ceil(rh)+'px no-repeat';}

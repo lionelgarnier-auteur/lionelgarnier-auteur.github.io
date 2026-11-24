@@ -1,6 +1,12 @@
 <!doctype html>
 <html lang="fr">
 <head>
+<style>body{zoom:var(--z,1)}.menu-liste{max-height:calc(100dvh / var(--z,1) - 110px)!important}</style>
+<script>
+/* V93 : « zoom automatique » sur ordinateur et grande tablette (demande de Lionel) : au-delà de 1240 px de large, tout le site grossit ensemble pour remplir l'écran (jusqu'à × 1,5) ; téléphone et tablette debout inchangés */
+(function(){var d=document.documentElement;function z(){var w=window.innerWidth,v=w>=1300?Math.min(1.5,w/1240):1;v=Math.round(v*100)/100;d.style.setProperty('--z',v);window.__z=v;}z();window.addEventListener('resize',z);})();
+</script>
+
 <meta charset="utf-8">
 <meta name="color-scheme" content="dark light">
 <script>/* V80 : le site s'ouvre toujours en mode nuit ; le mode jour reste possible par le bouton du menu (choix gardé sur l'appareil) */try{var t=localStorage.getItem('lg-mode');document.documentElement.setAttribute('data-theme',t==='light'?'light':'dark')}catch(e){document.documentElement.setAttribute('data-theme','dark')}</script>
