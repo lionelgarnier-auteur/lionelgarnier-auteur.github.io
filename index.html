@@ -803,6 +803,8 @@ main > section.pliable{border-top:0!important;border-bottom:0!important}
 :root[data-theme="light"] #section-feuilleter .bandeau .b-titre{color:#1e2233!important}:root[data-theme="light"] #section-feuilleter .bandeau .b-sous{color:#5b6075!important}:root[data-theme="light"] #section-feuilleter .bandeau .b-mot{color:#8a5d10!important}:root[data-theme="light"] #section-feuilleter .bandeau .b-rond{color:#8a5d10;border-color:currentColor}
 /* V91 : « Feuilleter » sur ordinateur et tablette couchée : le livre ouvert prend nettement plus de place, pour donner envie de lire (demande de Lionel) ; le téléphone ne change pas */
 @media (min-width:1000px) and (min-height:560px){.feuilleter .livre3d{width:min(1260px,94vw,calc((100svh - 178px)*296/210))!important;max-width:none!important;flex-shrink:0!important}}
+/* V92 : plus de trait sous le haut de page (il dessinait une bande) */
+.hero{border-bottom:0!important}
 /* ===== V83 : accueil « à bandeaux » (demande de Lionel) : chaque partie se déroule comme un rouleau, du même geste que le menu ; « Le livre » est déroulé à l'arrivée. Sans JavaScript, tout reste affiché normalement. ===== */
 main > section.pliable{padding-block:14px}
 /* V84 : la ligne du bandeau et celle du bouton « Replier » occupent toujours toute la largeur (dans « L'auteur », la mise en page en deux colonnes les réduisait à une colonne étroite sur tablette couchée) */
@@ -1426,7 +1428,7 @@ window.INTRO_VIDEO='/teaser-accueil-V16.mp4';
  function caleHero(){var h=document.querySelector('.hero'),c=document.querySelector('.hero .couv-livre');if(!h||!c)return;var H=h.getBoundingClientRect(),q=c.getBoundingClientRect();if(q.height<40||H.width<50)return;
   var ty=q.top-H.top+q.height*0.57,cx=q.left-H.left+q.width/2,W=H.width,Hh=H.height,rh,rw;
   if(window.matchMedia('(max-width:820px)').matches){ /* téléphone : le paysage en bandeau derrière la couverture, puis fondu vers le bleu nuit */
-   rh=Math.max(ty/0.41,q.height*2.3,W/R)*1.001;rw=rh*R;var top=ty-0.41*rh,bc=q.bottom-H.top;
+   rh=Math.max(ty/0.41,q.height*2.3,W/R,2*Math.max(cx,W-cx)/R)*1.001;   /* V92 : l'image couvre toujours toute la largeur (sinon une bande verticale apparaissait sur le côté) */rw=rh*R;var top=ty-0.41*rh,bc=q.bottom-H.top;
    h.style.background='linear-gradient(180deg,rgba(21,25,41,.55) 0px,rgba(21,25,41,.18) '+Math.round(ty-q.height*0.12)+'px,rgba(21,25,41,.3) '+Math.round(ty+q.height*0.1)+'px,rgba(21,25,41,.9) '+Math.round(bc+6)+'px,#151929 '+Math.round(Math.min(top+rh,bc+q.height*0.45))+'px,#151929 100%),#151929 url(/fond-paysage.jpg) '+Math.round(cx-rw/2)+'px '+Math.round(top)+'px/'+Math.ceil(rw)+'px '+Math.ceil(rh)+'px no-repeat';return;}
   h.style.background='';rh=Math.max(Hh,W/R,ty/0.41,(Hh-ty)/0.59,2*Math.max(cx,W-cx)/R)*1.001;rw=rh*R;
   h.style.backgroundSize='auto, '+Math.ceil(rw)+'px '+Math.ceil(rh)+'px';h.style.backgroundPosition='0 0, '+Math.round(cx-rw/2)+'px '+Math.round(ty-0.41*rh)+'px';}
