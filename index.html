@@ -638,9 +638,13 @@ main > section{position:relative}main > section:not(.feuilleter)::before,main > 
 #livre .plus-livre{text-align:center;margin-top:28px}
 /* V81 : dans le menu, les raccourcis « Sur cette page » portent une petite flèche vers le bas (on reste sur la page, elle glisse jusqu'à la partie) */
 .nav nav.menu .menu-liste a.menu-simple[href="/professionnels"]{margin-top:0;border-top:0;border-radius:9px;padding:11px 12px 11px 22px;font-weight:400}
-.nav nav.menu .menu-liste a.menu-relecteurs{margin-top:8px;border-top:1px solid var(--ligne);padding-top:15px}
+.nav nav.menu .menu-liste a.menu-relecteurs{margin-top:8px;border-top:1px solid var(--ligne);border-radius:0;padding-top:15px;padding-left:12px;font-weight:600}
 #pros-carte{scroll-margin-top:100px}
 .menu-liste a.menu-ici::before{content:'↓';display:inline-block;width:1.3em;color:var(--or-fonce);font-weight:700}
+/* V82 : « Il vous aide à aller mieux, » garde tout son éclat ; « quoi qu'il fasse. » est plus doux, sans halo (demande de Lionel). Chaque moitié reste d'un seul tenant : si la ligne est trop courte, la coupure se fait à la virgule. */
+.promesse > span > span{display:inline-block;max-width:100%;opacity:1!important;font-size:inherit}
+.promesse > span > .doux{color:#d2ad62!important;text-shadow:0 2px 12px rgba(0,0,0,.8)!important;font-weight:600}
+.promesse.attend > span > .fort{color:inherit;text-shadow:none}
 /* V80 : la phrase « Ce livre ne promet pas… » posée sur le paysage de la couverture ; quand elle arrive à l'écran, le paysage s'éclaire doucement (lever du jour) */
 .promesse{position:relative;isolation:isolate;margin-top:56px;margin-bottom:18px;padding:64px 32px 58px;border:1px solid rgba(242,198,109,.5);background:#151929 url(/fond-paysage.jpg) center 40%/cover no-repeat;box-shadow:0 18px 40px rgba(0,0,0,.3);gap:14px;overflow:hidden}
 .promesse::before{content:'';position:absolute;inset:0;z-index:-1;background:linear-gradient(rgba(15,19,34,0.12),rgba(15,19,34,0.28))}
@@ -731,7 +735,7 @@ main > section{position:relative}main > section:not(.feuilleter)::before,main > 
 
       <div class="promesse">
         <strong>Ce livre ne promet pas que votre proche arrêtera.</strong>
-        <span>Il vous aide à aller mieux, quoi qu’il fasse.</span>
+        <span><span class="fort">Il vous aide à aller mieux,</span> <span class="doux">quoi qu’il fasse.</span></span>
       </div>
       <p class="details">Impression à la demande · ISBN couleur 979-10-991066-2-9 · noir et blanc 979-10-991066-0-5 · les pages d’exercices peuvent être photocopiées pour un usage personnel (<a href="/professionnels#photocopies">conditions pour les professionnels</a>).</p>
     </div>
