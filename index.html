@@ -1386,6 +1386,8 @@ window.INTRO_VIDEO='/teaser-accueil-V16.mp4';
 <script>
 /* V94 : la liseuse de l'extrait ne se charge que lorsque la section approche de l'écran */
 (function(){var f=document.getElementById('liseuse-extrait');if(!f)return;function go(){if(!f.src)f.src=f.dataset.src;}
+ /* V95 : le livre demande une micro-vibration (cran du levier HD/MD/LD) ; un cadre ne peut pas faire vibrer lui-même. Seuls les messages du livre sont écoutés. */
+ window.addEventListener('message',function(e){if(e.origin!=='https://edition-discrete.pages.dev'||e.source!==f.contentWindow)return;var d=e.data;if(d&&d.ed==='vibre'&&navigator.vibrate){try{navigator.vibrate(Math.max(4,Math.min(20,+d.ms||9)));}catch(x){}}});
  if('IntersectionObserver' in window){var o=new IntersectionObserver(function(es){if(es.some(function(e){return e.isIntersecting;})){go();o.disconnect();}},{rootMargin:'600px 0px'});o.observe(f);}else go();})();
 </script>
 </body>
