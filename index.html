@@ -1394,7 +1394,10 @@ window.INTRO_VIDEO='/teaser-accueil-V16.mp4';
  function recadre(){var r=cad.getBoundingClientRect(),hh=mq.matches?0:((document.querySelector('header.nav')||{}).offsetHeight||70)/(window.__z||1);window.scrollTo({top:Math.max(0,window.scrollY+r.top/(window.__z||1)-hh),behavior:'auto'});document.body.classList.toggle('livre-plein',mq.matches);}
  var avant=null,tR=null;function tourne(){if(avant===null)avant=Math.max(vu,prec);clearTimeout(tR);tR=setTimeout(function(){if(avant>0.3){recadre();setTimeout(recadre,350);}avant=null;},250);}
  window.addEventListener('orientationchange',tourne);if(mq.addEventListener)mq.addEventListener('change',tourne);else if(mq.addListener)mq.addListener(tourne);
- window.addEventListener('message',function(e){if(e.origin!=='https://edition-discrete.pages.dev'||e.source!==f.contentWindow)return;var d=e.data;if(d&&d.ed==='vibre'&&navigator.vibrate){try{navigator.vibrate(Math.max(4,Math.min(20,+d.ms||9)));}catch(x){}}
+ /* V100 : la page prévient le livre quand ELLE est en plein écran : le livre cache alors son propre bouton plein écran (les deux empilés bloquaient le livre) */
+ function ditPlein(){try{var fe=document.fullscreenElement||document.webkitFullscreenElement;if(f.contentWindow)f.contentWindow.postMessage({ed:'sitePlein',on:!!fe&&fe!==f},'https://edition-discrete.pages.dev');}catch(x){}}
+ ['fullscreenchange','webkitfullscreenchange'].forEach(function(n){document.addEventListener(n,ditPlein);});f.addEventListener('load',ditPlein);
+ window.addEventListener('message',function(e){if(e.origin!=='https://edition-discrete.pages.dev'||e.source!==f.contentWindow)return;var d=e.data;if(d&&d.ed==='salut'){ditPlein();return;}if(d&&d.ed==='vibre'&&navigator.vibrate){try{navigator.vibrate(Math.max(4,Math.min(20,+d.ms||9)));}catch(x){}}
   /* V97 : glissé vertical sur le livre = la page du site défile (suivi du doigt, puis élan qui ralentit doucement) */
   if(d&&d.ed==='defile'){cancelAnimationFrame(elan);var dy=Math.max(-400,Math.min(400,+d.dy||0));window.scrollBy({top:-dy,behavior:'instant'});}
   if(d&&d.ed==='lance'){cancelAnimationFrame(elan);var v=Math.max(-4,Math.min(4,+d.v||0)),t0=performance.now();(function pas(t){var dt=Math.min(40,t-t0);t0=t;v*=Math.pow(0.996,dt);if(Math.abs(v)<0.02)return;window.scrollBy({top:-v*dt,behavior:'instant'});elan=requestAnimationFrame(pas);})(t0);}});
