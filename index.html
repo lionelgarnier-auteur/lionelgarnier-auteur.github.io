@@ -873,6 +873,17 @@ main > section.pliable{padding-block:14px}
 @media (max-width:699px){.feuilleter .liseuse-cadre{width:100vw;border-radius:0;height:78svh;min-height:420px;box-shadow:none;border-top:1px solid rgba(242,198,109,.25);border-bottom:1px solid rgba(242,198,109,.25)}}
 @media (orientation:landscape) and (max-height:520px){html.tel .feuilleter .liseuse-cadre{height:100svh;min-height:0;border-radius:0;width:100vw}
  html.tel body.livre-plein header.nav{transform:translateY(-100%);transition:transform .3s}header.nav{transition:transform .3s}}   /* V101 : seulement sur un TÉLÉPHONE (html.tel) : sur une tablette couchée, la barre d'adresse qui se cache ou revient faisait passer la hauteur sous 520 et la page sautait sur le livre */   /* V96 : téléphone couché : le livre prend tout l'écran, la barre du haut s'efface tant qu'il est à l'écran */
+
+
+/* V102 : levier « ZOOM » à cadran dans la barre du haut (idée et choix de Lionel) : 1 normal, 2 page en plein écran (livre en double page), 3 livre seul en plein écran */
+.zoom-lev{display:inline-flex;align-items:center;gap:4px;margin-right:2px}.zoom-lev[hidden]{display:none!important}
+.zoom-mot{font:800 10px/1 system-ui,-apple-system,"Segoe UI",sans-serif;letter-spacing:.06em;text-transform:uppercase;color:#f2c66d}
+.zoom-cad{width:68px;height:46px;touch-action:none;user-select:none;-webkit-user-select:none;cursor:pointer;position:relative;-webkit-tap-highlight-color:transparent}
+.zoom-cad svg{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
+.zoom-cad:focus-visible{outline:3px solid #f2c66d;outline-offset:3px;border-radius:10px}
+.zoom-cad .ch{font:700 13px Georgia,'Times New Roman',serif;fill:#8d91a8;transition:fill .2s}
+.zoom-cad .ch.on{fill:#ffe39a;filter:drop-shadow(0 0 3px rgba(242,198,109,.9))}
+@media (max-width:480px){.zoom-mot{display:none}.zoom-cad{width:54px;height:37px}html.zl .marque{font-size:0;letter-spacing:0;gap:0}}   /* téléphone : le nom laisse la place au levier, le petit marcheur reste */
 </style>
 </head>
 <body>
@@ -885,6 +896,7 @@ main > section.pliable{padding-block:14px}
     <a class="marque" href="#top" title="Retour à l’accueil"><img class="marque-ico" src="/icone-192.png" width="30" height="30" alt="">Lionel Garnier</a>
     <nav aria-label="Menu du site" class="menu">
       <button type="button" class="plein-btn" id="plein-btn" hidden aria-label="Plein écran" title="Plein écran"><svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" focusable="false"><path class="ouvre" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/><path class="ferme" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" d="M9 4v5H4M15 4v5h5M9 20v-5H4M15 20v-5h5"/></svg></button>
+      <div class="zoom-lev" id="zoom-lev" hidden><span class="zoom-mot" aria-hidden="true">Zoom</span><div class="zoom-cad" id="zoom-cad" role="slider" tabindex="0" aria-label="Zoom du livre" aria-valuemin="1" aria-valuemax="3" aria-valuenow="1" aria-valuetext="Normal" title="Zoom : 1 normal, 2 double page, 3 pleine page"></div></div>
       <button type="button" class="menu-btn" id="menu-btn" aria-expanded="false" aria-controls="menu-liste"><span class="burger" aria-hidden="true"></span><span class="txt">Menu</span></button>
       <a class="sos" href="/numeros-aide"><svg class="ico-tel" viewBox="0 0 24 24" width="16" height="16" aria-hidden="true" focusable="false"><path fill="currentColor" d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.25 11.4 11.4 0 0 0 3.6.57 1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.25.2 2.45.57 3.57a1 1 0 0 1-.25 1z"/></svg>Numéros d’aide</a>
       <div class="menu-liste" id="menu-liste" hidden>
@@ -1398,7 +1410,7 @@ window.INTRO_VIDEO='/teaser-accueil-V16.mp4';
  function tourneVrai(){var o=mqO.matches;if(o===ori)return;ori=o;tourne();}
  window.addEventListener('orientationchange',function(){setTimeout(tourneVrai,60);});if(mqO.addEventListener)mqO.addEventListener('change',tourneVrai);else if(mqO.addListener)mqO.addListener(tourneVrai);
  /* V100 : la page prévient le livre quand ELLE est en plein écran : le livre cache alors son propre bouton plein écran (les deux empilés bloquaient le livre) */
- function ditPlein(){try{var fe=document.fullscreenElement||document.webkitFullscreenElement;if(f.contentWindow)f.contentWindow.postMessage({ed:'sitePlein',on:!!fe&&fe!==f},'https://edition-discrete.pages.dev');}catch(x){}}
+ function ditPlein(){try{var fe=document.fullscreenElement||document.webkitFullscreenElement,lv=!!(document.documentElement.requestFullscreen||document.documentElement.webkitRequestFullscreen);if(f.contentWindow)f.contentWindow.postMessage({ed:'sitePlein',on:lv||(!!fe&&fe!==f)},'https://edition-discrete.pages.dev');}catch(x){}}   /* V102 : avec le levier ZOOM, le livre cache toujours son propre bouton plein écran */
  ['fullscreenchange','webkitfullscreenchange'].forEach(function(n){document.addEventListener(n,ditPlein);});f.addEventListener('load',ditPlein);
  /* V101 : quand le LIVRE sort de son plein écran (croix ou bouton), la page se recale sur le livre (elle restait à moitié décalée) */
  var feAvant=null;['fullscreenchange','webkitfullscreenchange'].forEach(function(n){document.addEventListener(n,function(){var fe=document.fullscreenElement||document.webkitFullscreenElement||null;if(feAvant===f&&!fe){setTimeout(recadre,120);setTimeout(recadre,500);}feAvant=fe;});});
@@ -1408,6 +1420,59 @@ window.INTRO_VIDEO='/teaser-accueil-V16.mp4';
   if(d&&d.ed==='lance'){cancelAnimationFrame(elan);var v=Math.max(-4,Math.min(4,+d.v||0)),t0=performance.now();(function pas(t){var dt=Math.min(40,t-t0);t0=t;v*=Math.pow(0.996,dt);if(Math.abs(v)<0.02)return;window.scrollBy({top:-v*dt,behavior:'instant'});elan=requestAnimationFrame(pas);})(t0);}});
  var elan=0;['wheel','touchstart'].forEach(function(n){window.addEventListener(n,function(){cancelAnimationFrame(elan);},{passive:true});});
  if('IntersectionObserver' in window){var o=new IntersectionObserver(function(es){if(es.some(function(e){return e.isIntersecting;})){go();o.disconnect();}},{rootMargin:'600px 0px'});o.observe(f);}else go();})();
+</script>
+
+<script>
+/* V102 : LEVIER ZOOM (cadran demi-lune, aiguille en cône, ressort : la position change au premier contact du cran, le rebond ne compte pas)
+   1 = normal ; 2 = la page en plein écran (le livre de « Feuilleter » en double page) ; 3 = le livre seul en plein écran.
+   Il remplace le bouton plein écran de la barre et la ligne « Plein écran » du menu. Absent là où le navigateur ne permet pas le plein écran (iPhone). */
+(function(){var box=document.getElementById('zoom-lev'),c=document.getElementById('zoom-cad'),f=document.getElementById('liseuse-extrait'),D=document.documentElement;
+ if(!box||!c||!f)return;var ok=!!(D.requestFullscreen||D.webkitRequestFullscreen);if(!ok)return;box.hidden=false;D.classList.add('zl');
+ var mp=document.getElementById('menu-plein');if(mp){mp.hidden=true;mp.style.display='none';}var pb=document.getElementById('plein-btn');if(pb){pb.hidden=true;pb.style.display='none';}   /* le levier remplace le bouton plein écran de la barre */
+ var NOMS=['Normal','Double page','Pleine page'],ANG=[-40,0,40],PX=56,PY=62;
+ function pt(a,r){var t=a*Math.PI/180;return [PX+Math.sin(t)*r,PY-Math.cos(t)*r];}
+ var gr=[-40,-20,0,20,40].map(function(a){var p=pt(a,38),q=pt(a,a%40?34:31);return '<line x1="'+p[0].toFixed(1)+'" y1="'+p[1].toFixed(1)+'" x2="'+q[0].toFixed(1)+'" y2="'+q[1].toFixed(1)+'" stroke="#c9a04a" stroke-width="'+(a%40?1:1.6)+'"/>';}).join('');
+ var ch=ANG.map(function(a,i){var p=pt(a,47);return '<text class="ch" x="'+p[0].toFixed(1)+'" y="'+(p[1]+4).toFixed(1)+'" text-anchor="middle">'+(i+1)+'</text>';}).join('');
+ c.innerHTML='<svg viewBox="0 0 112 76" aria-hidden="true"><defs><radialGradient id="zOr" cx="35%" cy="28%" r="80%"><stop offset="0" stop-color="#fff4d0"/><stop offset=".45" stop-color="#f2c66d"/><stop offset="1" stop-color="#7d5d1c"/></radialGradient>'+
+  '<linearGradient id="zCone" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff1c6"/><stop offset=".35" stop-color="#e2b552"/><stop offset=".7" stop-color="#f7d98a"/><stop offset="1" stop-color="#8a6a22"/></linearGradient>'+
+  '<linearGradient id="zLaiton" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffe9b0"/><stop offset=".5" stop-color="#d9a945"/><stop offset="1" stop-color="#6e521a"/></linearGradient></defs>'+
+  '<path d="M10 66 A46 46 0 0 1 102 66 Z" fill="url(#zLaiton)"/><path d="M15 66 A41 41 0 0 1 97 66 Z" fill="#231c10"/>'+gr+'<path d="M10 66 L102 66" stroke="#6e521a" stroke-width="2"/>'+ch+
+  '<g class="lev"><path d="M56 24 L61.5 62 L50.5 62 Z" fill="url(#zCone)"/><path d="M56 24 L57.5 62 L54 62 Z" fill="#fff6d8" opacity=".5"/><path d="M56 24 L61.5 62 L59 62 Z" fill="#5a4318" opacity=".45"/></g>'+
+  '<circle cx="56" cy="62" r="5" fill="url(#zOr)" stroke="#6e521a" stroke-width=".8"/></svg>';
+ var lev=c.querySelector('.lev'),chs=[].slice.call(c.querySelectorAll('.ch')),pos=0,ang=ANG[0],vit=0,cible=ANG[0],raf=0,g=null,AC=null;
+ function coup(t0,dur,fr,q,vol){var n=Math.floor(AC.sampleRate*dur),b=AC.createBuffer(1,n,AC.sampleRate),d=b.getChannelData(0);for(var i=0;i<n;i++)d[i]=(Math.random()*2-1)*Math.pow(1-i/n,5);var s=AC.createBufferSource();s.buffer=b;var fl=AC.createBiquadFilter();fl.type='bandpass';fl.frequency.value=fr;fl.Q.value=q;var gn=AC.createGain();gn.gain.value=vol;s.connect(fl);fl.connect(gn);gn.connect(AC.destination);s.start(AC.currentTime+t0);}
+ function clic(){try{AC=AC||new (window.AudioContext||window.webkitAudioContext)();if(AC.state==='suspended')AC.resume();coup(0,.035,2600,1.8,.55);coup(.018,.05,1100,2.2,.6);}catch(e){}   /* « clic-clac » d'un vieil interrupteur : un claquement aigu puis le corps du laiton */try{if(navigator.vibrate)navigator.vibrate(12);}catch(e){}}
+ function peint(){lev.setAttribute('transform','rotate('+ang.toFixed(2)+' '+PX+' '+PY+')');}
+ function maj(){chs.forEach(function(t,i){t.classList.toggle('on',i===pos);});c.setAttribute('aria-valuenow',pos+1);c.setAttribute('aria-valuetext',NOMS[pos]);}
+ function fe(){return document.fullscreenElement||document.webkitFullscreenElement||null;}
+ function sortir(){try{(document.exitFullscreen||document.webkitExitFullscreen).call(document);}catch(e){}}
+ function entrer(el){try{var r=(el.requestFullscreen||el.webkitRequestFullscreen).call(el);if(r&&r.catch)r.catch(function(){suit();});}catch(e){suit();}}
+ var veut=null;
+ function applique(i){var e=fe();veut=i;   /* le geste de l'utilisateur est encore actif ici : le navigateur accepte le plein écran */
+  if(i===0){if(e)sortir();}
+  else if(i===1){if(e===f)sortir();else if(!e)entrer(D);}   /* depuis 3 : on sort d'abord du livre, puis la page reprend le plein écran (voir suit) */
+  else{if(e!==f)entrer(f);}}
+ function suit(){var e=fe(),p=!e?0:(e===f?2:1);
+  if(veut===1&&p===0){veut=null;entrer(D);return;}   /* 3 → 2 : on était sorti du livre, la page repasse en plein écran */
+  if(veut===0&&p!==0){sortir();return;}               /* 3 → 1 avec la page en dessous : on sort complètement */
+  veut=null;if(p!==pos){pos=p;maj();}cible=ANG[pos];ressort(false);}
+ ['fullscreenchange','webkitfullscreenchange'].forEach(function(n){document.addEventListener(n,function(){setTimeout(suit,30);});});
+ /* ressort : la position est prise au PREMIER contact avec le cran ; le rebond qui suit est seulement visuel */
+ function ressort(nouv){cancelAnimationFrame(raf);var der=performance.now(),touche=false;
+  function pas(t){var dt=Math.min(32,t-der)/1000;der=t;vit+=((cible-ang)*420-vit*17)*dt;var av=ang;ang+=vit*dt;
+   if(!touche&&(av-cible)*(ang-cible)<=0){touche=true;if(nouv!==false&&nouv!==null&&nouv!==undefined){pos=nouv;maj();clic();applique(nouv);}}peint();
+   if(Math.abs(cible-ang)<.05&&Math.abs(vit)<1){ang=cible;peint();return;}raf=requestAnimationFrame(pas);}raf=requestAnimationFrame(pas);}
+ function va(i){cible=ANG[i];if(i===pos){ressort(false);return;}ressort(i);}
+ function reveil(){try{AC=AC||new (window.AudioContext||window.webkitAudioContext)();if(AC.state==='suspended')AC.resume();}catch(x){}}   /* le son doit être « réveillé » pendant le toucher, sinon téléphones et tablettes le coupent */
+ c.addEventListener('pointerdown',function(e){reveil();try{c.setPointerCapture(e.pointerId);}catch(x){}cancelAnimationFrame(raf);g={x:e.clientX,a:ang,parti:false};});
+ c.addEventListener('pointermove',function(e){if(!g||g.parti)return;var dx=e.clientX-g.x;ang=Math.max(-48,Math.min(48,g.a+dx*.7));peint();
+  if(Math.abs(dx)>10){var sens=dx>0?1:-1;g.parti=true;vit=sens*260;va(Math.max(0,Math.min(2,pos+sens)));}});
+ function fin(e){if(!g)return;var w=g;g=null;if(w.parti)return;if(Math.abs(e.clientX-w.x)<5){var r=c.getBoundingClientRect(),q=(e.clientX-r.left)/r.width;va(q<.36?0:(q>.64?2:1));}else va(pos);}
+ c.addEventListener('pointerup',fin);c.addEventListener('pointercancel',fin);
+ c.addEventListener('keydown',function(e){if(e.key==='ArrowRight'||e.key==='ArrowUp'){va(Math.min(2,pos+1));e.preventDefault();}if(e.key==='ArrowLeft'||e.key==='ArrowDown'){va(Math.max(0,pos-1));e.preventDefault();}});
+ /* le livre demande de sortir (sa croix, en position 3) : on revient à la position 1 */
+ window.addEventListener('message',function(e){if(e.origin!=='https://edition-discrete.pages.dev'||e.source!==f.contentWindow)return;var d=e.data;if(d&&d.ed==='sortPlein'&&fe()){veut=0;sortir();}});
+ window.__zoomLevier=true;peint();maj();suit();})();
 </script>
 </body>
 </html>
