@@ -871,7 +871,8 @@ main > section.pliable{padding-block:14px}
 .feuilleter .liseuse-cadre{position:relative;width:min(1400px,calc(96vw / var(--z,1)));left:50%;transform:translateX(-50%);height:min(calc(100svh / var(--z,1) - 70px),calc(96vw / var(--z,1) * .62));min-height:440px;margin:14px 0 10px;border-radius:14px;overflow:hidden;background:#131829;box-shadow:0 24px 60px -20px rgba(0,0,0,.7),0 0 0 1px rgba(242,198,109,.25)}
 .feuilleter .liseuse-cadre iframe{display:block;width:100%;height:100%;border:0;background:#131829}
 @media (max-width:699px){.feuilleter .liseuse-cadre{width:100vw;border-radius:0;height:78svh;min-height:420px;box-shadow:none;border-top:1px solid rgba(242,198,109,.25);border-bottom:1px solid rgba(242,198,109,.25)}}
-@media (orientation:landscape) and (max-height:520px){.feuilleter .liseuse-cadre{height:calc(100svh - 24px);min-height:0}}
+@media (orientation:landscape) and (max-height:520px){.feuilleter .liseuse-cadre{height:100svh;min-height:0;border-radius:0;width:100vw}
+ body.livre-plein header.nav{transform:translateY(-100%);transition:transform .3s}header.nav{transition:transform .3s}}   /* V96 : téléphone couché : le livre prend tout l'écran, la barre du haut s'efface tant qu'il est à l'écran */
 </style>
 </head>
 <body>
@@ -1387,6 +1388,12 @@ window.INTRO_VIDEO='/teaser-accueil-V16.mp4';
 /* V94 : la liseuse de l'extrait ne se charge que lorsque la section approche de l'écran */
 (function(){var f=document.getElementById('liseuse-extrait');if(!f)return;function go(){if(!f.src)f.src=f.dataset.src;}
  /* V95 : le livre demande une micro-vibration (cran du levier HD/MD/LD) ; un cadre ne peut pas faire vibrer lui-même. Seuls les messages du livre sont écoutés. */
+ /* V96 : quand on tourne le téléphone pendant que le livre est à l'écran, la page se recadre sur le livre (demande de Lionel) */
+ var cad=f.parentNode,vu=0,prec=0,mq=window.matchMedia('(orientation:landscape) and (max-height:520px)');
+ if('IntersectionObserver' in window)new IntersectionObserver(function(es){es.forEach(function(e){prec=vu;vu=e.intersectionRatio;document.body.classList.toggle('livre-plein',mq.matches&&vu>0.85);});},{threshold:[0,0.3,0.5,0.85,0.95,1]}).observe(cad);
+ function recadre(){var r=cad.getBoundingClientRect(),hh=mq.matches?0:((document.querySelector('header.nav')||{}).offsetHeight||70)/(window.__z||1);window.scrollTo({top:Math.max(0,window.scrollY+r.top/(window.__z||1)-hh),behavior:'auto'});document.body.classList.toggle('livre-plein',mq.matches);}
+ var avant=null,tR=null;function tourne(){if(avant===null)avant=Math.max(vu,prec);clearTimeout(tR);tR=setTimeout(function(){if(avant>0.3){recadre();setTimeout(recadre,350);}avant=null;},250);}
+ window.addEventListener('orientationchange',tourne);if(mq.addEventListener)mq.addEventListener('change',tourne);else if(mq.addListener)mq.addListener(tourne);
  window.addEventListener('message',function(e){if(e.origin!=='https://edition-discrete.pages.dev'||e.source!==f.contentWindow)return;var d=e.data;if(d&&d.ed==='vibre'&&navigator.vibrate){try{navigator.vibrate(Math.max(4,Math.min(20,+d.ms||9)));}catch(x){}}});
  if('IntersectionObserver' in window){var o=new IntersectionObserver(function(es){if(es.some(function(e){return e.isIntersecting;})){go();o.disconnect();}},{rootMargin:'600px 0px'});o.observe(f);}else go();})();
 </script>
