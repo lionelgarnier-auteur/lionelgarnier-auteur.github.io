@@ -1451,7 +1451,12 @@ window.INTRO_VIDEO='/teaser-accueil-V16.mp4';
  function applique(i){var e=fe();veut=i;   /* le geste de l'utilisateur est encore actif ici : le navigateur accepte le plein écran */
   if(i===0){if(e)sortir();}
   else if(i===1){if(e===f)sortir();else if(!e)entrer(D);}   /* depuis 3 : on sort d'abord du livre, puis la page reprend le plein écran (voir suit) */
-  else{if(e!==f)entrer(f);}}
+  else{if(e!==f){pret3();entrer(f);}}}
+ /* V103 : position 3 avec « Feuilleter » replié : on déplie la section et on charge le livre AVANT le plein écran (avant : cadre vide en plein écran, écran noir, impossible d'en sortir) */
+ function pret3(){try{var sec=document.getElementById('section-feuilleter'),bd=sec&&sec.querySelector('button.bandeau');if(bd&&bd.getAttribute('aria-expanded')!=='true')bd.click();if(!f.getAttribute('src')&&f.dataset.src)f.src=f.dataset.src;}catch(x){}}
+ /* filet de sécurité : le livre dit « salut » quand il est chargé ; si, 12 s après le passage en position 3, il n'a jamais répondu (pas de réseau…), on sort tout seul du plein écran */
+ var livreVu=false,garde3=0;window.addEventListener('message',function(e){if(e.source===f.contentWindow)livreVu=true;});
+ ['fullscreenchange','webkitfullscreenchange'].forEach(function(n){document.addEventListener(n,function(){clearTimeout(garde3);if(fe()===f&&!livreVu)garde3=setTimeout(function(){if(fe()===f&&!livreVu){veut=0;sortir();}},12000);});});
  function suit(){var e=fe(),p=!e?0:(e===f?2:1);
   if(veut===1&&p===0){veut=null;entrer(D);return;}   /* 3 → 2 : on était sorti du livre, la page repasse en plein écran */
   if(veut===0&&p!==0){sortir();return;}               /* 3 → 1 avec la page en dessous : on sort complètement */
