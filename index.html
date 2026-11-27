@@ -1487,7 +1487,7 @@ window.INTRO_VIDEO='/teaser-accueil-V16.mp4';
 /* V106 (Lionel) : flèche ↓ sous « …rien n’est gardé » : 1 s après que la phrase est bien visible, 3 pulsations puis elle s’éteint ; une fois par visite ; seulement si le livre n’est pas déjà bien visible */
 (function(){var fl=document.getElementById('fl-bas'),ch=fl&&fl.previousElementSibling,cad=document.getElementById('feuilleter');if(!fl||!ch||!cad||!('IntersectionObserver' in window))return;try{if(sessionStorage.getItem('fl_bas'))return;}catch(e){}var t=null;var o=new IntersectionObserver(function(es){es.forEach(function(e){clearTimeout(t);if(e.isIntersecting&&e.intersectionRatio>=0.6){t=setTimeout(function(){var r=cad.getBoundingClientRect();if(r.top<innerHeight*0.6)return;o.disconnect();try{sessionStorage.setItem('fl_bas','1');}catch(x){}fl.classList.add('go');},1000);}});},{threshold:[0,0.6]});o.observe(ch);})();
 </script>
-<script src="/fleche-menu.js?v=108"></script>
-<script src="/barre.js?v=109"></script>
+<script src="/fleche-menu.js?v=110"></script>
+<script src="/barre.js?v=110"></script>
 </body>
 </html>
