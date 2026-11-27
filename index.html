@@ -1463,7 +1463,7 @@ window.INTRO_VIDEO='/teaser-accueil-V16.mp4';
  function suit(){var e=fe(),p=!e?0:(e===f?2:1);
   if(veut===1&&p===0){veut=null;entrer(D);return;}   /* 3 → 2 : on était sorti du livre, la page repasse en plein écran */
   if(veut===0&&p!==0){sortir();return;}               /* 3 → 1 avec la page en dessous : on sort complètement */
-  veut=null;if(p!==pos){pos=p;maj();}cible=ANG[pos];ressort(false);}
+  veut=null;if(p!==pos){pos=p;maj();}try{if(f.contentWindow)f.contentWindow.postMessage({ed:'unePage',on:p===2},'https://edition-discrete.pages.dev');}catch(x){}   /* V107 : position 3 = le livre en une page */cible=ANG[pos];ressort(false);}
  ['fullscreenchange','webkitfullscreenchange'].forEach(function(n){document.addEventListener(n,function(){setTimeout(suit,30);});});
  /* ressort : la position est prise au PREMIER contact avec le cran ; le rebond qui suit est seulement visuel */
  function ressort(nouv){cancelAnimationFrame(raf);var der=performance.now(),touche=false;
