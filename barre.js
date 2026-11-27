@@ -16,6 +16,11 @@
   if(!ACHAT_OUVERT){ac.setAttribute('aria-disabled','true');ac.style.opacity='.75';ac.addEventListener('click',function(e){e.preventDefault();e.stopPropagation();var b=ac.querySelector('.achat-bulle');if(!b){b=document.createElement('span');b.className='achat-bulle';b.setAttribute('role','status');b.style.cssText='display:block;margin-top:6px;font-size:.85rem;font-weight:600;color:var(--or,#f2c66d)';ac.appendChild(b);}b.textContent='Pas encore en vente : bientôt disponible.';clearTimeout(ac._t);ac._t=setTimeout(function(){b.remove();},3500);});}}
  /* V110 (Lionel) : « 🔑 Espace auteur » dans le menu, pour tout le monde ; le serveur du livre ne montre l'espace qu'à Lionel (sinon « en cours de construction »). */
  if(liste&&!liste.querySelector('.menu-auteur')){var ea=document.createElement('a');ea.className='menu-auteur';ea.href='https://edition-discrete.pages.dev/admin/espace';ea.rel='nofollow';ea.innerHTML='<span aria-hidden="true">🔑 </span>Espace auteur';var ap=liste.querySelector('.menu-achat');liste.insertBefore(ea,ap?ap.nextSibling:null);}
- function quitte(e){if(e){e.preventDefault();e.stopPropagation();}try{document.body.innerHTML='';}catch(x){}location.replace('https://www.google.fr/search?q=m%C3%A9t%C3%A9o');}
+ /* V115 (Lionel, 27/11) : on sort du plein ecran AVANT de quitter. Sinon Chrome garde son plein ecran sur la page suivante, sans barre d adresse. */
+ function quitte(e){if(e){e.preventDefault();e.stopPropagation();}
+  var part=function(){try{document.body.innerHTML='';}catch(x){}location.replace('https://www.google.fr/search?q=m%C3%A9t%C3%A9o');};
+  try{var fe=document.fullscreenElement||document.webkitFullscreenElement;
+   if(fe){var r=(document.exitFullscreen||document.webkitExitFullscreen).call(document);if(r&&r.then){r.then(part,part);return;}setTimeout(part,150);return;}}catch(x){}
+  part();}
  q.addEventListener('click',quitte);document.addEventListener('click',function(e){if(e.target.closest&&e.target.closest('.v-quit'))quitte(e);},true);
  var wr=nav.parentNode,mq=wr.querySelector('.marque');var lv=document.createElement('a');lv.className='barre-livre';lv.href='https://edition-discrete.pages.dev/';lv.rel='nofollow';lv.title='Lire en ligne';lv.setAttribute('aria-label','Lire le livre en ligne');lv.innerHTML='<span aria-hidden="true">📖</span>';wr.insertBefore(lv,mq?mq.nextSibling:wr.firstChild);})();
