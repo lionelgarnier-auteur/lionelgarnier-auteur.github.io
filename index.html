@@ -1495,7 +1495,7 @@ window.INTRO_VIDEO='/teaser-accueil-V16.mp4';
 (function(){var fl=document.getElementById('fl-bas'),ch=fl&&fl.previousElementSibling,cad=document.getElementById('feuilleter');if(!fl||!ch||!cad||!('IntersectionObserver' in window))return;try{if(sessionStorage.getItem('fl_bas'))return;}catch(e){}var t=null;var o=new IntersectionObserver(function(es){es.forEach(function(e){clearTimeout(t);if(e.isIntersecting&&e.intersectionRatio>=0.6){t=setTimeout(function(){var r=cad.getBoundingClientRect();if(r.top<innerHeight*0.6)return;o.disconnect();try{sessionStorage.setItem('fl_bas','1');}catch(x){}fl.classList.add('go');},1000);}});},{threshold:[0,0.6]});o.observe(ch);})();
 </script>
 <script src="/fleche-menu.js?v=110"></script>
-<script src="/barre.js?v=110"></script>
+<script src="/barre.js?v=115"></script>
 <script src="/invite-zoom.js?v=113"></script>
 </body>
 </html>
