@@ -1414,6 +1414,7 @@ window.INTRO_VIDEO='/teaser-accueil-V16.mp4';
  var cad=f.parentNode,vu=0,prec=0,mqH=window.matchMedia('(orientation:landscape) and (max-height:520px)'),mq={get matches(){return TEL&&mqH.matches;}},mqO=window.matchMedia('(orientation:landscape)'),ori=mqO.matches;
  if('IntersectionObserver' in window)new IntersectionObserver(function(es){es.forEach(function(e){prec=vu;vu=e.intersectionRatio;document.body.classList.toggle('livre-plein',mq.matches&&vu>0.85);});},{threshold:[0,0.3,0.5,0.85,0.95,1]}).observe(cad);
  function recadre(){var r=cad.getBoundingClientRect(),hh=mq.matches?0:((document.querySelector('header.nav')||{}).offsetHeight||70)/(window.__z||1);window.scrollTo({top:Math.max(0,window.scrollY+r.top/(window.__z||1)-hh),behavior:'auto'});document.body.classList.toggle('livre-plein',mq.matches);}
+ window.__recadreLivre=recadre;   /* V113 (Lionel, 27/11) : le levier ZOOM s'en sert pour recaler la page sur le livre en position 2 */
  var avant=null,tR=null;function tourne(){if(avant===null)avant=Math.max(vu,prec);clearTimeout(tR);tR=setTimeout(function(){if(avant>0.3){recadre();setTimeout(recadre,350);}avant=null;},250);}
  /* V101 : on ne recadre que si l'appareil a VRAIMENT tourné (pas quand la hauteur change à cause de la barre d'adresse ou d'une sortie de plein écran) */
  function tourneVrai(){var o=mqO.matches;if(o===ori)return;ori=o;tourne();}
@@ -1469,7 +1470,7 @@ window.INTRO_VIDEO='/teaser-accueil-V16.mp4';
  function suit(){var e=fe(),p=!e?0:(e===f?2:1);
   if(veut===1&&p===0){veut=null;entrer(D);return;}   /* 3 → 2 : on était sorti du livre, la page repasse en plein écran */
   if(veut===0&&p!==0){sortir();return;}               /* 3 → 1 avec la page en dessous : on sort complètement */
-  veut=null;if(p!==pos){pos=p;maj();}try{if(f.contentWindow)f.contentWindow.postMessage({ed:'unePage',on:p===2},'https://edition-discrete.pages.dev');}catch(x){}   /* V107 : position 3 = le livre en une page */cible=ANG[pos];ressort(false);}
+  veut=null;if(p!==pos){pos=p;maj();}if(p===1&&window.__recadreLivre){setTimeout(window.__recadreLivre,90);setTimeout(window.__recadreLivre,430);}   /* V113 : en position 2, on arrive directement sur le livre, pas sur le bandeau */try{if(f.contentWindow)f.contentWindow.postMessage({ed:'unePage',on:p===2},'https://edition-discrete.pages.dev');}catch(x){}   /* V107 : position 3 = le livre en une page */cible=ANG[pos];ressort(false);}
  ['fullscreenchange','webkitfullscreenchange'].forEach(function(n){document.addEventListener(n,function(){setTimeout(suit,30);});});
  /* ressort : la position est prise au PREMIER contact avec le cran ; le rebond qui suit est seulement visuel */
  function ressort(nouv){cancelAnimationFrame(raf);var der=performance.now(),touche=false;
