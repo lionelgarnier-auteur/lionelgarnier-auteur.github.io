@@ -1,0 +1,8 @@
+/* V108 (Lionel) : MENU — petite flèche ▼ rouge-orangé en bas du menu déroulant tant qu'il reste des liens plus bas (on croyait le menu complet) ;
+   elle disparaît quand on arrive en bas ; un toucher fait descendre le menu. */
+(function(){var L=document.getElementById('menu-liste');if(!L)return;
+ var st=document.createElement('style');st.textContent='.menu-fl{position:sticky;bottom:-10px;margin:0 -10px -10px;height:34px;display:flex;align-items:flex-end;justify-content:center;padding-bottom:4px;background:linear-gradient(rgba(0,0,0,0),var(--surface,#1f2438) 70%);pointer-events:none;flex:none}.menu-fl span{pointer-events:auto;cursor:pointer;width:34px;height:24px;border-radius:12px;background:#e2552d;color:#fff;font:700 13px/24px system-ui,sans-serif;text-align:center;box-shadow:0 2px 8px rgba(226,85,45,.55);animation:menuFl 1.6s ease-in-out infinite}@keyframes menuFl{50%{transform:translateY(3px)}}.menu-fl.off{display:none}@media (prefers-reduced-motion:reduce){.menu-fl span{animation:none}}';document.head.appendChild(st);
+ var f=document.createElement('div');f.className='menu-fl off';f.setAttribute('aria-hidden','true');f.innerHTML='<span>▼</span>';L.appendChild(f);
+ function maj(){if(L.hidden){f.classList.add('off');return;}var reste=L.scrollHeight-L.clientHeight-L.scrollTop;f.classList.toggle('off',reste<12);}
+ L.addEventListener('scroll',maj,{passive:true});addEventListener('resize',maj);new MutationObserver(function(){setTimeout(maj,40);}).observe(L,{attributes:true,attributeFilter:['hidden']});
+ f.firstChild.addEventListener('click',function(e){e.stopPropagation();L.scrollBy({top:L.clientHeight*0.7,behavior:'smooth'});});setTimeout(maj,300);})();
