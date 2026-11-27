@@ -1352,7 +1352,13 @@ window.INTRO_VIDEO='/teaser-accueil-V16.mp4';
  function pour(el){for(var i=0;i<P.length;i++)if(P[i].sec===el||P[i].sec.contains(el))return P[i];return null;}
  /* un lien vers une partie (menu « Sur cette page », bouton « Feuilleter le début du livre », lien d'une autre page) la déroule d'abord */
  document.addEventListener('click',function(e){var a=e.target.closest&&e.target.closest('a[href*="#"]');if(!a)return;var h=a.getAttribute('href'),i=h.indexOf('#'),id=h.slice(i+1);if(!id||(i>0&&h.slice(0,i)!=='/'&&h.slice(0,i)!==location.pathname))return;var c=document.getElementById(id);if(!c)return;var o=pour(c);if(o&&!o.ouvert)o.ouvre(false);},true);
- function selonAdresse(){var id=(location.hash||'').slice(1),c=id&&document.getElementById(id),o=c&&pour(c);if(o&&!o.ouvert){o.ouvre(false);setTimeout(function(){c.scrollIntoView();},60);}}
+ /* V113 (Lionel, 27/11) : quand on arrive par un lien vers « Feuilleter », on se cale sur le LIVRE (entier a l'ecran, juste sous la barre) et non sur le haut de la section, sinon le livre etait coupe en bas */
+ function cale(c){try{var cad=c&&c.id==='section-feuilleter'&&document.getElementById('feuilleter');
+  if(cad){var n=document.querySelector('header.nav'),hh=n?n.getBoundingClientRect().height:0,r=cad.getBoundingClientRect(),dispo=innerHeight-hh,y=scrollY+r.top-hh-8;
+   if(r.height<dispo-24)y=scrollY+r.top-hh-(dispo-r.height)/2;
+   window.scrollTo(0,Math.max(0,Math.round(y)));return;}}catch(x){}
+  c.scrollIntoView();}
+ function selonAdresse(){var id=(location.hash||'').slice(1),c=id&&document.getElementById(id),o=c&&pour(c);if(o&&!o.ouvert){o.ouvre(false);setTimeout(function(){cale(c);},60);setTimeout(function(){cale(c);},420);}}
  /* V89 : plus aucune partie ouverte à l'arrivée : on voit d'un coup d'œil tous les bandeaux du livre (demande de Lionel) */   /* « Le livre » est déroulé à chaque arrivée sur l'accueil */
  selonAdresse();window.addEventListener('hashchange',selonAdresse);window.__bandeaux=P;})();
 </script>
@@ -1489,6 +1495,6 @@ window.INTRO_VIDEO='/teaser-accueil-V16.mp4';
 </script>
 <script src="/fleche-menu.js?v=110"></script>
 <script src="/barre.js?v=110"></script>
-<script src="/invite-zoom.js?v=112"></script>
+<script src="/invite-zoom.js?v=113"></script>
 </body>
 </html>
